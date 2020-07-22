@@ -17,7 +17,7 @@ let whitelist = [];
 if (app.get("env") === "development") {
   whitelist.push("http://localhost:9000", "http://localhost:3000");
 } else {
-  whitelist.push("https://glistening-coast.surge.sh/");
+  whitelist.push("https://glistening-coast.surge.sh");
 }
 
 const corsOptions = {
