@@ -13,12 +13,7 @@ const questionsRouter = require("./routes/questions");
 
 var app = express();
 
-let whitelist = [];
-if (app.get("env") === "development") {
-  whitelist.push("http://localhost:9000", "http://localhost:3000");
-} else {
-  whitelist.push("https://glistening-coast.surge.sh");
-}
+let whitelist = ["http://localhost:9000", "https://glistening-coast.surge.sh"];
 
 const corsOptions = {
   origin: function (origin, cb) {
