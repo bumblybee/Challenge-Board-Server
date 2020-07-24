@@ -3,7 +3,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
-const dotenv = require("dotenv");
+require("dotenv").config({ path: __dirname + "/.env" });
 
 const errorHandlers = require("./handlers/errorHandlers");
 
@@ -12,8 +12,19 @@ var usersRouter = require("./routes/users");
 const questionsRouter = require("./routes/questions");
 
 var app = express();
+// var env = process.env.NODE_ENV || "development";
 
-let whitelist = ["http://localhost:9000", "https://glistening-coast.surge.sh"];
+const whitelist = [
+  "http://localhost:3000",
+  "http://localhost:9000",
+  "https://glistening-coast.surge.sh",
+];
+
+// if (app.get(env) === "development") {
+//   whitelist.push("http://localhost:3000", "http://localhost:9000");
+// } else {
+//   whitelist.push("https://glistening-coast.surge.sh");
+// }
 
 const corsOptions = {
   origin: function (origin, cb) {

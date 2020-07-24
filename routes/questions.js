@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const challengeController = require("../controllers/challengeController");
+const questionsController = require("../controllers/questionsController");
 
-router.get("/:id", challengeController.getQuestions);
+router.get("/", questionsController.getQuestions);
+router.get("/:id", questionsController.getQuestions);
 
 module.exports = router;
