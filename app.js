@@ -18,6 +18,7 @@ const whitelist = [
   "http://localhost:3000",
   "http://localhost:9000",
   "https://glistening-coast.surge.sh",
+  "https://hushed-wool.surge.sh/",
 ];
 
 // if (app.get(env) === "development") {
