@@ -14,13 +14,11 @@ const questionsRouter = require("./routes/questions");
 var app = express();
 // var env = process.env.NODE_ENV || "development";
 
-// const whitelist = [
-//   "http://localhost:3000",
-//   "http://localhost:9000",
-//   "https://hushed-wool.surge.sh/",
-// ];
-
-const whitelist = [];
+const whitelist = [
+  "http://localhost:3000",
+  "http://localhost:9000",
+  "https://hushed-wool.surge.sh/",
+];
 
 // if (app.get(env) === "development") {
 //   whitelist.push("http://localhost:3000", "http://localhost:9000");
