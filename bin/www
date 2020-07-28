@@ -3,7 +3,10 @@
 /**
  * Module dependencies.
  */
+const dotenv = require("dotenv");
+dotenv.config();
 
+const db = require("../models/db");
 var app = require("../app");
 var debug = require("debug")("challenge-board-server:server");
 var http = require("http");
@@ -24,10 +27,12 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-
-server.listen(port, () => console.log(`Server running on ${port}`));
-server.on("error", onError);
-server.on("listening", onListening);
+let forceDbReset = true;
+db.sequelize.sync({ force: forceDbReset }).then(() => {
+  server.listen(port, () => console.log(`Server running on ${port}`));
+  server.on("error", onError);
+  server.on("listening", onListening);
+});
 
 /**
  * Normalize a port into a number, string, or false.

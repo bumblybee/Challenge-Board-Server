@@ -3,7 +3,7 @@ exports.getQuestions = (req, res) => {
   res.json([
     {
       user: {
-        name: "Mark Hill",
+        username: "Mark Hill",
       },
       createdAt: "07/16/2020",
       body:
@@ -14,7 +14,7 @@ exports.getQuestions = (req, res) => {
     },
     {
       user: {
-        name: "Mark Hill",
+        username: "Mark Hill",
       },
       createdAt: "07/16/2020",
       body:
@@ -25,7 +25,7 @@ exports.getQuestions = (req, res) => {
     },
     {
       user: {
-        name: "Sara Jones",
+        username: "Sara Jones",
       },
       createdAt: "07/15/2020",
       body:
@@ -36,7 +36,7 @@ exports.getQuestions = (req, res) => {
     },
     {
       user: {
-        name: "Molly Brown",
+        username: "Molly Brown",
       },
       createdAt: "07/14/2020",
       body:
@@ -47,7 +47,7 @@ exports.getQuestions = (req, res) => {
     },
     {
       user: {
-        name: "Jon Smith",
+        username: "Jon Smith",
       },
       createdAt: "07/14/2020",
       body:
@@ -58,7 +58,7 @@ exports.getQuestions = (req, res) => {
     },
     {
       user: {
-        name: "Lucy Thompson",
+        username: "Lucy Thompson",
       },
       createdAt: "07/13/2020",
       body:
@@ -69,7 +69,7 @@ exports.getQuestions = (req, res) => {
     },
     {
       user: {
-        name: "Mark Hill",
+        username: "Mark Hill",
       },
       createdAt: "07/12/2020",
       body:
@@ -77,31 +77,6 @@ exports.getQuestions = (req, res) => {
       isAnswered: true,
       commentCount: 7,
       threadId: 6,
-    },
-  ]);
-};
-
-exports.getUsers = (req, res) => {
-  res.json([
-    {
-      id: 1,
-      name: "Mark Hill",
-      username: "hill34",
-    },
-    {
-      id: 2,
-      name: "Sam Jones",
-      username: "pizza55",
-    },
-    {
-      id: 3,
-      name: "Molly Brown",
-      username: "simplesimon",
-    },
-    {
-      id: 4,
-      name: "Sara London",
-      username: "bigben",
     },
   ]);
 };
