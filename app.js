@@ -11,7 +11,6 @@ var usersRouter = require("./routes/users");
 const questionsRouter = require("./routes/questions");
 
 var app = express();
-// var env = process.env.NODE_ENV || "development";
 
 const whitelist = [
   "http://localhost:3000",
@@ -25,15 +24,15 @@ const whitelist = [
 //   whitelist.push("https://glistening-coast.surge.sh");
 // }
 
-// const corsOptions = {
-//   origin: function (origin, cb) {
-//     if (whitelist.indexOf(origin) !== -1) {
-//       cb(null, true);
-//     } else {
-//       cb(new Error("Not allowed by CORS"));
-//     }
-//   },
-// };
+const corsOptions = {
+  origin: function (origin, cb) {
+    if (whitelist.indexOf(origin) !== -1) {
+      cb(null, true);
+    } else {
+      cb(new Error("Not allowed by CORS"));
+    }
+  },
+};
 
 app.use(cors());
 app.use(logger("dev"));
