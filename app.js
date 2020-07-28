@@ -16,7 +16,7 @@ var app = express();
 const whitelist = [
   "http://localhost:3000",
   "http://localhost:9000",
-  "https://hushed-wool.surge.sh/",
+  "https://innate-letters.surge.sh/",
 ];
 
 // if (app.get(env) === "development") {
