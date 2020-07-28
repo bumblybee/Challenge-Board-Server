@@ -24,6 +24,6 @@ sequelize
   .catch((err) => console.log("Error:" + err));
 
 const Question = QuestionModel(sequelize, Sequelize);
-const User = UserModel(sequalize, Sequelize);
+const User = UserModel(sequelize, Sequelize);
 
 module.exports = { Sequelize, sequelize, Question };
