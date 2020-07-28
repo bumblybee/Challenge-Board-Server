@@ -12,11 +12,11 @@ const questionsRouter = require("./routes/questions");
 
 var app = express();
 
-const whitelist = [
-  "http://localhost:3000",
-  "http://localhost:9000",
-  "https://innate-letters.surge.sh/",
-];
+// const whitelist = [
+//   "http://localhost:3000",
+//   "http://localhost:9000",
+//   "https://innate-letters.surge.sh/",
+// ];
 
 // if (app.get(env) === "development") {
 //   whitelist.push("http://localhost:3000", "http://localhost:9000");
@@ -24,15 +24,15 @@ const whitelist = [
 //   whitelist.push("https://glistening-coast.surge.sh");
 // }
 
-const corsOptions = {
-  origin: function (origin, cb) {
-    if (whitelist.indexOf(origin) !== -1) {
-      cb(null, true);
-    } else {
-      cb(new Error("Not allowed by CORS"));
-    }
-  },
-};
+// const corsOptions = {
+//   origin: function (origin, cb) {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       cb(null, true);
+//     } else {
+//       cb(new Error("Not allowed by CORS"));
+//     }
+//   },
+// };
 
 app.use(cors());
 app.use(logger("dev"));
