@@ -26,17 +26,17 @@ const whitelist = [
 //   whitelist.push("https://glistening-coast.surge.sh");
 // }
 
-const corsOptions = {
-  origin: function (origin, cb) {
-    if (whitelist.indexOf(origin) !== -1) {
-      cb(null, true);
-    } else {
-      cb(new Error("Not allowed by CORS"));
-    }
-  },
-};
+// const corsOptions = {
+//   origin: function (origin, cb) {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       cb(null, true);
+//     } else {
+//       cb(new Error("Not allowed by CORS"));
+//     }
+//   },
+// };
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
