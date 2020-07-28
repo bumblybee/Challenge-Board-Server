@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const { QuestionModel } = require("./QuestionModel");
+const { UserModel } = require("./UserModel");
 
 const env = process.env.NODE_ENV || "development";
 
@@ -23,5 +24,6 @@ sequelize
   .catch((err) => console.log("Error:" + err));
 
 const Question = QuestionModel(sequelize, Sequelize);
+const User = UserModel(sequalize, Sequelize);
 
 module.exports = { Sequelize, sequelize, Question };
