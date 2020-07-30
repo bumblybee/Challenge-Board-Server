@@ -26,4 +26,4 @@ sequelize
 const Question = QuestionModel(sequelize, Sequelize);
 const User = UserModel(sequelize, Sequelize);
 
-module.exports = { Sequelize, sequelize, Question };
+module.exports = { Sequelize, sequelize, Question, User };

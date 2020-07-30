@@ -15,6 +15,11 @@ exports.UserModel = (sequelize, DataTypes) => {
         unique: true,
         field: "username",
       },
+      email: {
+        type: DataTypes.STRING,
+        unique: true,
+        field: "email",
+      },
       password: {
         type: DataTypes.STRING,
         allowNull: false,

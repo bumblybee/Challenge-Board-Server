@@ -1,4 +1,6 @@
 exports.getQuestions = (req, res) => {
+  //TODO: set up route for thread id
+  //TODO: save questions in db
   const thread = req.params.id;
   res.json([
     {
