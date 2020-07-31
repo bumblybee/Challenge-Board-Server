@@ -9,6 +9,7 @@ const errorHandlers = require("./handlers/errorHandlers");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 const questionsRouter = require("./routes/questions");
+const discordRouter = require("./routes/discord");
 
 var app = express();
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/questions", questionsRouter);
+app.use("/discord", discordRouter);
 
 //error handlers
 

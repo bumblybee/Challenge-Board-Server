@@ -5,6 +5,7 @@ const crypto = require("crypto");
 const { Op } = require("sequelize");
 const User = require("../models/db").User;
 const emailHandler = require("../handlers/emailHandler");
+const authService = require("../services/authService");
 
 exports.signupUser = async (req, res) => {
   try {
@@ -44,41 +45,16 @@ exports.signupUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
-  const userRecord = await User.findOne({ where: { email: email } });
-
-  if (!userRecord) {
-    throw new Error("User not found");
-  } else {
-    const correctPassword = await argon2.verify(userRecord.password, password);
-    if (!correctPassword) {
-      throw new Error("Incorrect Password");
-    }
-  }
-
-  res.cookie("jwt", generateJWT(userRecord), {
+  const { jwt, user } = authService.loginWithPassword(email, password);
+  res.cookie("jwt", jwt, {
     httpOnly: true,
     maxAge: 3600000,
   });
 
   res.json({
-    id: userRecord.id,
-    username: userRecord.username,
-    email: userRecord.email,
-  });
-};
-
-const generateJWT = (user) => {
-  const userData = {
     id: user.id,
     username: user.username,
     email: user.email,
-  };
-
-  const secret = Buffer.from(process.env.JWT_SECRET, "base64");
-  const expiration = "6h";
-  return jwt.sign({ userData }, secret, {
-    expiresIn: expiration,
-    algorithm: "HS256",
   });
 };
 
