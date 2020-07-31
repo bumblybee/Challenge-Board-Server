@@ -22,8 +22,11 @@ exports.UserModel = (sequelize, DataTypes) => {
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: false,
         field: "password",
+      },
+      hasDiscordLogin: {
+        type: DataTypes.BOOLEAN,
+        field: "has_discord_login",
       },
     },
     { tableName: "User" }

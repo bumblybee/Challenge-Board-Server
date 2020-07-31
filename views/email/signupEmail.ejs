@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome</title>
+    <style>
+      .container {
+        width: 60%;
+        margin: 2rem auto;
+        padding: 2rem;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      h1 {
+        border-bottom: 4px solid black;
+        margin-bottom: 2rem;
+        width: 75%;
+      }
+
+      p {
+        line-height: 1.4;
+        font-size: 1.1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Welcome to the Challenge Board, <%= user.username %>!</h1>
+
+      <p>
+        We're so glad to have you! Head over to /threads to see what people are
+        talking about, <br />
+        or head over to /challenge to start leveling up your skills!
+      </p>
+      <p>Rock on! &#x1F3B8; &#x1F91F;</p>
+    </div>
+  </body>
+</html>
