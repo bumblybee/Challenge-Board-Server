@@ -3,13 +3,16 @@ const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const { Op } = require("sequelize");
+
 const User = require("../models/db").User;
+
 const emailHandler = require("../handlers/emailHandler");
 const authService = require("../services/authService");
+const COOKIE_CONFIG = require("../config").COOKIE_CONFIG;
 
 exports.signupUser = async (req, res) => {
   try {
-    const { username, email, password, avatarUrl } = req.body;
+    const { username, email, password } = req.body;
     const hash = await argon2.hash(password);
 
     const newUser = {
@@ -44,18 +47,19 @@ exports.signupUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
-  const { email, password } = req.body;
-  const { jwt, user } = authService.loginWithPassword(email, password);
-  res.cookie("jwt", jwt, {
-    httpOnly: true,
-    maxAge: 3600000,
-  });
+  try {
+    const { email, password } = req.body;
+    const { jwt, user } = await authService.loginWithPassword(email, password);
+    res.cookie("jwt", jwt, COOKIE_CONFIG);
 
-  res.json({
-    id: user.id,
-    username: user.username,
-    email: user.email,
-  });
+    res.json({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 // set up password reset token and send email with url

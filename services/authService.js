@@ -1,4 +1,8 @@
-exports.generateJWT = (user) => {
+const User = require("../models/db").User;
+const argon2 = require("argon2");
+const jwt = require("jsonwebtoken");
+
+generateJWT = (user) => {
   const userData = {
     id: user.id,
     username: user.username,
@@ -9,27 +13,34 @@ exports.generateJWT = (user) => {
   const expiration = "6h";
   return jwt.sign({ userData }, secret, {
     expiresIn: expiration,
-    algorithm: "HS256",
+    // algorithm: "HS256",
   });
 };
 
 exports.loginWithPassword = async (email, password) => {
-  const userRecord = await User.findOne({ where: { email: email } });
+  try {
+    const userRecord = await User.findOne({ where: { email: email } });
 
-  if (!userRecord) {
-    throw new Error("User not found");
-  } else {
-    const correctPassword = await argon2.verify(userRecord.password, password);
+    if (!userRecord) {
+      throw new Error("User not found");
+    } else {
+      const correctPassword = await argon2.verify(
+        userRecord.password,
+        password
+      );
 
-    if (!correctPassword) {
-      throw new Error("Incorrect Password");
+      if (!correctPassword) {
+        throw new Error("Incorrect Password");
+      }
+      const jwt = generateJWT(userRecord);
+
+      return {
+        jwt,
+        user: userRecord,
+      };
     }
-    const jwt = generateJWT(userRecord);
-
-    return {
-      jwt,
-      user: userRecord,
-    };
+  } catch (err) {
+    console.log(err);
   }
 };
 
