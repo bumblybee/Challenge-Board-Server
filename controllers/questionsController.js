@@ -1,84 +1,34 @@
-exports.getQuestions = (req, res) => {
-  //TODO: set up route for thread id
-  //TODO: save questions in db
+const Question = require("../models/db").Question;
+
+//TODO: set up route for thread id
+exports.getQuestions = async (req, res) => {
+  //Find all questions and sort by newest
+  const questions = await Question.findAll({ order: [["createdAt", "DESC"]] });
   const thread = req.params.id;
-  res.json([
-    {
-      user: {
-        username: "Mark Hill",
-      },
-      createdAt: "07/16/2020",
-      body:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat accusamus neque laudantium tempora labore.",
-      isAnswered: false,
-      commentCount: 3,
-      threadId: 1,
-    },
-    {
-      user: {
-        username: "Mark Hill",
-      },
-      createdAt: "07/16/2020",
-      body:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat accusamus neque laudantium tempora labore.",
-      isAnswered: false,
-      commentCount: 3,
-      threadId: 1,
-    },
-    {
-      user: {
-        username: "Sara Jones",
-      },
-      createdAt: "07/15/2020",
-      body:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat accusamus neque laudantium dolorum tempora labore.",
-      isAnswered: true,
-      commentCount: 2,
-      threadId: 2,
-    },
-    {
-      user: {
-        username: "Molly Brown",
-      },
-      createdAt: "07/14/2020",
-      body:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat accusamus neque laudantium dolorum tempora.",
-      isAnswered: false,
-      commentCount: 4,
-      threadId: 3,
-    },
-    {
-      user: {
-        username: "Jon Smith",
-      },
-      createdAt: "07/14/2020",
-      body:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat neque laudantium dolorum tempora labore.",
-      isAnswered: false,
-      commentCount: 1,
-      threadId: 4,
-    },
-    {
-      user: {
-        username: "Lucy Thompson",
-      },
-      createdAt: "07/13/2020",
-      body:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat accusamus neque laudantium dolorum tempora labore.",
-      isAnswered: true,
-      commentCount: 5,
-      threadId: 5,
-    },
-    {
-      user: {
-        username: "Mark Hill",
-      },
-      createdAt: "07/12/2020",
-      body:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat accusamus neque laudantium dolorum tempora labore.",
-      isAnswered: true,
-      commentCount: 7,
-      threadId: 6,
-    },
-  ]);
+  res.json(questions);
 };
+
+exports.createQuestion = async (req, res) => {
+  try {
+    const {
+      username,
+      question,
+      questionDetails,
+      isAnswered,
+      commentCount,
+    } = req.body;
+    const newQuestion = {
+      username,
+      question,
+      questionDetails,
+      isAnswered,
+      commentCount,
+    };
+    await Question.create(newQuestion);
+    res.json(newQuestion);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//TODO: Set isAnswered default to false and commentCount 0

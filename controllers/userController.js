@@ -86,11 +86,11 @@ exports.generatePasswordReset = async (req, res) => {
         { resetPasswordToken: resetToken, resetPasswordExpiry: resetExpiry },
         { where: { email } }
       );
-      // create link with current host and reset token
+      // create link with current host and reset token - req.headers.host is host and port number of server req is sent to
       const resetPasswordUrl = `http://${req.headers.host}/users/password-reset/${resetToken}`;
       // send email containing link and pass url to ejs template
       emailHandler.sendEmail({
-        subject: "Password Reset for Message Board",
+        subject: "Password Reset for Challenge Board",
         filename: "resetPasswordEmail",
         user: { email },
 

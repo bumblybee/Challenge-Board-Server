@@ -1,23 +1,22 @@
+//TODO: change thread id to not allow null?
+const uuid = require("uuid");
+
 exports.QuestionModel = (sequelize, DataTypes) => {
   const Question = sequelize.define(
     "question",
     {
       threadId: {
         type: DataTypes.UUID,
-        primaryKey: true,
-        allowNull: false,
-        unique: true,
         field: "thread_id",
       },
       username: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
         field: "username",
       },
       question: {
         type: DataTypes.STRING,
-        allNull: false,
+        allowNull: false,
         field: "question",
       },
       questionDetails: {
