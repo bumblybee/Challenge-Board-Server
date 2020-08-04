@@ -13,7 +13,12 @@ const discordRouter = require("./routes/discord");
 
 var app = express();
 
-app.use(cors({ origin: "http://127.0.0.1:3000", credentials: true }));
+app.use(
+  cors({
+    origin: ["http://127.0.0.1:3000", "https://temporary-heat.surge.sh"],
+    credentials: true,
+  })
+);
 
 app.use(logger("dev"));
 app.use(express.json());
