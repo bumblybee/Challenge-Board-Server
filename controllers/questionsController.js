@@ -4,7 +4,7 @@ const Question = require("../models/db").Question;
 exports.getQuestions = async (req, res) => {
   //Find all questions and sort by newest
   const questions = await Question.findAll({ order: [["createdAt", "DESC"]] });
-  const thread = req.params.id;
+  // const thread = req.params.id;
   res.json(questions);
 };
 

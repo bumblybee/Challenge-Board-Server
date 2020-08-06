@@ -10,7 +10,7 @@ generateJWT = (user) => {
   };
 
   const secret = Buffer.from(process.env.JWT_SECRET, "base64");
-  const expiration = "5m";
+  const expiration = "3m";
   return jwt.sign({ userData }, secret, {
     expiresIn: expiration,
     // algorithm: "HS256",
@@ -22,6 +22,7 @@ exports.loginWithPassword = async (email, password) => {
     const userRecord = await User.findOne({ where: { email: email } });
 
     if (!userRecord) {
+      //Handle login failure
       throw new Error("User not found");
     } else {
       const correctPassword = await argon2.verify(
