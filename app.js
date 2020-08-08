@@ -6,8 +6,8 @@ const cors = require("cors");
 
 const errorHandlers = require("./handlers/errorHandlers");
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+const indexRouter = require("./routes/index");
+const usersRouter = require("./routes/users");
 const questionsRouter = require("./routes/questions");
 const discordRouter = require("./routes/discord");
 
@@ -15,7 +15,7 @@ var app = express();
 
 app.use(
   cors({
-    origin: ["http://127.0.0.1:3000", "https://temporary-heat.surge.sh"],
+    origin: ["http://localhost:3000", "https://temporary-heat.surge.sh"],
     credentials: true,
   })
 );

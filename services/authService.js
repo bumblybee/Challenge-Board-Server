@@ -1,8 +1,9 @@
 const User = require("../models/db").User;
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
+const uuid = require("uuid");
 
-generateJWT = (user) => {
+exports.generateJWT = (user) => {
   const userData = {
     id: user.id,
     username: user.username,
@@ -45,26 +46,32 @@ exports.loginWithPassword = async (email, password) => {
   }
 };
 
+// Maybe put sendWelcomeEmail in createDiscordUser and only have one function, or just use this to send email and call createDiscorderUser elsewhere
 exports.signupDiscordUser = async (email, username) => {
-  const createdUser = await createDiscordUser(email, username);
+  const createdUser = await createDiscordUserInDB(email, username);
   // add this when you're ready
-  // sendWelcomeSignupEmail(email, username)
+  // sendWelcomeSignupEmail(email, username);
 
   return createdUser;
 };
 
-async function createDiscordUser(email, username) {
-  const user = {
-    id: uuid.v4(),
-    username,
-    email,
-    hasDiscordLogin: true,
-  };
-  const userModel = await User.create(user);
-  const createdUser = {
-    id: userModel.id,
-    username: userModel.username,
-    email: userModel.email,
-  };
-  return createdUser;
-}
+const createDiscordUserInDB = async (email, username) => {
+  try {
+    const user = {
+      id: uuid.v4(),
+      username,
+      email,
+      hasDiscordLogin: true,
+    };
+
+    const newUser = await User.create(user);
+    const createdUser = {
+      id: newUser.id,
+      username: newUser.username,
+      email: newUser.email,
+    };
+    return createdUser;
+  } catch (err) {
+    console.log(err);
+  }
+};

@@ -4,7 +4,7 @@ const { isAuth } = require("../middleware/isAuth");
 
 const questionsController = require("../controllers/questionsController");
 
-router.get("/", isAuth, questionsController.getQuestions);
+router.get("/", questionsController.getQuestions);
 router.post("/", isAuth, questionsController.createQuestion);
 
 module.exports = router;

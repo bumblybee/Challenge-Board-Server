@@ -62,6 +62,12 @@ exports.loginUser = async (req, res) => {
   }
 };
 
+// exports.checkLoggedIn = async (req, res) => {
+//   const { id } = req.body;
+//   const user = User.findOne({ where: { id: id } });
+//   res.json({ user });
+// };
+
 // set up password reset token and send email with url
 exports.generatePasswordReset = async (req, res) => {
   try {

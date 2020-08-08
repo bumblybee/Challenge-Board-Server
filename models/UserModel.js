@@ -28,6 +28,14 @@ exports.UserModel = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         field: "has_discord_login",
       },
+      createdAt: {
+        type: DataTypes.DATE,
+        field: "created_at",
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        field: "updated_at",
+      },
     },
     { tableName: "User" }
   );
