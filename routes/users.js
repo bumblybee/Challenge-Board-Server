@@ -4,7 +4,7 @@ const userController = require("../controllers/userController");
 
 router.post("/create", userController.signupUser);
 router.post("/login", userController.loginUser);
-// router.get("/login", userController.checkLoggedIn);
+//TODO: add route for checking isLogged in with isAuth
 router.post("/password-reset", userController.generatePasswordReset);
 router.post("/password-reset/:token", userController.passwordReset);
 module.exports = router;

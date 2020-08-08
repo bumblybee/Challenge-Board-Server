@@ -1,4 +1,5 @@
 const User = require("../models/db").User;
+const emailHandler = require("../handlers/emailHandler");
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
@@ -49,8 +50,15 @@ exports.loginWithPassword = async (email, password) => {
 // Maybe put sendWelcomeEmail in createDiscordUser and only have one function, or just use this to send email and call createDiscorderUser elsewhere
 exports.signupDiscordUser = async (email, username) => {
   const createdUser = await createDiscordUserInDB(email, username);
-  // add this when you're ready
-  // sendWelcomeSignupEmail(email, username);
+  // send welcome email
+  emailHandler.sendEmail({
+    subject: "Welcome to the Message Board!",
+    filename: "signupEmail",
+    user: {
+      username,
+      email,
+    },
+  });
 
   return createdUser;
 };
