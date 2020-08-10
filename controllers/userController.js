@@ -62,11 +62,9 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-// exports.checkLoggedIn = async (req, res) => {
-//   const { id } = req.body;
-//   const user = User.findOne({ where: { id: id } });
-//   res.json({ user });
-// };
+exports.checkLoggedIn = (req, res) => {
+  res.json("logged in");
+};
 
 // set up password reset token and send email with url
 exports.generatePasswordReset = async (req, res) => {
@@ -92,8 +90,10 @@ exports.generatePasswordReset = async (req, res) => {
         { resetPasswordToken: resetToken, resetPasswordExpiry: resetExpiry },
         { where: { email } }
       );
+
       // create link with current host and reset token - req.headers.host is host and port number of server req is sent to
-      const resetPasswordUrl = `http://${req.headers.host}/users/password-reset/${resetToken}`;
+      const resetPasswordUrl = `http://localhost:3000/reset-password/${resetToken}`;
+
       // send email containing link and pass url to ejs template
       emailHandler.sendEmail({
         subject: "Password Reset for Challenge Board",
@@ -102,6 +102,7 @@ exports.generatePasswordReset = async (req, res) => {
 
         resetPasswordUrl,
       });
+
       //send json confirmation
       res.json({ message: "An email has been sent to the address provided." });
     }
@@ -138,10 +139,8 @@ exports.passwordReset = async (req, res) => {
       // Update user in db
       userRecord.update({ password: hash });
       // send along another cookie with token so they're logged in
-      res.cookie("jwt", generateJWT(userRecord), {
-        httpOnly: true,
-        maxAge: 3600000,
-      });
+      //TODO: add to authService
+      res.cookie("jwt", authService.generateJWT(userRecord), COOKIE_CONFIG);
       // Send data
       res.json({
         message: "Password Updated",

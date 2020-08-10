@@ -1,3 +1,5 @@
+const { database } = require("faker");
+
 exports.UserModel = (sequelize, DataTypes) => {
   const User = sequelize.define(
     "user",
@@ -24,6 +26,14 @@ exports.UserModel = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         field: "password",
       },
+      resetPasswordToken: {
+        type: DataTypes.STRING,
+        field: "reset_password_token",
+      },
+      resetPasswordExpiry: {
+        type: DataTypes.DATE,
+        field: "reset_password_expiry",
+      },
       hasDiscordLogin: {
         type: DataTypes.BOOLEAN,
         field: "has_discord_login",
@@ -37,7 +47,7 @@ exports.UserModel = (sequelize, DataTypes) => {
         field: "updated_at",
       },
     },
-    { tableName: "User" }
+    { tableName: "user" }
   );
   return User;
 };

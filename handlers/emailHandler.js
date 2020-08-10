@@ -20,13 +20,17 @@ const generateHTML = async (filename, options) => {
 };
 
 exports.sendEmail = async (options) => {
-  const emailHTML = await generateHTML(options.filename, options);
+  try {
+    const emailHTML = await generateHTML(options.filename, options);
 
-  const mailOptions = {
-    from: "Tiffani H <tiff@gmail.com>",
-    to: options.user.email,
-    subject: options.subject,
-    html: emailHTML,
-  };
-  return transport.sendMail(mailOptions);
+    const mailOptions = {
+      from: "Tiffani H <tiff@gmail.com>",
+      to: options.user.email,
+      subject: options.subject,
+      html: emailHTML,
+    };
+    return transport.sendMail(mailOptions);
+  } catch (err) {
+    console.log(err);
+  }
 };

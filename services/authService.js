@@ -35,7 +35,7 @@ exports.loginWithPassword = async (email, password) => {
       if (!correctPassword) {
         throw new Error("Incorrect Password");
       }
-      const jwt = generateJWT(userRecord);
+      const jwt = this.generateJWT(userRecord);
 
       return {
         jwt,
