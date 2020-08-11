@@ -6,7 +6,7 @@ exports.QuestionModel = (sequelize, DataTypes) => {
     "question",
     {
       threadId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         field: "thread_id",
       },
       username: {
