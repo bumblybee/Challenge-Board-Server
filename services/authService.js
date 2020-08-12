@@ -1,19 +1,18 @@
-const User = require("../models/db").User;
+const User = require("../db").User;
 const emailHandler = require("../handlers/emailHandler");
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
-const uuid = require("uuid");
 
 exports.generateJWT = (user) => {
-  const userData = {
+  const data = {
     id: user.id,
     username: user.username,
     email: user.email,
   };
 
   const secret = Buffer.from(process.env.JWT_SECRET, "base64");
-  const expiration = "3m";
-  return jwt.sign({ userData }, secret, {
+  const expiration = "8m";
+  return jwt.sign({ data }, secret, {
     expiresIn: expiration,
     // algorithm: "HS256",
   });
@@ -66,7 +65,6 @@ exports.signupDiscordUser = async (email, username) => {
 const createDiscordUserInDB = async (email, username) => {
   try {
     const user = {
-      id: uuid.v4(),
       username,
       email,
       hasDiscordLogin: true,

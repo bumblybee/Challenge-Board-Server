@@ -1,10 +1,18 @@
-const Question = require("../models/db").Question;
-
+const Question = require("../db").Question;
+const User = require("../db").User;
 //TODO: set up route for thread id
 exports.getQuestions = async (req, res) => {
   //Find all questions and sort by newest
-  const questions = await Question.findAll({ order: [["createdAt", "DESC"]] });
-
+  const questions = await Question.findAll({
+    order: [["createdAt", "DESC"]],
+    include: [
+      {
+        model: User,
+        attributes: ["username"],
+      },
+    ],
+  });
+  console.log(questions);
   res.json(questions);
 };
 
@@ -15,7 +23,7 @@ exports.getQuestion = async (req, res) => {
   });
   const question = questionId.question;
   console.log(question);
-  // const question = questionId.question;
+
   res.json({
     question,
     comments: [
@@ -44,24 +52,22 @@ exports.getQuestion = async (req, res) => {
 
 exports.createQuestion = async (req, res) => {
   try {
-    const {
-      threadId,
-      username,
-      question,
-      questionDetails,
-      isAnswered,
-      commentCount,
-    } = req.body;
+    const { title, body, isAnswered } = req.body;
+    const { id: userId } = req.token.data;
     const newQuestion = {
-      threadId,
-      username,
-      question,
-      questionDetails,
+      title,
+      body,
       isAnswered,
-      commentCount,
+      userId,
     };
     await Question.create(newQuestion);
-    res.json(newQuestion);
+
+    const createdQuestion = {
+      title: newQuestion.title,
+      body: newQuestion.body,
+      isAnswered: newQuestion.isAnswered,
+    };
+    res.json(createdQuestion);
   } catch (error) {
     console.log(error);
   }

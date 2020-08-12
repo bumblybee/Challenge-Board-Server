@@ -6,7 +6,7 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
-const db = require("../models/db");
+const db = require("../db");
 var app = require("../app");
 var debug = require("debug")("challenge-board-server:server");
 var http = require("http");

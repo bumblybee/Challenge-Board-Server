@@ -1,16 +1,9 @@
-const { database } = require("faker");
+"use strict";
 
-exports.UserModel = (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     "user",
     {
-      id: {
-        type: DataTypes.UUID,
-        primaryKey: true,
-        allowNull: false,
-        unique: true,
-        field: "id",
-      },
       username: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -19,6 +12,7 @@ exports.UserModel = (sequelize, DataTypes) => {
       },
       email: {
         type: DataTypes.STRING,
+        allowNull: false,
         unique: true,
         field: "email",
       },
@@ -38,6 +32,10 @@ exports.UserModel = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         field: "has_discord_login",
       },
+      isTeacher: {
+        type: DataTypes.BOOLEAN,
+        field: "is_teacher",
+      },
       createdAt: {
         type: DataTypes.DATE,
         field: "created_at",
@@ -49,5 +47,6 @@ exports.UserModel = (sequelize, DataTypes) => {
     },
     { tableName: "user" }
   );
+
   return User;
 };

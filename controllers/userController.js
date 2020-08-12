@@ -1,10 +1,9 @@
-const uuid = require("uuid");
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const { Op } = require("sequelize");
 
-const User = require("../models/db").User;
+const User = require("../db").User;
 
 const emailHandler = require("../handlers/emailHandler");
 const authService = require("../services/authService");
@@ -16,7 +15,6 @@ exports.signupUser = async (req, res) => {
     const hash = await argon2.hash(password);
 
     const newUser = {
-      id: uuid.v4(),
       username,
       email,
       password: hash,
