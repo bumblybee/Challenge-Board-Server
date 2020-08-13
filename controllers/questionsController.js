@@ -1,5 +1,6 @@
 const Question = require("../db").Question;
 const User = require("../db").User;
+const Comment = require("../db").Comment;
 //TODO: set up route for thread id
 exports.getQuestions = async (req, res) => {
   //Find all questions and sort by newest
@@ -12,42 +13,29 @@ exports.getQuestions = async (req, res) => {
       },
     ],
   });
-  console.log(questions);
+  // console.log(questions);
   res.json(questions);
 };
 
 exports.getQuestion = async (req, res) => {
   const { id } = req.params;
-  const questionId = await Question.findOne({
+  const question = await Question.findOne({
     where: { id: id },
-  });
-  const question = questionId.question;
-  console.log(question);
-
-  res.json({
-    question,
-    comments: [
+    include: [
       {
-        username: "Sam Hill",
-        comment: `You're seeing question thread ${req.params.id}`,
-        chosenAnswer: false,
-        createdAt: "2020-08-10T10:07:47.988-05",
+        model: User,
+        attributes: ["username"],
       },
       {
-        username: "Molly Brown",
-        comment: "I think I've done the same thing, funny.",
-        chosenAnswer: false,
-        createdAt: "2020-08-10T14:09:47.988-05",
-      },
-      {
-        username: "Mark Jones",
-        comment:
-          "Grab the input value with event.target and store it in state.",
-        chosenAnswer: true,
-        createdAt: "2020-08-09T14:07:47.988-05",
+        model: Comment,
+        include: [{ model: User, attributes: ["username"] }],
       },
     ],
   });
+
+  // console.log(question);
+
+  res.json({ question });
 };
 
 exports.createQuestion = async (req, res) => {
@@ -70,6 +58,20 @@ exports.createQuestion = async (req, res) => {
     res.json(createdQuestion);
   } catch (error) {
     console.log(error);
+  }
+};
+
+exports.createComment = async (req, res) => {
+  try {
+    const { body, isAnswer } = req.body;
+    const { id: questionId } = req.params;
+    const { id: userId } = req.token.data;
+    const comment = { body, isAnswer, questionId, userId };
+
+    await Comment.create(comment);
+    res.json({ body, isAnswer });
+  } catch (err) {
+    console.log(err);
   }
 };
 
