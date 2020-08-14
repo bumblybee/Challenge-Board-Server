@@ -60,8 +60,13 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-exports.checkLoggedIn = (req, res) => {
-  res.json("logged in");
+exports.checkLoggedIn = async (req, res) => {
+  const { id } = req.token.data;
+  const user = await User.findOne({
+    where: { id },
+    attributes: ["username"],
+  });
+  res.json({ message: "logged in", user });
 };
 
 // set up password reset token and send email with url
