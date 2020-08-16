@@ -10,44 +10,56 @@ const authService = require("../services/authService");
 const COOKIE_CONFIG = require("../config").COOKIE_CONFIG;
 
 exports.signupUser = async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
-    const hash = await argon2.hash(password);
+  const { username, email, password } = req.body;
 
-    const newUser = {
+  const checkEmail = await User.findOne({ where: { email: email } });
+  const checkUsername = await User.findOne({ where: { username: username } });
+
+  if (checkEmail) {
+    res.status(401).json({ error: "signup.invalidEmail" });
+    return;
+  }
+  if (checkUsername) {
+    res.status(401).json({ error: "signup.invalidUsername" });
+    return;
+  }
+
+  const hash = await argon2.hash(password);
+
+  const newUser = {
+    username,
+    email,
+    password: hash,
+  };
+  // Store user in db
+  const userData = await User.create(newUser);
+
+  // create object with data from db to pass to api, minus password
+  const createdUser = {
+    id: userData.id,
+    username: userData.username,
+    email: userData.email,
+  };
+
+  emailHandler.sendEmail({
+    subject: "Welcome to the Message Board!",
+    filename: "signupEmail",
+    user: {
       username,
       email,
-      password: hash,
-    };
-    // Store user in db
-    const userData = await User.create(newUser);
+    },
+  });
 
-    // create object with data from db to pass to api, minus password
-    const createdUser = {
-      id: userData.id,
-      username: userData.username,
-      email: userData.email,
-    };
-
-    emailHandler.sendEmail({
-      subject: "Welcome to the Message Board!",
-      filename: "signupEmail",
-      user: {
-        username,
-        email,
-      },
-    });
-
-    res.json(createdUser);
-  } catch (error) {
-    console.log(error);
-  }
+  res.json(createdUser);
 };
 
 exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const { jwt, user } = await authService.loginWithPassword(email, password);
+    const { jwt, user, errMsg } = await authService.loginWithPassword(
+      email,
+      password
+    );
 
     res.cookie("jwt", jwt, COOKIE_CONFIG);
 
@@ -57,7 +69,7 @@ exports.loginUser = async (req, res) => {
       email: user.email,
     });
   } catch (err) {
-    console.log(err);
+    res.status(401).json({ error: "login.invalidCredentials" });
   }
 };
 
