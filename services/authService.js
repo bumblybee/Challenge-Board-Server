@@ -19,30 +19,24 @@ exports.generateJWT = (user) => {
 };
 
 exports.loginWithPassword = async (email, password) => {
-  try {
-    const userRecord = await User.findOne({ where: { email: email } });
+  const userRecord = await User.findOne({ where: { email: email } });
 
-    if (!userRecord) {
-      //Handle login failure
-      throw new Error("User not found");
-    } else {
-      const correctPassword = await argon2.verify(
-        userRecord.password,
-        password
-      );
+  if (!userRecord) {
+    //Handle login failure
+    throw new Error("login.invalidCredentials");
+  } else {
+    const correctPassword = await argon2.verify(userRecord.password, password);
 
-      if (!correctPassword) {
-        throw new Error("Incorrect Password");
-      }
-      const jwt = this.generateJWT(userRecord);
-
-      return {
-        jwt,
-        user: userRecord,
-      };
+    if (!correctPassword) {
+      //handle error - how without access to res?
+      throw new Error("login.invalidCredentials");
     }
-  } catch (err) {
-    console.log(err);
+    const jwt = this.generateJWT(userRecord);
+
+    return {
+      jwt,
+      user: userRecord,
+    };
   }
 };
 

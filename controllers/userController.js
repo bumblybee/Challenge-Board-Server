@@ -48,6 +48,7 @@ exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const { jwt, user } = await authService.loginWithPassword(email, password);
+
     res.cookie("jwt", jwt, COOKIE_CONFIG);
 
     res.json({
