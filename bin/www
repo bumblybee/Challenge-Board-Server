@@ -27,7 +27,7 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-let forceDbReset = true;
+let forceDbReset = false;
 db.sequelize.sync({ force: forceDbReset }).then(() => {
   server.listen(port, () => console.log(`Server running on ${port}`));
   server.on("error", onError);
