@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        set(value) {
+          const normalizedEmail = value.trim().toLowerCase();
+          this.setDataValue("email", normalizedEmail);
+        },
         field: "email",
       },
       password: {
