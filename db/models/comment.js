@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     "comment",
     {
       body: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
         field: "body",
       },

@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         field: "title",
       },
       body: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
         field: "body",
       },
