@@ -16,6 +16,6 @@ router.post(
   errorWrapper(userController.passwordReset)
 );
 
-router.get("/check-login", isAuth, userController.checkLoggedIn);
+router.get("/check-login", isAuth, errorWrapper(userController.checkLoggedIn));
 
 module.exports = router;

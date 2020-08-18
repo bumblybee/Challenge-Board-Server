@@ -33,6 +33,7 @@ app.use("/questions", questionsRouter);
 //error handlers
 
 app.use(errorHandlers.notFound);
+app.use(errorHandlers.sequelizeErrorHandler);
 
 if (app.get("env") === "development") {
   app.use(errorHandlers.developmentErrors);

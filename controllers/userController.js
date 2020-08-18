@@ -16,11 +16,11 @@ exports.signupUser = async (req, res) => {
   const checkUsername = await User.findOne({ where: { username: username } });
 
   if (checkEmail) {
-    res.status(401).json({ error: "signup.invalidEmail" });
+    res.status(401).json({ error: "signup.emailTaken" });
     return;
   }
   if (checkUsername) {
-    res.status(401).json({ error: "signup.invalidUsername" });
+    res.status(401).json({ error: "signup.usernameTaken" });
     return;
   }
 

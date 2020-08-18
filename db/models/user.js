@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
           const normalizedEmail = value.trim().toLowerCase();
           this.setDataValue("email", normalizedEmail);
         },
+        validate: {
+          isEmail: {
+            msg: "signup.invalidEmail",
+          },
+        },
         field: "email",
       },
       password: {
