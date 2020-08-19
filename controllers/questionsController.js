@@ -1,7 +1,10 @@
 const Question = require("../db").Question;
 const User = require("../db").User;
 const Comment = require("../db").Comment;
-//TODO: set up route for thread id
+
+// To add isAnswered to question
+// Question.update({ isAnswered: true }, { where: { id: req.params.id} });
+
 exports.getQuestions = async (req, res) => {
   //Find all questions and sort by newest
   const questions = await Question.findAll({
@@ -11,6 +14,7 @@ exports.getQuestions = async (req, res) => {
         model: User,
         attributes: ["username"],
       },
+      { model: Comment },
     ],
   });
   // console.log(questions);
