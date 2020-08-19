@@ -6,7 +6,8 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
-const db = require("../db");
+var db = require("../db");
+var authService = require("../services/authService");
 var app = require("../app");
 var debug = require("debug")("challenge-board-server:server");
 var http = require("http");
@@ -28,10 +29,16 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 let forceDbReset = false;
-db.sequelize.sync({ force: forceDbReset }).then(() => {
+db.sequelize.sync({ force: forceDbReset }).then(async () => {
   server.listen(port, () => console.log(`Server running on ${port}`));
   server.on("error", onError);
   server.on("listening", onListening);
+  //seed db with teacher data
+  await authService.createTeacherUser(
+    process.env.TEACHER_USERNAME,
+    process.env.TEACHER_EMAIL,
+    process.env.TEACHER_PASSWORD
+  );
 });
 
 /**

@@ -18,6 +18,38 @@ exports.generateJWT = (user) => {
   });
 };
 
+exports.createTeacherUser = async (username, email, password) => {
+  const hash = await argon2.hash(password);
+
+  const newUser = {
+    username,
+    email,
+    password: hash,
+    role: roles.Teacher,
+  };
+  // Store user in db
+  const userData = await User.create(newUser);
+
+  // create object with data from db to pass to api, minus password
+  const createdUser = {
+    id: userData.id,
+    username: userData.username,
+    email: userData.email,
+    role: userData.role,
+  };
+
+  // emailHandler.sendEmail({
+  //   subject: "Welcome to the Message Board!",
+  //   filename: "signupEmail",
+  //   user: {
+  //     username,
+  //     email,
+  //   },
+  // });
+
+  return createdUser;
+};
+
 exports.loginWithPassword = async (email, password) => {
   const userRecord = await User.findOne({ where: { email: email } });
 
