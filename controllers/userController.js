@@ -4,9 +4,11 @@ const crypto = require("crypto");
 const { Op } = require("sequelize");
 
 const User = require("../db").User;
+const roles = require("../enums/roles");
 
 const emailHandler = require("../handlers/emailHandler");
 const authService = require("../services/authService");
+
 const COOKIE_CONFIG = require("../config").COOKIE_CONFIG;
 
 exports.signupUser = async (req, res) => {
@@ -30,6 +32,7 @@ exports.signupUser = async (req, res) => {
     username,
     email,
     password: hash,
+    role: roles.Student,
   };
   // Store user in db
   const userData = await User.create(newUser);
@@ -39,6 +42,7 @@ exports.signupUser = async (req, res) => {
     id: userData.id,
     username: userData.username,
     email: userData.email,
+    role: userData.role,
   };
 
   emailHandler.sendEmail({
@@ -56,10 +60,7 @@ exports.signupUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const { jwt, user, errMsg } = await authService.loginWithPassword(
-      email,
-      password
-    );
+    const { jwt, user } = await authService.loginWithPassword(email, password);
 
     res.cookie("jwt", jwt, COOKIE_CONFIG);
 
@@ -67,6 +68,7 @@ exports.loginUser = async (req, res) => {
       id: user.id,
       username: user.username,
       email: user.email,
+      roles: user.roles,
     });
   } catch (err) {
     res.status(401).json({ error: "login.invalidCredentials" });
@@ -77,7 +79,7 @@ exports.checkLoggedIn = async (req, res) => {
   const { id } = req.token.data;
   const user = await User.findOne({
     where: { id },
-    attributes: ["id", "username", "email"],
+    attributes: ["id", "username", "email", "role"],
   });
 
   if (!user) {

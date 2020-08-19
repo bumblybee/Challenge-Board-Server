@@ -1,4 +1,5 @@
 const User = require("../db").User;
+const roles = require("../enums/roles");
 const emailHandler = require("../handlers/emailHandler");
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
@@ -32,6 +33,7 @@ exports.loginWithPassword = async (email, password) => {
     }
     const jwt = this.generateJWT(userRecord);
 
+    //Fix so not returning password
     return {
       jwt,
       user: userRecord,
@@ -61,6 +63,7 @@ const createDiscordUserInDB = async (email, username) => {
       username,
       email,
       hasDiscordLogin: true,
+      role: roles.Student,
     };
 
     const newUser = await User.create(user);
@@ -68,6 +71,7 @@ const createDiscordUserInDB = async (email, username) => {
       id: newUser.id,
       username: newUser.username,
       email: newUser.email,
+      role: newUser.role,
     };
     return createdUser;
   } catch (err) {

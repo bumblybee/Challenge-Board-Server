@@ -41,9 +41,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         field: "has_discord_login",
       },
-      isTeacher: {
-        type: DataTypes.BOOLEAN,
-        field: "is_teacher",
+      role: {
+        type: DataTypes.STRING,
+        field: "role",
       },
       createdAt: {
         type: DataTypes.DATE,

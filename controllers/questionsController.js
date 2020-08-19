@@ -80,4 +80,8 @@ exports.createComment = async (req, res) => {
   }
 };
 
+exports.selectAnswer = async (req, res) => {
+  res.json({ message: "selected answer" });
+};
+
 //TODO: Set isAnswered default to false and commentCount 0
