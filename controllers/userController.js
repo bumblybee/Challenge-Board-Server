@@ -77,8 +77,13 @@ exports.checkLoggedIn = async (req, res) => {
   const { id } = req.token.data;
   const user = await User.findOne({
     where: { id },
-    attributes: ["username"],
+    attributes: ["id", "username", "email"],
   });
+
+  if (!user) {
+    res.status(404).json({ error: "user.notFound" });
+    return;
+  }
   res.json({ message: "logged in", user });
 };
 

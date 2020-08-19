@@ -5,6 +5,7 @@ const Comment = require("../db").Comment;
 // To add isAnswered to question
 // Question.update({ isAnswered: true }, { where: { id: req.params.id} });
 
+// Question.destroy({ where: { id: 3 } });
 exports.getQuestions = async (req, res) => {
   //Find all questions and sort by newest
   const questions = await Question.findAll({
