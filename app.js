@@ -15,7 +15,10 @@ var app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://temporary-heat.surge.sh"],
+    origin: [
+      "http://localhost:3000",
+      "https://challenge-board-react.vercel.app",
+    ],
     credentials: true,
   })
 );
