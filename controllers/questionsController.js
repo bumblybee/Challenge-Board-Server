@@ -3,9 +3,8 @@ const User = require("../db").User;
 const Comment = require("../db").Comment;
 
 // To add isAnswered to question
-// Question.update({ isAnswered: true }, { where: { id: req.params.id} });
 
-// Question.destroy({ where: { id: 3 } });
+// Comment.destroy({ where: { id: 3 } });
 exports.getQuestions = async (req, res) => {
   //Find all questions and sort by newest
   const questions = await Question.findAll({
@@ -81,7 +80,26 @@ exports.createComment = async (req, res) => {
 };
 
 exports.selectAnswer = async (req, res) => {
-  res.json({ message: "selected answer" });
+  try {
+    //TODO: Check for already selected Answer and handle
+    const { id } = req.params;
+    const comment = await Comment.findOne({ where: { id: id } });
+    const questionId = comment.questionId;
+    const answer = await Comment.update(
+      { isAnswer: true },
+      { where: { id: id } }
+    );
+    const answered = await Question.update(
+      { isAnswered: true },
+      { where: { id: questionId } }
+    );
+    res.status(201).json({ message: `updated:`, answer, answered });
+  } catch (err) {
+    res.status(401).json({ error: "selectAnswer.error" });
+  }
 };
 
-//TODO: Set isAnswered default to false and commentCount 0
+// exports.deleteQuestion = async (req, res) => {
+//   await Question.destroy({ where: { id: req.params.id } });
+//   res.json({ message: `Question ${req.params.id} deleted` });
+// };
