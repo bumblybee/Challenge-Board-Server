@@ -1,26 +1,31 @@
-const User = require("../db");
-
-const isCorrectRole = (requiredRoles, userRole) => {
-  if (typeof requiredRoles === "string") {
-    return useRole === requiredRoles;
-  } else {
-    return requiredRoles.includes(userRole);
-  }
-};
+const User = require("../db").User;
 
 exports.authRole = (requiredRoles) => {
   return async (req, res, next) => {
-    const { id } = req.token.data;
-    const user = await User.findOne({ where: { id: id } });
+    try {
+      const userId = req.token.data.id;
 
-    const role = { user };
+      const userRecord = await User.findOne({ where: { id: userId } });
+      // console.log(userRecord);
+      const { role } = userRecord;
 
-    if (!user) {
-      return res.status(404).json({ error: "user.notFound" });
-    } else if (!!requiredRoles && !isCorrectRole(requiredRoles, role)) {
-      return res.status(403).json({ error: user.unauthorized });
-    } else {
-      return next();
+      if (!userRecord) {
+        return res.status(404).json({ error: "user.notFound" });
+      } else if (!!requiredRoles && !isCorrectRole(requiredRoles, role)) {
+        return res.status(403).json({ error: "user.unauthorized" });
+      } else {
+        return next();
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
+};
+
+const isCorrectRole = (requiredRoles, userRole) => {
+  if (typeof requiredRoles === "string") {
+    return userRole === requiredRoles;
+  } else {
+    return requiredRoles.includes(userRole);
+  }
 };

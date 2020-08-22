@@ -44,22 +44,17 @@ exports.getQuestion = async (req, res) => {
 
 exports.createQuestion = async (req, res) => {
   try {
-    const { title, body, isAnswered } = req.body;
+    const { title, body } = req.body;
     const { id: userId } = req.token.data;
     const newQuestion = {
       title,
       body,
-      isAnswered,
       userId,
+      isAnswered: false,
     };
-    await Question.create(newQuestion);
+    const question = await Question.create(newQuestion);
 
-    const createdQuestion = {
-      title: newQuestion.title,
-      body: newQuestion.body,
-      isAnswered: newQuestion.isAnswered,
-    };
-    res.json(createdQuestion);
+    res.json(question);
   } catch (error) {
     console.log(error);
   }
@@ -67,13 +62,13 @@ exports.createQuestion = async (req, res) => {
 
 exports.createComment = async (req, res) => {
   try {
-    const { body, isAnswer } = req.body;
+    const { body } = req.body;
     const { id: questionId } = req.params;
     const { id: userId } = req.token.data;
-    const comment = { body, isAnswer, questionId, userId };
+    const comment = { body, questionId, userId, isAnswer: false };
 
-    await Comment.create(comment);
-    res.json({ body, isAnswer });
+    const createdComment = await Comment.create(comment);
+    res.json(createdComment);
   } catch (err) {
     console.log(err);
   }
@@ -82,12 +77,12 @@ exports.createComment = async (req, res) => {
 exports.selectAnswer = async (req, res) => {
   try {
     //TODO: Check for already selected Answer and handle
-    const { id } = req.params;
-    const comment = await Comment.findOne({ where: { id: id } });
-    const questionId = comment.questionId;
+    const { commentId, questionId } = req.params;
+    // const comment = await Comment.findOne({ where: { id: commentId } });
+    // const questionId = comment.questionId;
     const answer = await Comment.update(
       { isAnswer: true },
-      { where: { id: id } }
+      { where: { id: commentId } }
     );
     const answered = await Question.update(
       { isAnswered: true },
@@ -95,11 +90,12 @@ exports.selectAnswer = async (req, res) => {
     );
     res.status(201).json({ message: `updated:`, answer, answered });
   } catch (err) {
-    res.status(401).json({ error: "selectAnswer.error" });
+    res.status(500).json({ error: "selectAnswer.error" });
+    //TODO: have error handler handle
   }
 };
 
-// exports.deleteQuestion = async (req, res) => {
-//   await Question.destroy({ where: { id: req.params.id } });
-//   res.json({ message: `Question ${req.params.id} deleted` });
-// };
+exports.deleteQuestion = async (req, res) => {
+  await Question.destroy({ where: { id: req.params.id } });
+  res.json({ message: `Question ${req.params.id} deleted` });
+};

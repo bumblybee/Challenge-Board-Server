@@ -11,17 +11,17 @@ router.get("/:id", questionsController.getQuestion);
 router.post("/", isAuth, questionsController.createQuestion);
 router.post("/:id", isAuth, questionsController.createComment);
 router.post(
-  "/select-answer/:id",
+  "/select-answer/:questionId/:commentId",
   isAuth,
-  // authRole(roles.Teacher),
+  authRole(roles.Teacher),
   questionsController.selectAnswer
 );
 
-// router.delete(
-//   "/:id",
-//   isAuth,
-//   authRole(roles.Teacher),
-//   questionsController.deleteQuestion
-// );
+router.delete(
+  "/:id",
+  isAuth,
+  authRole(roles.Teacher),
+  questionsController.deleteQuestion
+);
 
 module.exports = router;
