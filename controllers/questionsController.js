@@ -60,26 +60,11 @@ exports.createQuestion = async (req, res) => {
   }
 };
 
-exports.createComment = async (req, res) => {
-  try {
-    const { body } = req.body;
-    const { id: questionId } = req.params;
-    const { id: userId } = req.token.data;
-    const comment = { body, questionId, userId, isAnswer: false };
-
-    const createdComment = await Comment.create(comment);
-    res.json(createdComment);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 exports.selectAnswer = async (req, res) => {
   try {
     //TODO: Check for already selected Answer and handle
     const { commentId, questionId } = req.params;
-    // const comment = await Comment.findOne({ where: { id: commentId } });
-    // const questionId = comment.questionId;
+
     const answer = await Comment.update(
       { isAnswer: true },
       { where: { id: commentId } }
