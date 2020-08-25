@@ -30,6 +30,7 @@ exports.getQuestion = async (req, res) => {
       {
         model: Comment,
         include: [{ model: User, attributes: ["username", "email"] }],
+        order: [["createdAt", "DESC"]],
       },
     ],
   });
