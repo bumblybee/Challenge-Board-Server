@@ -2,9 +2,6 @@ const Question = require("../db").Question;
 const User = require("../db").User;
 const Comment = require("../db").Comment;
 
-// To add isAnswered to question
-
-// Comment.destroy({ where: { id: 3 } });
 exports.getQuestions = async (req, res) => {
   //Find all questions and sort by newest
   const questions = await Question.findAll({
@@ -17,7 +14,7 @@ exports.getQuestions = async (req, res) => {
       { model: Comment },
     ],
   });
-  // console.log(questions);
+
   res.json(questions);
 };
 
@@ -78,6 +75,15 @@ exports.selectAnswer = async (req, res) => {
     res.status(500).json({ error: "selectAnswer.error" });
     //TODO: have error handler handle
   }
+};
+
+exports.editQuestion = async (req, res) => {
+  //TODO: Check if right user's question
+  const updatedQuestion = await Question.update(
+    { body: req.body.body, title: req.body.title },
+    { where: { id: req.params.id } }
+  );
+  console.log(req.body);
 };
 
 exports.deleteQuestion = async (req, res) => {

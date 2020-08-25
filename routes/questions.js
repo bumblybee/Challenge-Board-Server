@@ -19,6 +19,8 @@ router.post(
   questionsController.selectAnswer
 );
 
+router.put("/edit-question/:id", questionsController.editQuestion);
+
 router.delete(
   "/:id",
   isAuth,
