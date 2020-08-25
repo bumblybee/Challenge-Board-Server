@@ -25,16 +25,14 @@ exports.getQuestion = async (req, res) => {
     include: [
       {
         model: User,
-        attributes: ["username"],
+        attributes: ["username", "id", "email"],
       },
       {
         model: Comment,
-        include: [{ model: User, attributes: ["username"] }],
+        include: [{ model: User, attributes: ["username", "email"] }],
       },
     ],
   });
-
-  // console.log(question);
 
   res.json({ question });
 };
@@ -78,12 +76,19 @@ exports.selectAnswer = async (req, res) => {
 };
 
 exports.editQuestion = async (req, res) => {
-  //TODO: Check if right user's question
-  const updatedQuestion = await Question.update(
-    { body: req.body.body, title: req.body.title },
-    { where: { id: req.params.id } }
-  );
-  console.log(req.body);
+  //TODO: handle error
+  const id = req.token.data.id;
+  const { title, body, userId } = req.body;
+
+  // const question = await Question.findOne({ where: { id: req.params.id } });
+
+  if (id === userId) {
+    const updatedQuestion = Question.update(
+      { body: body, title: title },
+      { where: { id: req.params.id } }
+    );
+    res.status(201).json(updatedQuestion);
+  }
 };
 
 exports.deleteQuestion = async (req, res) => {
