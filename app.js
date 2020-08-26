@@ -11,6 +11,7 @@ const usersRouter = require("./routes/users");
 const discordRouter = require("./routes/discord");
 const questionsRouter = require("./routes/questions");
 const commentsRouter = require("./routes/comments");
+const projectsRouter = require("./routes/projects");
 
 var app = express();
 
@@ -34,6 +35,7 @@ app.use("/users", usersRouter);
 app.use("/discord", discordRouter);
 app.use("/questions", questionsRouter);
 app.use("/comments", commentsRouter);
+app.use("/projects", projectsRouter);
 
 //error handlers
 
