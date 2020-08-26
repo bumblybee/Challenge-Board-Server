@@ -21,7 +21,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         field: "updated_at",
       },
+      deletedAt: {
+        type: DataTypes.DATE,
+        field: "deleted_at",
+      },
     },
+    {
+      timestamps: true,
+      paranoid: true,
+    },
+
     { tableName: "comment" }
   );
 
