@@ -15,20 +15,23 @@ exports.submitProject = async (req, res) => {
 };
 
 exports.editProject = async (req, res) => {
-  //TODO: check userId against project userId
+  //TODO: validate links are url
   try {
-    const { id: userId } = req.token.data;
-    const { githubLink, additionalLink, comment } = req.body;
-    const project = await Project.update(
-      {
-        githubLink: githubLink,
-        additionalLink: additionalLink,
-        comment: comment,
-      },
-      { where: { id: req.params.id } }
-    );
-    if (project) {
-      res.status(200).json(project);
+    const { id: id } = req.token.data;
+    const { githubLink, additionalLink, comment, userId } = req.body;
+    if (userId === id) {
+      const project = await Project.update(
+        {
+          githubLink: githubLink,
+          additionalLink: additionalLink,
+          comment: comment,
+        },
+        { where: { id: req.params.id } }
+      );
+
+      if (project) {
+        res.status(200).json(project);
+      }
     }
   } catch (err) {
     console.log(err);
