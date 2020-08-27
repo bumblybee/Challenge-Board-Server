@@ -7,10 +7,12 @@ module.exports = (sequelize, DataTypes) => {
       githubLink: {
         type: DataTypes.STRING,
         allowNull: false,
+        isUrl: true,
         field: "github_link",
       },
       additionalLink: {
         type: DataTypes.STRING,
+        isUrl: true,
         field: "additional_link",
       },
       comment: {

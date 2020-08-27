@@ -13,3 +13,24 @@ exports.submitProject = async (req, res) => {
     console.log(err);
   }
 };
+
+exports.editProject = async (req, res) => {
+  //TODO: check userId against project userId
+  try {
+    const { id: userId } = req.token.data;
+    const { githubLink, additionalLink, comment } = req.body;
+    const project = await Project.update(
+      {
+        githubLink: githubLink,
+        additionalLink: additionalLink,
+        comment: comment,
+      },
+      { where: { id: req.params.id } }
+    );
+    if (project) {
+      res.status(200).json(project);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
