@@ -95,6 +95,7 @@ exports.getPosts = async (req, res) => {
   const { id: userId } = req.token.data;
   const user = await User.findOne({
     where: { id: userId },
+
     include: [
       {
         model: Question,
@@ -106,9 +107,9 @@ exports.getPosts = async (req, res) => {
         order: [["createdAt", "DESC"]],
       },
     ],
+    attributes: ["id", "username", "email", "role"],
   });
 
-  console.log(user);
   res.json(user);
 };
 
