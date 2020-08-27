@@ -4,6 +4,8 @@ const crypto = require("crypto");
 const { Op } = require("sequelize");
 
 const User = require("../db").User;
+const Question = require("../db").Question;
+const Comment = require("../db").Comment;
 const roles = require("../enums/roles");
 
 const emailHandler = require("../handlers/emailHandler");
@@ -87,6 +89,27 @@ exports.checkLoggedIn = async (req, res) => {
     return;
   }
   res.json({ message: "logged in", user });
+};
+
+exports.getPosts = async (req, res) => {
+  const { id: userId } = req.token.data;
+  const user = await User.findOne({
+    where: { id: userId },
+    include: [
+      {
+        model: Question,
+        order: [["createdAt", "DESC"]],
+      },
+      {
+        model: Comment,
+
+        order: [["createdAt", "DESC"]],
+      },
+    ],
+  });
+
+  console.log(user);
+  res.json(user);
 };
 
 // set up password reset token and send email with url

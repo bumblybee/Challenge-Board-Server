@@ -18,4 +18,6 @@ router.post(
 
 router.get("/check-login", isAuth, errorWrapper(userController.checkLoggedIn));
 
+router.get("/:id/posts", isAuth, userController.getPosts);
+
 module.exports = router;
