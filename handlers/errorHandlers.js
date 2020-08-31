@@ -9,24 +9,20 @@ exports.errorWrapper = (fn) => {
 exports.developmentErrors = (err, req, res, next) => {
   err.stack = err.stack || "";
   const errorDetails = {
-    message: err.message,
-    status: err.status,
+    error: err.message,
     stack: err.stack,
   };
-  res.status(err.status || 500);
-  res.json(errorDetails);
+  res.status(err.status || 500).json(errorDetails);
 };
 
 exports.productionErrors = (err, req, res, next) => {
-  res.status(err.status || 500);
-  res.json({
-    message: err.message,
-    error: {},
+  res.status(err.status || 500).json({
+    error: err.message,
   });
 };
 
 exports.notFound = (req, res, next) => {
-  const err = new Error("Not Found");
+  const err = new Error("server.notFound");
   err.status = 404;
   next(err);
 };
@@ -42,3 +38,18 @@ exports.sequelizeErrorHandler = (err, req, res, next) => {
     next(err);
   }
 };
+
+class CustomError extends Error {
+  constructor(error, name, status) {
+    super(error);
+
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, CustomError);
+    }
+
+    this.name = name;
+    this.status = status;
+  }
+}
+
+exports.CustomError = CustomError;

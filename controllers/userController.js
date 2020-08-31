@@ -10,22 +10,20 @@ const roles = require("../enums/roles");
 
 const emailHandler = require("../handlers/emailHandler");
 const authService = require("../services/authService");
-
+const { CustomError } = require("../handlers/errorHandlers");
 const COOKIE_CONFIG = require("../config").COOKIE_CONFIG;
 
 exports.signupUser = async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
+  const { username, email, password } = req.body;
 
-    const checkDetails = await User.findOne({
-      where: { [Op.or]: [{ email: email }, { username: username }] },
-    });
+  const checkDetails = await User.findOne({
+    where: { [Op.or]: [{ email: email }, { username: username }] },
+  });
 
-    if (checkDetails) {
-      res.status(401).json({ error: "signup.userExists" });
-      return;
-    }
-
+  if (checkDetails) {
+    throw new CustomError("auth.existingCredentials", "SignupError", 401);
+    return;
+  } else {
     const hash = await argon2.hash(password);
 
     const newUser = {
@@ -34,6 +32,7 @@ exports.signupUser = async (req, res) => {
       password: hash,
       role: roles.Student,
     };
+
     // Store user in db
     const userData = await User.create(newUser);
 
@@ -55,27 +54,27 @@ exports.signupUser = async (req, res) => {
       res.cookie("jwt", jwt, COOKIE_CONFIG);
 
       res.json(user);
+    } else {
+      throw new CustomError("server.failed", "SignupError", 500);
     }
-  } catch (err) {
-    console.log(err);
   }
 };
 
 exports.loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const { jwt, user } = await authService.loginWithPassword(email, password);
+  const { email, password } = req.body;
+  const { jwt, user } = await authService.loginWithPassword(email, password);
 
-    res.cookie("jwt", jwt, COOKIE_CONFIG);
+  res.cookie("jwt", jwt, COOKIE_CONFIG);
 
+  if (user) {
     res.json({
       id: user.id,
       username: user.username,
       email: user.email,
       role: user.role,
     });
-  } catch (err) {
-    res.status(401).json({ error: "login.invalidCredentials" });
+  } else {
+    res.json({ error });
   }
 };
 

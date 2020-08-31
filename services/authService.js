@@ -3,6 +3,7 @@ const roles = require("../enums/roles");
 const emailHandler = require("../handlers/emailHandler");
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
+const { CustomError } = require("../handlers/errorHandlers");
 
 exports.generateJWT = (user) => {
   const data = {
@@ -55,13 +56,13 @@ exports.loginWithPassword = async (email, password) => {
 
   if (!userRecord) {
     //Handle login failure
-    throw new Error("login.invalidCredentials");
+    throw new CustomError("auth.invalidCredentials", "LoginError", 403);
   } else {
     const correctPassword = await argon2.verify(userRecord.password, password);
 
     if (!correctPassword) {
       //handle error - how without access to res?
-      throw new Error("login.invalidCredentials");
+      throw new CustomError("auth.invalidCredentials", "LoginError", 401);
     }
     const jwt = this.generateJWT(userRecord);
 
