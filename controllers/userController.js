@@ -14,49 +14,54 @@ const authService = require("../services/authService");
 const COOKIE_CONFIG = require("../config").COOKIE_CONFIG;
 
 exports.signupUser = async (req, res) => {
-  const { username, email, password } = req.body;
+  try {
+    const { username, email, password } = req.body;
 
-  const checkEmail = await User.findOne({ where: { email: email } });
-  const checkUsername = await User.findOne({ where: { username: username } });
+    const checkEmail = await User.findOne({ where: { email: email } });
+    const checkUsername = await User.findOne({ where: { username: username } });
 
-  if (checkEmail) {
-    res.status(401).json({ error: "signup.emailTaken" });
-    return;
-  }
-  if (checkUsername) {
-    res.status(401).json({ error: "signup.usernameTaken" });
-    return;
-  }
+    if (checkEmail) {
+      res.status(401).json({ error: "signup.emailTaken" });
+      return;
+    }
+    if (checkUsername) {
+      res.status(401).json({ error: "signup.usernameTaken" });
+      return;
+    }
 
-  const hash = await argon2.hash(password);
+    const hash = await argon2.hash(password);
 
-  const newUser = {
-    username,
-    email,
-    password: hash,
-    role: roles.Student,
-  };
-  // Store user in db
-  const userData = await User.create(newUser);
-
-  // create object with data from db to pass to api, minus password
-  const createdUser = {
-    id: userData.id,
-    username: userData.username,
-    email: userData.email,
-    role: userData.role,
-  };
-
-  emailHandler.sendEmail({
-    subject: "Welcome to the Message Board!",
-    filename: "signupEmail",
-    user: {
+    const newUser = {
       username,
       email,
-    },
-  });
+      password: hash,
+      role: roles.Student,
+    };
+    // Store user in db
+    const userData = await User.create(newUser);
 
-  res.json(createdUser);
+    if (userData) {
+      emailHandler.sendEmail({
+        subject: "Welcome to the Message Board!",
+        filename: "signupEmail",
+        user: {
+          username,
+          email,
+        },
+      });
+
+      const { jwt, user } = await authService.loginWithPassword(
+        email,
+        password
+      );
+
+      res.cookie("jwt", jwt, COOKIE_CONFIG);
+      //TODO:This returns password, fix
+      res.json(user);
+    }
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 exports.loginUser = async (req, res) => {
