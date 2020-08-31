@@ -16,11 +16,12 @@ const COOKIE_CONFIG = require("../config").COOKIE_CONFIG;
 exports.signupUser = async (req, res) => {
   const { username, email, password } = req.body;
 
-  const checkDetails = await User.findOne({
+  //TODO: Move outside?
+  const existingCredentials = await User.findOne({
     where: { [Op.or]: [{ email: email }, { username: username }] },
   });
 
-  if (checkDetails) {
+  if (existingCredentials) {
     throw new CustomError("auth.existingCredentials", "SignupError", 401);
     return;
   } else {
@@ -86,10 +87,10 @@ exports.checkLoggedIn = async (req, res) => {
   });
 
   if (!user) {
-    res.status(404).json({ error: "user.notFound" });
-    return;
+    throw new CustomError("auth.invalidCredentials", "LoginError", 401);
+  } else {
+    res.json({ message: "logged in", user });
   }
-  res.json({ message: "logged in", user });
 };
 
 exports.getPosts = async (req, res) => {
