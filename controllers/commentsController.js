@@ -18,7 +18,7 @@ exports.createComment = async (req, res) => {
 
 exports.editComment = async (req, res) => {
   //TODO: handle error
-  //TODO: Do we want the edited comment rendering at bottom of list?
+
   const id = req.token.data.id;
   const { body, userId } = req.body;
 

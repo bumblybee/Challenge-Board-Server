@@ -33,6 +33,7 @@ exports.getQuestion = async (req, res) => {
         include: [{ model: User, attributes: ["username", "email"] }],
       },
     ],
+    //Order comments correctly so edited comments aren't pushed to end of list
     order: [[Comment, "createdAt", "ASC"]],
   });
 
@@ -81,8 +82,6 @@ exports.editQuestion = async (req, res) => {
   //TODO: handle error
   const id = req.token.data.id;
   const { title, body, userId } = req.body;
-
-  // const question = await Question.findOne({ where: { id: req.params.id } });
 
   if (id === userId) {
     const updatedQuestion = Question.update(
