@@ -17,15 +17,12 @@ exports.signupUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-    const checkEmail = await User.findOne({ where: { email: email } });
-    const checkUsername = await User.findOne({ where: { username: username } });
+    const checkDetails = await User.findAll({
+      where: { [Op.or]: [{ email: email, username: username }] },
+    });
 
-    if (checkEmail) {
-      res.status(401).json({ error: "signup.emailTaken" });
-      return;
-    }
-    if (checkUsername) {
-      res.status(401).json({ error: "signup.usernameTaken" });
+    if (checkDetails) {
+      res.status(401).json({ error: "signup.userExists" });
       return;
     }
 
