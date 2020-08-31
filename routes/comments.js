@@ -7,8 +7,13 @@ const commentsController = require("../controllers/commentsController");
 
 router.post("/:id", isAuth, commentsController.createComment);
 
-router.put("/edit-comment/:id", isAuth, commentsController.editComment);
+router.put("/edit/:id", isAuth, commentsController.editComment);
 
-router.delete("/:id", commentsController.deleteComment);
+router.delete(
+  "/:id",
+  isAuth,
+  authRole(roles.Teacher),
+  commentsController.deleteComment
+);
 
 module.exports = router;

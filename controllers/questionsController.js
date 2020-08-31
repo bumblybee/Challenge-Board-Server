@@ -22,6 +22,7 @@ exports.getQuestion = async (req, res) => {
   const { id } = req.params;
   const question = await Question.findOne({
     where: { id: id },
+
     include: [
       {
         model: User,
