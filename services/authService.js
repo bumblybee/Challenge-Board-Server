@@ -38,14 +38,14 @@ exports.createTeacherUser = async (username, email, password) => {
     role: userData.role,
   };
 
-  // emailHandler.sendEmail({
-  //   subject: "Welcome to the Message Board!",
-  //   filename: "signupEmail",
-  //   user: {
-  //     username,
-  //     email,
-  //   },
-  // });
+  emailHandler.sendEmail({
+    subject: "Welcome to the Message Board!",
+    filename: "signupEmail",
+    user: {
+      username,
+      email,
+    },
+  });
 
   return createdUser;
 };
@@ -65,10 +65,17 @@ exports.loginWithPassword = async (email, password) => {
     }
     const jwt = this.generateJWT(userRecord);
 
+    const user = {
+      id: userRecord.id,
+      username: userRecord.username,
+      email: userRecord.email,
+      role: userRecord.role,
+    };
+
     //Fix so not returning password
     return {
       jwt,
-      user: userRecord,
+      user,
     };
   }
 };
