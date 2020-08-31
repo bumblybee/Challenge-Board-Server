@@ -17,8 +17,8 @@ exports.signupUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-    const checkDetails = await User.findAll({
-      where: { [Op.or]: [{ email: email, username: username }] },
+    const checkDetails = await User.findOne({
+      where: { [Op.or]: [{ email: email }, { username: username }] },
     });
 
     if (checkDetails) {
@@ -53,7 +53,7 @@ exports.signupUser = async (req, res) => {
       );
 
       res.cookie("jwt", jwt, COOKIE_CONFIG);
-      //TODO:This returns password, fix
+
       res.json(user);
     }
   } catch (err) {

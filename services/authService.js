@@ -72,7 +72,6 @@ exports.loginWithPassword = async (email, password) => {
       role: userRecord.role,
     };
 
-    //Fix so not returning password
     return {
       jwt,
       user,
