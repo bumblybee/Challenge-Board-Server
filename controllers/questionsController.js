@@ -79,16 +79,19 @@ exports.selectAnswer = async (req, res) => {
 };
 
 exports.editQuestion = async (req, res) => {
-  //TODO: handle error
   const id = req.token.data.id;
   const { title, body, userId } = req.body;
 
   if (id === userId) {
-    const updatedQuestion = Question.update(
+    const updatedQuestion = await Question.update(
       { body: body, title: title },
       { where: { id: req.params.id } }
     );
-    res.status(201).json(updatedQuestion);
+    if (updatedQuestion) {
+      res.status(201).json(updatedQuestion);
+    } else {
+      throw new Error("post.failed", "QuestionError", 500);
+    }
   }
 };
 
