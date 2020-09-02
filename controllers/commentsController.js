@@ -20,8 +20,6 @@ exports.createComment = async (req, res) => {
 };
 
 exports.editComment = async (req, res) => {
-  //TODO: handle error
-
   const id = req.token.data.id;
   const { body, userId } = req.body;
 
@@ -30,7 +28,12 @@ exports.editComment = async (req, res) => {
       { body: body },
       { where: { id: req.params.id } }
     );
-    res.status(201).json(updatedComment);
+
+    if (updatedComment) {
+      res.status(201).json(updatedComment);
+    } else {
+      throw new CustomError("post.failed", "CommentError", 500);
+    }
   }
 };
 

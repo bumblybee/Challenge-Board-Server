@@ -8,7 +8,7 @@ const commentsController = require("../controllers/commentsController");
 
 router.post("/:id", isAuth, errorWrapper(commentsController.createComment));
 
-router.put("/edit/:id", isAuth, commentsController.editComment);
+router.put("/edit/:id", isAuth, errorWrapper(commentsController.editComment));
 
 router.delete(
   "/:id",
