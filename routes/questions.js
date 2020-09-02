@@ -30,7 +30,7 @@ router.delete(
   "/:id",
   isAuth,
   authRole(roles.Teacher),
-  questionsController.deleteQuestion
+  errorWrapper(questionsController.deleteQuestion)
 );
 
 module.exports = router;

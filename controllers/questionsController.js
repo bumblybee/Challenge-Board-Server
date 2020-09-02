@@ -96,6 +96,13 @@ exports.editQuestion = async (req, res) => {
 };
 
 exports.deleteQuestion = async (req, res) => {
-  await Question.destroy({ where: { id: req.params.id } });
-  res.json({ message: `Question ${req.params.id} deleted` });
+  throw new CustomError("delete.failed", "QuestionError", 500);
+  const deletedQuestion = await Question.destroy({
+    where: { id: req.params.id },
+  });
+  if (deletedQuestion) {
+    res.json({ message: `Question ${req.params.id} deleted`, deletedQuestion });
+  } else {
+    throw new CustomError("delete.failed", "QuestionError", 500);
+  }
 };
