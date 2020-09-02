@@ -1,18 +1,21 @@
+const { CustomError } = require("../handlers/errorHandlers");
+
 const Question = require("../db").Question;
 const User = require("../db").User;
 const Comment = require("../db").Comment;
 
 exports.createComment = async (req, res) => {
-  try {
-    const { body } = req.body;
-    const { id: questionId } = req.params;
-    const { id: userId } = req.token.data;
-    const comment = { body, questionId, userId, isAnswer: false };
+  const { body } = req.body;
+  const { id: questionId } = req.params;
+  const { id: userId } = req.token.data;
+  const comment = { body, questionId, userId, isAnswer: false };
 
-    const createdComment = await Comment.create(comment);
+  const createdComment = await Comment.create(comment);
+
+  if (createdComment) {
     res.json(createdComment);
-  } catch (err) {
-    console.log(err);
+  } else {
+    throw new CustomError("post.failed", "CommentError", 500);
   }
 };
 
