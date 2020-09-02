@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { isAuth } = require("../middleware/isAuth");
+const { errorWrapper } = require("../handlers/errorHandlers");
 const { authRole } = require("../middleware/authRole");
 const roles = require("../enums/roles");
 
@@ -10,7 +11,7 @@ router.get("/", questionsController.getQuestions);
 
 router.get("/:id", questionsController.getQuestion);
 
-router.post("/", isAuth, questionsController.createQuestion);
+router.post("/", isAuth, errorWrapper(questionsController.createQuestion));
 
 router.post(
   "/select-answer/:questionId/:commentId",

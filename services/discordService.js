@@ -49,3 +49,26 @@ exports.createDiscordUser = async (code) => {
     user: createdUser,
   };
 };
+
+exports.checkDiscordUser = async (code) => {
+  const tokenResponse = await oauth.tokenRequest({
+    code: code,
+    scope: "identify email",
+    grantType: "authorization_code", // check the Discord OAuth docs for various grantTypes
+  });
+
+  const { access_token } = tokenResponse;
+
+  const discordUser = await oauth.getUser(access_token);
+
+  const { email, username } = discordUser;
+
+  const existingUser = await authService.loginWithPassword(email, username);
+
+  const jwt = authService.generateJWT(createdUser);
+
+  return {
+    jwt,
+    user: existingUser,
+  };
+};

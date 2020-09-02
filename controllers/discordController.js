@@ -40,6 +40,7 @@ exports.authenticateDiscordUser = async (req, res) => {
 
   const { code, state } = req.body;
 
+  // If no code returned then something went wrong with requesting the token from Discord
   if (!code) {
     throw new CustomError("auth.discordError", "DiscordError", 400);
   }
@@ -52,7 +53,31 @@ exports.authenticateDiscordUser = async (req, res) => {
 
     if (user) {
       res.cookie("jwt", jwt, COOKIE_CONFIG);
-      //TODO: figure out what issue is here because user data not being returned - console shows undefined
+
+      res.json(user);
+    } else {
+      res.json({ error });
+    }
+  } else {
+    throw new CustomError("auth.discordError", "DiscordError", 401);
+  }
+};
+
+exports.loginDiscordUser = async (req, res) => {
+  const { code, state } = req.body;
+
+  if (!code) {
+    throw new CustomError("auth.discordError", "DiscordError", 400);
+  }
+
+  const previousState = getStateFromHeader(req);
+
+  if (previousState === state) {
+    // Function that requests token from Discord, gens JWT, returns user data and JWT
+    const { jwt, user } = await discordOAuthService.checkDiscordUser(code);
+
+    if (user) {
+      res.cookie("jwt", jwt, COOKIE_CONFIG);
 
       res.json(user);
     } else {
