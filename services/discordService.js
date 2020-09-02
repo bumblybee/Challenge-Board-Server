@@ -1,6 +1,7 @@
 const DiscordOauth2 = require("discord-oauth2");
 const crypto = require("crypto");
 const authService = require("./authService");
+const { CustomError } = require("../handlers/errorHandlers");
 
 // set up the service with some base information
 const oauth = new DiscordOauth2({
@@ -21,33 +22,30 @@ exports.generateDiscordURL = () => {
 
 exports.createDiscordUser = async (code) => {
   // grab an access_token from Discord based on the code and any prior scope
-  try {
-    const tokenResponse = await oauth.tokenRequest({
-      code: code,
-      scope: "identify email",
-      grantType: "authorization_code", // check the Discord OAuth docs for various grantTypes
-    });
 
-    const { access_token } = tokenResponse;
+  const tokenResponse = await oauth.tokenRequest({
+    code: code,
+    scope: "identify email",
+    grantType: "authorization_code", // check the Discord OAuth docs for various grantTypes
+  });
 
-    // now that we have the access_token, let's get some user information
-    const discordUser = await oauth.getUser(access_token);
+  const { access_token } = tokenResponse;
 
-    const { email, username } = discordUser;
+  // now that we have the access_token, let's get some user information
+  const discordUser = await oauth.getUser(access_token);
 
-    // authService will handle creating the user in the database for us
-    const createdUser = await authService.signupDiscordUser(email, username);
+  const { email, username } = discordUser;
 
-    // create the JWT here, but let the controller set the cookie
-    const jwt = authService.generateJWT(createdUser);
-    //This returns full details of user, working correctly
-    // console.log(createdUser);
+  // authService will handle creating the user in the database for us
+  const createdUser = await authService.signupDiscordUser(email, username);
 
-    return {
-      jwt,
-      user: createdUser,
-    };
-  } catch (err) {
-    console.log(err);
-  }
+  // create the JWT here, but let the controller set the cookie
+  const jwt = authService.generateJWT(createdUser);
+  //This returns full details of user, working correctly
+  // console.log(createdUser);
+
+  return {
+    jwt,
+    user: createdUser,
+  };
 };

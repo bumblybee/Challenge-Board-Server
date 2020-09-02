@@ -12,6 +12,7 @@ exports.developmentErrors = (err, req, res, next) => {
     error: err.message,
     stack: err.stack,
   };
+
   res.status(err.status || 500).json(errorDetails);
 };
 

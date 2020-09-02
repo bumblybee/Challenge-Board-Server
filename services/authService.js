@@ -1,4 +1,5 @@
 const User = require("../db").User;
+const { Op } = require("sequelize");
 const roles = require("../enums/roles");
 const emailHandler = require("../handlers/emailHandler");
 const argon2 = require("argon2");
@@ -80,7 +81,6 @@ exports.loginWithPassword = async (email, password) => {
   }
 };
 
-// Maybe put sendWelcomeEmail in createDiscordUser and only have one function, or just use this to send email and call createDiscorderUser elsewhere
 exports.signupDiscordUser = async (email, username) => {
   const createdUser = await createDiscordUserInDB(email, username);
   // send welcome email
@@ -97,14 +97,21 @@ exports.signupDiscordUser = async (email, username) => {
 };
 
 const createDiscordUserInDB = async (email, username) => {
-  try {
-    const user = {
-      username,
-      email,
-      hasDiscordLogin: true,
-      role: roles.Student,
-    };
+  const user = {
+    username,
+    email,
+    hasDiscordLogin: true,
+    role: roles.Student,
+  };
 
+  const existingCredentials = await User.findOne({
+    where: { [Op.or]: [{ email: email }, { username: username }] },
+  });
+
+  if (existingCredentials) {
+    throw new CustomError("auth.existingCredentials", "DiscordError", 401);
+    return;
+  } else {
     const newUser = await User.create(user);
     const createdUser = {
       id: newUser.id,
@@ -113,7 +120,5 @@ const createDiscordUserInDB = async (email, username) => {
       role: newUser.role,
     };
     return createdUser;
-  } catch (err) {
-    console.log(err);
   }
 };

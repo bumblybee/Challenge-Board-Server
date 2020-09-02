@@ -16,7 +16,7 @@ const COOKIE_CONFIG = require("../config").COOKIE_CONFIG;
 exports.signupUser = async (req, res) => {
   const { username, email, password } = req.body;
 
-  //TODO: Move outside?
+  //TODO: Move function outside?
   const existingCredentials = await User.findOne({
     where: { [Op.or]: [{ email: email }, { username: username }] },
   });
