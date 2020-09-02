@@ -14,7 +14,7 @@ router.delete(
   "/:id",
   isAuth,
   authRole(roles.Teacher),
-  commentsController.deleteComment
+  errorWrapper(commentsController.deleteComment)
 );
 
 module.exports = router;

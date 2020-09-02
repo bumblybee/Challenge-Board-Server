@@ -38,6 +38,14 @@ exports.editComment = async (req, res) => {
 };
 
 exports.deleteComment = async (req, res) => {
-  await Comment.destroy({ where: { id: req.params.id } });
-  res.json({ message: `Comment ${req.params.id} deleted` });
+  throw new CustomError("delete.failed", "CommentError", 500);
+  const deletedComment = await Comment.destroy({
+    where: { id: req.params.id },
+  });
+
+  if (deletedComment) {
+    res.json({ message: `Comment ${req.params.id} deleted` });
+  } else {
+    throw new CustomError("delete.failed", "CommentError", 500);
+  }
 };
