@@ -1,16 +1,19 @@
 const Project = require("../db").Project;
+const { CustomError } = require("../handlers/errorHandlers");
 
 exports.submitProject = async (req, res) => {
-  try {
-    const { githubLink, additionalLink, comment } = req.body;
-    const { id: userId } = req.token.data;
-    const project = { githubLink, additionalLink, comment, userId };
+  throw new CustomError("post.failed", "ProjectError", 500);
+  const { githubLink, additionalLink, comment } = req.body;
+  const { id: userId } = req.token.data;
+  const project = { githubLink, additionalLink, comment, userId };
 
-    const newProject = await Project.create(project);
+  const newProject = await Project.create(project);
+
+  if (newProject) {
     //TODO: Send email confirmation
     res.status(200).json(newProject);
-  } catch (err) {
-    console.log(err);
+  } else {
+    throw new CustomError("post.failed", "ProjectError", 500);
   }
 };
 

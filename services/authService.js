@@ -98,7 +98,6 @@ exports.signupDiscordUser = async (email, username) => {
 };
 
 const createDiscordUserInDB = async (email, username) => {
-  //TODO: Throw error if fails
   const user = {
     username,
     email,
@@ -126,6 +125,7 @@ const createDiscordUserInDB = async (email, username) => {
       email: newUser.email,
       role: newUser.role,
     };
+    //!  ?????????? Call signupDiscordUser here instead of in controller so existing user doesn't get emailed?
   }
 
   return createdUser;
