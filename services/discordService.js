@@ -22,7 +22,7 @@ exports.generateDiscordURL = () => {
 
 exports.createDiscordUser = async (code) => {
   // grab an access_token from Discord based on the code and any prior scope
-  //? Handling error existing user in createDiscordUserInDb in authService
+
   //? Handling error no token response in controller
   const tokenResponse = await oauth.tokenRequest({
     code: code,

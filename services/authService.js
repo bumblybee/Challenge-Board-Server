@@ -60,12 +60,12 @@ exports.loginWithPassword = async (email, password) => {
     throw new CustomError("auth.invalidCredentials", "LoginError", 403);
   } else {
     //TODO: handle edge case where password coming from db if discord user is logging in
-    // const correctPassword = await argon2.verify(userRecord.password, password);
+    const correctPassword = await argon2.verify(userRecord.password, password);
 
-    // if (!correctPassword) {
-    //   //handle error - how without access to res?
-    //   throw new CustomError("auth.invalidCredentials", "LoginError", 401);
-    // }
+    if (!correctPassword) {
+      //handle error - how without access to res?
+      throw new CustomError("auth.invalidCredentials", "LoginError", 401);
+    }
     const jwt = this.generateJWT(userRecord);
 
     const user = {
@@ -98,32 +98,26 @@ exports.signupDiscordUser = async (email, username) => {
 };
 
 const createDiscordUserInDB = async (email, username) => {
-  //TODO: Can you check here if user already exists and then just return that user and nt put in db? Then you go use to login
+  //TODO: Throw error if fails
   const user = {
     username,
     email,
     hasDiscordLogin: true,
     role: roles.Student,
   };
-  let createdUser;
 
   const existingCredentials = await User.findOne({
     where: { [Op.or]: [{ email: email }, { username: username }] },
   });
 
+  let createdUser;
   if (existingCredentials) {
-    const loginUser = await this.loginWithPassword(
-      existingCredentials.email,
-      existingCredentials.password
-    );
-
     createdUser = {
       id: existingCredentials.id,
       username: existingCredentials.username,
       email: existingCredentials.email,
       role: existingCredentials.role,
     };
-    // throw new CustomError("auth.existingCredentials", "DiscordError", 401);
   } else {
     const newUser = await User.create(user);
     createdUser = {
