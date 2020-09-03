@@ -23,7 +23,6 @@ exports.generateDiscordURL = () => {
 exports.createDiscordUser = async (code) => {
   // grab an access_token from Discord based on the code and any prior scope
 
-  //? Handling error no token response in controller
   const tokenResponse = await oauth.tokenRequest({
     code: code,
     scope: "identify email",
@@ -48,6 +47,8 @@ exports.createDiscordUser = async (code) => {
       jwt,
       user: createdUser,
     };
+  } else {
+    throw new CustomError("auth.discordError", "DiscordError", 401);
   }
 };
 
