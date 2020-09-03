@@ -4,6 +4,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
 const compression = require("compression");
+const helmet = require("helmet");
 
 const errorHandlers = require("./handlers/errorHandlers");
 
@@ -26,6 +27,7 @@ app.use(
   })
 );
 app.use(compression());
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
