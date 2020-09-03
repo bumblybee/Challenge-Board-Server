@@ -36,30 +36,34 @@ const getStateFromHeader = (req) => {
 };
 
 exports.authenticateDiscordUser = async (req, res) => {
-  // URL contains state and code when user redirected back to app by redirect uri specified
+  try {
+    // URL contains state and code when user redirected back to app by redirect uri specified
 
-  const { code, state } = req.body;
+    const { code, state } = req.body;
 
-  // If no code returned then something went wrong with requesting the token from Discord
-  if (!code) {
-    throw new CustomError("auth.discordError", "DiscordError", 400);
-  }
-  //Get state from header
-  const previousState = getStateFromHeader(req);
-
-  if (previousState === state) {
-    // Function that requests token from Discord, gens JWT, returns user data and JWT
-    const { jwt, user } = await discordOAuthService.createDiscordUser(code);
-
-    if (user) {
-      res.cookie("jwt", jwt, COOKIE_CONFIG);
-
-      res.json(user);
-    } else {
-      res.json({ error });
+    // If no code returned then something went wrong with requesting the token from Discord
+    if (!code) {
+      throw new CustomError("auth.discordError", "DiscordError", 400);
     }
-  } else {
-    throw new CustomError("auth.discordError", "DiscordError", 401);
+    //Get state from header
+    const previousState = getStateFromHeader(req);
+
+    if (previousState === state) {
+      // Function that requests token from Discord, gens JWT, returns user data and JWT
+      const { jwt, user } = await discordOAuthService.createDiscordUser(code);
+
+      if (user) {
+        res.cookie("jwt", jwt, COOKIE_CONFIG);
+
+        res.json(user);
+      } else {
+        res.json({ error });
+      }
+    } else {
+      throw new CustomError("auth.discordError", "DiscordError", 401);
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 

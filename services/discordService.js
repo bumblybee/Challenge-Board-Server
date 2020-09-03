@@ -22,7 +22,8 @@ exports.generateDiscordURL = () => {
 
 exports.createDiscordUser = async (code) => {
   // grab an access_token from Discord based on the code and any prior scope
-
+  //? Handling error existing user in createDiscordUserInDb in authService
+  //? Handling error no token response in controller
   const tokenResponse = await oauth.tokenRequest({
     code: code,
     scope: "identify email",
@@ -34,20 +35,20 @@ exports.createDiscordUser = async (code) => {
   // now that we have the access_token, let's get some user information
   const discordUser = await oauth.getUser(access_token);
 
-  const { email, username } = discordUser;
+  if (discordUser) {
+    const { email, username } = discordUser;
 
-  // authService will handle creating the user in the database for us
-  const createdUser = await authService.signupDiscordUser(email, username);
+    // authService will handle creating the user in the database for us
+    const createdUser = await authService.signupDiscordUser(email, username);
 
-  // create the JWT here, but let the controller set the cookie
-  const jwt = authService.generateJWT(createdUser);
-  //This returns full details of user, working correctly
-  // console.log(createdUser);
+    // create the JWT here, but let the controller set the cookie
+    const jwt = authService.generateJWT(createdUser);
 
-  return {
-    jwt,
-    user: createdUser,
-  };
+    return {
+      jwt,
+      user: createdUser,
+    };
+  }
 };
 
 exports.checkDiscordUser = async (code) => {
