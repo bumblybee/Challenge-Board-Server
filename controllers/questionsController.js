@@ -59,22 +59,22 @@ exports.createQuestion = async (req, res) => {
 };
 
 exports.selectAnswer = async (req, res) => {
-  try {
-    //TODO: Check for already selected Answer and handle
-    const { commentId, questionId } = req.params;
+  //TODO: Check for already selected Answer and handle
+  const { commentId, questionId } = req.params;
 
-    const answer = await Comment.update(
-      { isAnswer: true },
-      { where: { id: commentId } }
-    );
-    const answered = await Question.update(
-      { isAnswered: true },
-      { where: { id: questionId } }
-    );
-    res.status(201).json({ message: `updated:`, answer, answered });
-  } catch (err) {
-    res.status(500).json({ error: "selectAnswer.error" });
-    //TODO: have error handler handle
+  const answer = await Comment.update(
+    { isAnswer: true },
+    { where: { id: commentId } }
+  );
+  const answeredQuestion = await Question.update(
+    { isAnswered: true },
+    { where: { id: questionId } }
+  );
+
+  if (answer && answeredQuestion) {
+    res.status(201).json({ message: `updated:`, answer, answeredQuestion });
+  } else {
+    throw new CustomError("post.failed", "QuestionError", 500);
   }
 };
 

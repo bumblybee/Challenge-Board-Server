@@ -17,7 +17,7 @@ router.post(
   "/select-answer/:questionId/:commentId",
   isAuth,
   authRole(roles.Teacher),
-  questionsController.selectAnswer
+  errorWrapper(questionsController.selectAnswer)
 );
 
 router.put(
