@@ -104,15 +104,23 @@ const createDiscordUserInDB = async (email, username) => {
     role: roles.Student,
   };
 
-  const newUser = await User.create(user);
-  const createdUser = {
-    id: newUser.id,
-    username: newUser.username,
-    email: newUser.email,
-    role: newUser.role,
-  };
+  const existingCredentials = await User.findOne({
+    where: { [Op.or]: [{ email: email }, { username: username }] },
+  });
 
-  return createdUser;
+  if (existingCredentials) {
+    throw new Error("auth.existingCredentials", "SignupError", 400);
+  } else {
+    const newUser = await User.create(user);
+    const createdUser = {
+      id: newUser.id,
+      username: newUser.username,
+      email: newUser.email,
+      role: newUser.role,
+    };
+
+    return createdUser;
+  }
 };
 
 exports.loginDiscordUser = async (email, username) => {
