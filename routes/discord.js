@@ -8,6 +8,4 @@ router.get("/", discordController.getDiscordUrl);
 // Where redirect URI brings user, checks state, stores them in DB and logs them in
 router.post("/login", errorWrapper(discordController.authenticateDiscordUser));
 
-// router.post("/login", errorWrapper(discordController.loginDiscordUser));
-
 module.exports = router;

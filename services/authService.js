@@ -59,7 +59,6 @@ exports.loginWithPassword = async (email, password) => {
     //Handle login failure
     throw new CustomError("auth.invalidCredentials", "LoginError", 403);
   } else {
-    //TODO: handle edge case where password coming from db if discord user is logging in
     const correctPassword = await argon2.verify(userRecord.password, password);
 
     if (!correctPassword) {
