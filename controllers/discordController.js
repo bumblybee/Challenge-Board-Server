@@ -14,9 +14,21 @@ function getParameterByName(name, url) {
   return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-exports.getDiscordUrl = (req, res) => {
+exports.getSignupDiscordUrl = (req, res) => {
   // Passes scope and crypto state, along with client id and redirect URI, constructed in library method
-  const url = discordOAuthService.generateDiscordURL();
+  const url = discordOAuthService.generateSignupDiscordURL();
+
+  res.cookie("state", getParameterByName("state", url), {
+    maxAge: 1000 * 60 * 20,
+  });
+
+  res.json({
+    discordUrl: url,
+  });
+};
+
+exports.getLoginDiscordUrl = (req, res) => {
+  const url = discordOAuthService.generateLoginDiscordURL();
 
   res.cookie("state", getParameterByName("state", url), {
     maxAge: 1000 * 60 * 20,

@@ -4,15 +4,30 @@ const authService = require("./authService");
 const { CustomError } = require("../handlers/errorHandlers");
 
 // set up the service with some base information
-const oauth = new DiscordOauth2({
+const signupOauth = new DiscordOauth2({
+  clientId: process.env.DISCORD_CLIENT, // provided when you sign up on Discord for an app
+  clientSecret: process.env.DISCORD_SECRET, // provided when you sign up on Discord for an app
+  redirectUri: "http://localhost:3000/discord-signup", // add this as redirect URI in Discord app config
+});
+
+const loginOauth = new DiscordOauth2({
   clientId: process.env.DISCORD_CLIENT, // provided when you sign up on Discord for an app
   clientSecret: process.env.DISCORD_SECRET, // provided when you sign up on Discord for an app
   redirectUri: "http://localhost:3000/discord-login", // add this as redirect URI in Discord app config
 });
 
 // wraps DiscordOauth2's generate auth url.
-exports.generateDiscordURL = () => {
-  const url = oauth.generateAuthUrl({
+exports.generateSignupDiscordURL = () => {
+  const url = signupOauth.generateAuthUrl({
+    scope: ["identify", "email"], // see Discord OAuth docs for scope info
+    state: crypto.randomBytes(16).toString("hex"), // look familiar? cryptographically-secure random 16 bytes
+  });
+
+  return url;
+};
+
+exports.generateLoginDiscordURL = () => {
+  const url = loginOauth.generateAuthUrl({
     scope: ["identify", "email"], // see Discord OAuth docs for scope info
     state: crypto.randomBytes(16).toString("hex"), // look familiar? cryptographically-secure random 16 bytes
   });
@@ -23,7 +38,7 @@ exports.generateDiscordURL = () => {
 exports.createDiscordUser = async (code) => {
   // grab an access_token from Discord based on the code and any prior scope
 
-  const tokenResponse = await oauth.tokenRequest({
+  const tokenResponse = await signupOauth.tokenRequest({
     code: code,
     scope: "identify email",
     grantType: "authorization_code", // check the Discord OAuth docs for various grantTypes
@@ -32,7 +47,7 @@ exports.createDiscordUser = async (code) => {
   const { access_token } = tokenResponse;
 
   // now that we have the access_token, let's get some user information
-  const discordUser = await oauth.getUser(access_token);
+  const discordUser = await signupOauth.getUser(access_token);
 
   if (discordUser) {
     const { email, username } = discordUser;
@@ -53,7 +68,7 @@ exports.createDiscordUser = async (code) => {
 };
 
 exports.loginDiscordUser = async (code) => {
-  const tokenResponse = await oauth.tokenRequest({
+  const tokenResponse = await loginOauth.tokenRequest({
     code: code,
     scope: "identify email",
     grantType: "authorization_code",
@@ -61,7 +76,7 @@ exports.loginDiscordUser = async (code) => {
 
   const { access_token } = tokenResponse;
 
-  const discordUser = await oauth.getUser(access_token);
+  const discordUser = await loginOauth.getUser(access_token);
 
   if (discordUser) {
     const { email, username } = discordUser;
