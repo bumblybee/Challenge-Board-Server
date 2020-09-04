@@ -59,6 +59,7 @@ exports.createQuestion = async (req, res) => {
 };
 
 exports.selectAnswer = async (req, res) => {
+  throw new CustomError("post.failed", "QuestionError", 500);
   //TODO: Check for already selected Answer and handle
   const { commentId, questionId } = req.params;
 

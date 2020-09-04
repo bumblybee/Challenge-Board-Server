@@ -104,28 +104,41 @@ const createDiscordUserInDB = async (email, username) => {
     role: roles.Student,
   };
 
+  const newUser = await User.create(user);
+  const createdUser = {
+    id: newUser.id,
+    username: newUser.username,
+    email: newUser.email,
+    role: newUser.role,
+  };
+
+  return createdUser;
+};
+
+exports.loginDiscordUser = async (email, username) => {
+  const createdUser = await findDiscordUserInDB(email, username);
+
+  return createdUser;
+};
+
+const findDiscordUserInDB = async (email, username) => {
+  const user = {
+    username,
+    email,
+    hasDiscordLogin: true,
+    role: roles.Student,
+  };
+
   const existingCredentials = await User.findOne({
     where: { [Op.or]: [{ email: email }, { username: username }] },
   });
 
-  let createdUser;
-  if (existingCredentials) {
-    createdUser = {
-      id: existingCredentials.id,
-      username: existingCredentials.username,
-      email: existingCredentials.email,
-      role: existingCredentials.role,
-    };
-  } else {
-    const newUser = await User.create(user);
-    createdUser = {
-      id: newUser.id,
-      username: newUser.username,
-      email: newUser.email,
-      role: newUser.role,
-    };
-    //!  ?????????? Call signupDiscordUser here instead of in controller so existing user doesn't get emailed?
-  }
+  const createdUser = {
+    id: existingCredentials.id,
+    username: existingCredentials.username,
+    email: existingCredentials.email,
+    role: existingCredentials.role,
+  };
 
   return createdUser;
 };
