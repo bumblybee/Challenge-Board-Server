@@ -39,9 +39,35 @@ exports.createDiscordUser = async (code) => {
 
     // authService will handle creating the user in the database for us
     const createdUser = await authService.signupDiscordUser(email, username);
-    //!Call createDiscordUserInDb here instead and signupDiscordUser in createDiscordUserInDb?? Right now getting email if re-logging in through Discord
 
     // create the JWT here, but let the controller set the cookie
+    const jwt = authService.generateJWT(createdUser);
+
+    return {
+      jwt,
+      user: createdUser,
+    };
+  } else {
+    throw new CustomError("auth.discordError", "DiscordError", 401);
+  }
+};
+
+exports.loginDiscordUser = async (code) => {
+  const tokenResponse = await oauth.tokenRequest({
+    code: code,
+    scope: "identify email",
+    grantType: "authorization_code",
+  });
+
+  const { access_token } = tokenResponse;
+
+  const discordUser = await oauth.getUser(access_token);
+
+  if (discordUser) {
+    const { email, username } = discordUser;
+
+    const createdUser = await authService.loginDiscordUser(email, username);
+
     const jwt = authService.generateJWT(createdUser);
 
     return {

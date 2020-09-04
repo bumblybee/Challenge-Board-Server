@@ -62,3 +62,27 @@ exports.authenticateDiscordUser = async (req, res) => {
     throw new CustomError("auth.discordError", "DiscordError", 401);
   }
 };
+
+exports.loginDiscordUser = async (req, res) => {
+  const { code, state } = req.body;
+
+  if (!code) {
+    throw new CustomError("auth.discordError", "DiscordError", 400);
+  }
+  //Get state from header
+  const previousState = getStateFromHeader(req);
+
+  if (previousState === state) {
+    const { jwt, user } = await discordOAuthService.loginDiscordUser(code);
+
+    if (user) {
+      res.cookie("jwt", jwt, COOKIE_CONFIG);
+
+      res.json(user);
+    } else {
+      res.json({ error });
+    }
+  } else {
+    throw new CustomError("auth.discordError", "DiscordError", 401);
+  }
+};
