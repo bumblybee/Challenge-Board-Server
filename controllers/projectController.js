@@ -30,7 +30,8 @@ exports.submitProject = async (req, res) => {
 
 exports.editProject = async (req, res) => {
   const { id: id } = req.token.data;
-  const { githubLink, additionalLink, comment, userId } = req.body;
+  const { githubLink, additionalLink, comment, userData } = req.body;
+  const { id: userId, email, username } = userData;
 
   if (userId === id) {
     const editedProject = await Project.update(
@@ -51,7 +52,7 @@ exports.editProject = async (req, res) => {
           email,
         },
       });
-      res.status(200).json(project);
+      res.status(200).json(editedProject);
     } else {
       throw new CustomError("post.failed", "ProjectError", 500);
     }
