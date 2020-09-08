@@ -20,6 +20,4 @@ router.post(
 
 router.get("/get-user", isAuth, errorWrapper(userController.getUser));
 
-router.get("/:id/posts", isAuth, userController.getPosts);
-
 module.exports = router;

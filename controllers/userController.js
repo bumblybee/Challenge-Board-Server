@@ -69,28 +69,6 @@ exports.getUser = async (req, res) => {
   res.json({ message: "logged in", user });
 };
 
-exports.getPosts = async (req, res) => {
-  const { id: userId } = req.token.data;
-  const user = await User.findOne({
-    where: { id: userId },
-
-    include: [
-      {
-        model: Question,
-        order: [["createdAt", "DESC"]],
-      },
-      {
-        model: Comment,
-
-        order: [["createdAt", "DESC"]],
-      },
-    ],
-    attributes: ["id", "username", "email", "role"],
-  });
-
-  res.json(user);
-};
-
 // set up password reset token and send email with url
 exports.generatePasswordReset = async (req, res) => {
   //Grab email from client
