@@ -16,48 +16,13 @@ const COOKIE_CONFIG = require("../config").COOKIE_CONFIG;
 exports.signupUser = async (req, res) => {
   const { username, email, password } = req.body;
 
-  //TODO: Move function outside?
-  const existingCredentials = await User.findOne({
-    where: { [Op.or]: [{ email: email }, { username: username }] },
-  });
+  const { jwt, user } = await authService.signupUser(email, username, password);
 
-  if (existingCredentials) {
-    throw new CustomError("auth.existingCredentials", "SignupError", 401);
-    return;
+  if (user) {
+    res.cookie("jwt", jwt, COOKIE_CONFIG);
+    res.json(user);
   } else {
-    const hash = await argon2.hash(password);
-
-    const newUser = {
-      username,
-      email,
-      password: hash,
-      role: roles.Student,
-    };
-
-    // Store user in db
-    const userData = await User.create(newUser);
-
-    if (userData) {
-      emailHandler.sendEmail({
-        subject: "Welcome to the Message Board!",
-        filename: "signupEmail",
-        user: {
-          username,
-          email,
-        },
-      });
-
-      const { jwt, user } = await authService.loginWithPassword(
-        email,
-        password
-      );
-
-      res.cookie("jwt", jwt, COOKIE_CONFIG);
-
-      res.json(user);
-    } else {
-      throw new CustomError("server.failed", "SignupError", 500);
-    }
+    res.json({ error });
   }
 };
 

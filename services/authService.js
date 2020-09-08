@@ -52,6 +52,53 @@ exports.createTeacherUser = async (username, email, password) => {
   return createdUser;
 };
 
+exports.signupUser = async (email, username, password) => {
+  const existingCredentials = await User.findOne({
+    where: { [Op.or]: [{ email: email }, { username: username }] },
+  });
+
+  if (existingCredentials) {
+    throw new CustomError("auth.existingCredentials", "SignupError", 401);
+    return;
+  } else {
+    const hash = await argon2.hash(password);
+
+    const newUser = {
+      username,
+      email,
+      password: hash,
+      role: roles.Student,
+    };
+
+    // Store user in db
+    const createdUser = await User.create(newUser);
+
+    if (createdUser) {
+      emailHandler.sendEmail({
+        subject: "Welcome to the Message Board!",
+        filename: "signupEmail",
+        user: {
+          username,
+          email,
+        },
+      });
+
+      const jwt = this.generateJWT(createdUser);
+
+      const user = {
+        id: createdUser.id,
+        username: createdUser.username,
+        email: createdUser.email,
+        role: createdUser.role,
+      };
+
+      return { jwt, user };
+    } else {
+      throw new CustomError("auth.failedSignup", "SignupError", 401);
+    }
+  }
+};
+
 exports.loginWithPassword = async (email, password) => {
   const userRecord = await User.findOne({ where: { email: email } });
 
