@@ -58,27 +58,6 @@ exports.createQuestion = async (req, res) => {
   }
 };
 
-exports.selectAnswer = async (req, res) => {
-  throw new CustomError("post.failed", "QuestionError", 500);
-  //TODO: Check for already selected Answer and handle
-  const { commentId, questionId } = req.params;
-
-  const answer = await Comment.update(
-    { isAnswer: true },
-    { where: { id: commentId } }
-  );
-  const answeredQuestion = await Question.update(
-    { isAnswered: true },
-    { where: { id: questionId } }
-  );
-
-  if (answer && answeredQuestion) {
-    res.status(201).json({ message: `updated:`, answer, answeredQuestion });
-  } else {
-    throw new CustomError("post.failed", "QuestionError", 500);
-  }
-};
-
 exports.editQuestion = async (req, res) => {
   const id = req.token.data.id;
   const { title, body, userId } = req.body;
@@ -97,7 +76,6 @@ exports.editQuestion = async (req, res) => {
 };
 
 exports.deleteQuestion = async (req, res) => {
-  throw new CustomError("delete.failed", "QuestionError", 500);
   const deletedQuestion = await Question.destroy({
     where: { id: req.params.id },
   });

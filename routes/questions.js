@@ -13,13 +13,6 @@ router.get("/:id", questionsController.getQuestion);
 
 router.post("/", isAuth, errorWrapper(questionsController.createQuestion));
 
-router.post(
-  "/select-answer/:questionId/:commentId",
-  isAuth,
-  authRole(roles.Teacher),
-  errorWrapper(questionsController.selectAnswer)
-);
-
 router.put(
   "/edit-question/:id",
   isAuth,

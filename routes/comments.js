@@ -10,6 +10,13 @@ router.post("/:id", isAuth, errorWrapper(commentsController.createComment));
 
 router.put("/edit/:id", isAuth, errorWrapper(commentsController.editComment));
 
+router.post(
+  "/select-answer/:questionId/:commentId",
+  isAuth,
+  authRole(roles.Teacher),
+  errorWrapper(commentsController.selectAnswer)
+);
+
 router.delete(
   "/:id",
   isAuth,
