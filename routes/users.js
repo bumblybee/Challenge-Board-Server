@@ -5,12 +5,14 @@ const { errorWrapper } = require("../handlers/errorHandlers");
 const userController = require("../controllers/userController");
 
 router.post("/create", errorWrapper(userController.signupUser));
+
 router.post("/login", errorWrapper(userController.loginUser));
 
 router.post(
   "/password-reset",
   errorWrapper(userController.generatePasswordReset)
 );
+
 router.post(
   "/password-reset/:token",
   errorWrapper(userController.passwordReset)

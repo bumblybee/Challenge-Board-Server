@@ -12,7 +12,7 @@ exports.authRole = (requiredRoles) => {
       if (!userRecord) {
         return res.status(404).json({ error: "user.notFound" });
       } else if (!!requiredRoles && !isCorrectRole(requiredRoles, role)) {
-        return res.status(403).json({ error: "user.unauthorized" });
+        return res.status(403).json({ error: "auth.invalidCredentials" });
       } else {
         return next();
       }

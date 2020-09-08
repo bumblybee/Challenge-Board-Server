@@ -6,7 +6,7 @@ const { Op } = require("sequelize");
 const User = require("../db").User;
 const Question = require("../db").Question;
 const Comment = require("../db").Comment;
-const roles = require("../enums/roles");
+const Project = require("../db").Project;
 
 const emailHandler = require("../handlers/emailHandler");
 const authService = require("../services/authService");
@@ -49,6 +49,12 @@ exports.checkLoggedIn = async (req, res) => {
   const user = await User.findOne({
     where: { id },
     attributes: ["id", "username", "email", "role"],
+    include: [
+      {
+        model: Project,
+        order: [["createdAt", "DESC"]],
+      },
+    ],
   });
 
   res.json({ message: "logged in", user });
