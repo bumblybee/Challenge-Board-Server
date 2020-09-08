@@ -51,11 +51,7 @@ exports.checkLoggedIn = async (req, res) => {
     attributes: ["id", "username", "email", "role"],
   });
 
-  if (!user) {
-    throw new CustomError("auth.invalidCredentials", "LoginError", 401);
-  } else {
-    res.json({ message: "logged in", user });
-  }
+  res.json({ message: "logged in", user });
 };
 
 exports.getPosts = async (req, res) => {
