@@ -54,6 +54,15 @@ exports.getUser = async (req, res) => {
         model: Project,
         order: [["createdAt", "DESC"]],
       },
+      {
+        model: Question,
+        order: [["createdAt", "DESC"]],
+      },
+      {
+        model: Comment,
+
+        order: [["createdAt", "DESC"]],
+      },
     ],
   });
 
