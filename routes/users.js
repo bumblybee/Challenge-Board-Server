@@ -18,7 +18,7 @@ router.post(
   errorWrapper(userController.passwordReset)
 );
 
-router.get("/check-login", isAuth, errorWrapper(userController.checkLoggedIn));
+router.get("/get-user", isAuth, errorWrapper(userController.getUser));
 
 router.get("/:id/posts", isAuth, userController.getPosts);
 

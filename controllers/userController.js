@@ -44,7 +44,7 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-exports.checkLoggedIn = async (req, res) => {
+exports.getUser = async (req, res) => {
   const { id } = req.token.data;
   const user = await User.findOne({
     where: { id },
