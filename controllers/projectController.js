@@ -12,20 +12,15 @@ exports.submitProject = async (req, res) => {
 
   const newProject = await Project.create(project);
 
-  if (newProject && email) {
-    console.log(username, email);
-    emailHandler.sendEmail({
-      subject: "Project Submission Received!",
-      filename: "submissionEmail",
-      user: {
-        username,
-        email,
-      },
-    });
-    res.status(200).json(newProject);
-  } else {
-    throw new CustomError("post.failed", "ProjectError", 500);
-  }
+  emailHandler.sendEmail({
+    subject: "Project Submission Received!",
+    filename: "submissionEmail",
+    user: {
+      username,
+      email,
+    },
+  });
+  res.status(200).json(newProject);
 };
 
 exports.editProject = async (req, res) => {
@@ -43,18 +38,14 @@ exports.editProject = async (req, res) => {
       { where: { id: req.params.id } }
     );
 
-    if (editedProject) {
-      emailHandler.sendEmail({
-        subject: "Your Edited Project Submission has Been Received!",
-        filename: "submissionEmail",
-        user: {
-          username,
-          email,
-        },
-      });
-      res.status(200).json(editedProject);
-    } else {
-      throw new CustomError("post.failed", "ProjectError", 500);
-    }
+    emailHandler.sendEmail({
+      subject: "Your Edited Project Submission has Been Received!",
+      filename: "submissionEmail",
+      user: {
+        username,
+        email,
+      },
+    });
+    res.status(201).json(editedProject);
   }
 };

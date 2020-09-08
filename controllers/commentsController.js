@@ -1,7 +1,6 @@
 const { CustomError } = require("../handlers/errorHandlers");
 
 const Question = require("../db").Question;
-const User = require("../db").User;
 const Comment = require("../db").Comment;
 
 exports.createComment = async (req, res) => {
@@ -12,11 +11,7 @@ exports.createComment = async (req, res) => {
 
   const createdComment = await Comment.create(comment);
 
-  if (createdComment) {
-    res.json(createdComment);
-  } else {
-    throw new CustomError("post.failed", "CommentError", 500);
-  }
+  res.status(200).json(createdComment);
 };
 
 exports.editComment = async (req, res) => {
@@ -29,11 +24,7 @@ exports.editComment = async (req, res) => {
       { where: { id: req.params.id } }
     );
 
-    if (updatedComment) {
-      res.status(201).json(updatedComment);
-    } else {
-      throw new CustomError("post.failed", "CommentError", 500);
-    }
+    res.status(201).json(updatedComment);
   }
 };
 
@@ -42,11 +33,9 @@ exports.deleteComment = async (req, res) => {
     where: { id: req.params.id },
   });
 
-  if (deletedComment) {
-    res.json({ message: `Comment ${req.params.id} deleted`, deletedComment });
-  } else {
-    throw new CustomError("delete.failed", "CommentError", 500);
-  }
+  res
+    .status(200)
+    .json({ message: `Comment ${req.params.id} deleted`, deletedComment });
 };
 
 exports.selectAnswer = async (req, res) => {
@@ -61,9 +50,5 @@ exports.selectAnswer = async (req, res) => {
     { where: { id: questionId } }
   );
 
-  if (answer && answeredQuestion) {
-    res.status(201).json({ message: `updated:`, answer, answeredQuestion });
-  } else {
-    throw new CustomError("post.failed", "QuestionError", 500);
-  }
+  res.status(201).json({ message: `updated:`, answer, answeredQuestion });
 };

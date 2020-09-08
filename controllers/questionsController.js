@@ -51,11 +51,7 @@ exports.createQuestion = async (req, res) => {
   };
   const question = await Question.create(newQuestion);
 
-  if (question) {
-    res.json(question);
-  } else {
-    throw new CustomError("post.failed", "QuestionError", 500);
-  }
+  res.status(200).json(question);
 };
 
 exports.editQuestion = async (req, res) => {
@@ -67,11 +63,8 @@ exports.editQuestion = async (req, res) => {
       { body: body, title: title },
       { where: { id: req.params.id } }
     );
-    if (updatedQuestion) {
-      res.status(201).json(updatedQuestion);
-    } else {
-      throw new Error("post.failed", "QuestionError", 500);
-    }
+
+    res.status(201).json(updatedQuestion);
   }
 };
 
@@ -79,9 +72,8 @@ exports.deleteQuestion = async (req, res) => {
   const deletedQuestion = await Question.destroy({
     where: { id: req.params.id },
   });
-  if (deletedQuestion) {
-    res.json({ message: `Question ${req.params.id} deleted`, deletedQuestion });
-  } else {
-    throw new CustomError("delete.failed", "QuestionError", 500);
-  }
+
+  res
+    .status(200)
+    .json({ message: `Question ${req.params.id} deleted`, deletedQuestion });
 };
