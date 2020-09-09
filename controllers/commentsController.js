@@ -39,16 +39,17 @@ exports.deleteComment = async (req, res) => {
 };
 
 exports.selectAnswer = async (req, res) => {
+  // throw new CustomError("post.failed", "AnswerError", 500);
   const { commentId, questionId } = req.params;
 
   const answer = await Comment.update(
     { isAnswer: true },
-    { where: { id: commentId } }
+    { where: { id: commentId }, returning: true, plain: true }
   );
   const answeredQuestion = await Question.update(
     { isAnswered: true },
-    { where: { id: questionId } }
+    { where: { id: questionId }, returning: true, plain: true }
   );
 
-  res.status(201).json({ message: `updated:`, answer, answeredQuestion });
+  res.status(201).json({ answer, answeredQuestion });
 };
