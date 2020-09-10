@@ -30,7 +30,10 @@ exports.getQuestion = async (req, res) => {
       },
       {
         model: Comment,
-        include: [{ model: User, attributes: ["username", "email"] }],
+        include: [
+          { model: User, attributes: ["username", "email"] },
+          { model: Question },
+        ],
       },
     ],
     //Order comments correctly so edited comments aren't pushed to end of list

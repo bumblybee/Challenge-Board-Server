@@ -29,7 +29,7 @@ exports.editComment = async (req, res) => {
 };
 
 exports.deleteComment = async (req, res) => {
-  throw new CustomError("post.failed", "AnswerError", 500);
+  // throw new CustomError("post.failed", "AnswerError", 500);
   const deletedComment = await Comment.destroy({
     where: { id: req.params.id },
   });
