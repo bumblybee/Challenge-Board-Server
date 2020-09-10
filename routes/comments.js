@@ -17,6 +17,13 @@ router.post(
   errorWrapper(commentsController.selectAnswer)
 );
 
+router.post(
+  "/deselect-answer/:questionId/:commentId",
+  isAuth,
+  authRole(roles.Teacher),
+  errorWrapper(commentsController.deselectAnswer)
+);
+
 router.delete(
   "/:id",
   isAuth,

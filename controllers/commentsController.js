@@ -56,7 +56,7 @@ exports.selectAnswer = async (req, res) => {
 };
 
 exports.deselectAnswer = async (req, res) => {
-  const { commentId, questionId } = req.body;
+  const { commentId, questionId } = req.params;
 
   const deselectedAnswer = await Comment.update(
     { isAnswer: false },
