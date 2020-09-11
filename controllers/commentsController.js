@@ -31,7 +31,7 @@ exports.createComment = async (req, res) => {
 
 exports.editComment = async (req, res) => {
   const id = req.token.data.id;
-  const { body, userId } = req.body;
+  const { body, userId, questionId } = req.body;
 
   if (id === userId) {
     const updatedComment = await Comment.update(
@@ -39,7 +39,21 @@ exports.editComment = async (req, res) => {
       { where: { id: req.params.id } }
     );
 
-    res.status(201).json(updatedComment);
+    const comments = await Comment.findAll({
+      where: { questionId: questionId },
+      order: [["createdAt", "ASC"]],
+      include: [
+        {
+          model: User,
+          attributes: ["username"],
+        },
+        {
+          model: Question,
+        },
+      ],
+    });
+
+    res.status(201).json({ comments });
   }
 };
 
