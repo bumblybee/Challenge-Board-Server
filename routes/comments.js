@@ -25,7 +25,7 @@ router.post(
 );
 
 router.delete(
-  "/:id",
+  "/:questionId/:commentId",
   isAuth,
   authRole(roles.Teacher),
   errorWrapper(commentsController.deleteComment)

@@ -2,6 +2,7 @@ const { CustomError } = require("../handlers/errorHandlers");
 
 const Question = require("../db").Question;
 const Comment = require("../db").Comment;
+const User = require("../db").User;
 
 exports.createComment = async (req, res) => {
   const { body } = req.body;
@@ -11,7 +12,21 @@ exports.createComment = async (req, res) => {
 
   const createdComment = await Comment.create(comment);
 
-  res.status(200).json(createdComment);
+  const comments = await Comment.findAll({
+    where: { questionId: questionId },
+    order: [["createdAt", "ASC"]],
+    include: [
+      {
+        model: User,
+        attributes: ["username"],
+      },
+      {
+        model: Question,
+      },
+    ],
+  });
+
+  res.status(200).json({ comments });
 };
 
 exports.editComment = async (req, res) => {
@@ -30,17 +45,31 @@ exports.editComment = async (req, res) => {
 
 exports.deleteComment = async (req, res) => {
   // throw new CustomError("post.failed", "AnswerError", 500);
+
   const deletedComment = await Comment.destroy({
-    where: { id: req.params.id },
+    where: { id: req.params.commentId },
   });
 
-  res
-    .status(200)
-    .json({ message: `Comment ${req.params.id} deleted`, deletedComment });
+  const comments = await Comment.findAll({
+    where: { questionId: req.params.questionId },
+    order: [["createdAt", "ASC"]],
+    include: [
+      {
+        model: User,
+        attributes: ["username"],
+      },
+      {
+        model: Question,
+      },
+    ],
+  });
+
+  res.status(200).json({ comments });
 };
 
 exports.selectAnswer = async (req, res) => {
-  // throw new CustomError("post.failed", "AnswerError", 500);
+  //?? should I just be putting commentId in params and getting questionId from comment
+
   const { commentId, questionId } = req.params;
 
   const selectedAnswer = await Comment.update(
@@ -52,7 +81,21 @@ exports.selectAnswer = async (req, res) => {
     { where: { id: questionId }, returning: true, plain: true }
   );
 
-  res.status(201).json({ selectedAnswer, updatedQuestion });
+  const comments = await Comment.findAll({
+    where: { questionId: questionId },
+    order: [["createdAt", "ASC"]],
+    include: [
+      {
+        model: User,
+        attributes: ["username"],
+      },
+      {
+        model: Question,
+      },
+    ],
+  });
+
+  res.status(201).json({ comments });
 };
 
 exports.deselectAnswer = async (req, res) => {
@@ -67,5 +110,19 @@ exports.deselectAnswer = async (req, res) => {
     { isAnswered: false },
     { where: { id: questionId }, returning: true, plain: true }
   );
-  res.status(201).json({ deselectedAnswer, updatedQuestion });
+
+  const comments = await Comment.findAll({
+    where: { questionId: questionId },
+    order: [["createdAt", "ASC"]],
+    include: [
+      {
+        model: User,
+        attributes: ["username"],
+      },
+      {
+        model: Question,
+      },
+    ],
+  });
+  res.status(201).json({ comments });
 };
