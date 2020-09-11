@@ -80,3 +80,12 @@ exports.deleteQuestion = async (req, res) => {
     .status(200)
     .json({ message: `Question ${req.params.id} deleted`, deletedQuestion });
 };
+
+exports.editAnswer = async (req, res) => {
+  const editedQuestion = await Question.update(
+    { isAnswered: false },
+    { where: { id: req.params.id } }
+  );
+
+  res.status(200).json("Question updated");
+};

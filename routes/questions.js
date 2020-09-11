@@ -19,6 +19,12 @@ router.put(
   errorWrapper(questionsController.editQuestion)
 );
 
+router.put(
+  "/edit-answer/:id",
+  isAuth,
+  errorWrapper(questionsController.editAnswer)
+);
+
 router.delete(
   "/:id",
   isAuth,
