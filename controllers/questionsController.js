@@ -54,7 +54,18 @@ exports.createQuestion = async (req, res) => {
   };
   const question = await Question.create(newQuestion);
 
-  res.status(200).json(question);
+  const questions = await Question.findAll({
+    order: [["createdAt", "DESC"]],
+    include: [
+      {
+        model: User,
+        attributes: ["username"],
+      },
+      { model: Comment },
+    ],
+  });
+
+  res.status(200).json({ questions });
 };
 
 exports.editQuestion = async (req, res) => {
@@ -67,7 +78,18 @@ exports.editQuestion = async (req, res) => {
       { where: { id: req.params.id } }
     );
 
-    res.status(201).json(updatedQuestion);
+    const questions = await Question.findAll({
+      order: [["createdAt", "DESC"]],
+      include: [
+        {
+          model: User,
+          attributes: ["username"],
+        },
+        { model: Comment },
+      ],
+    });
+
+    res.status(201).json({ questions });
   }
 };
 
@@ -76,9 +98,18 @@ exports.deleteQuestion = async (req, res) => {
     where: { id: req.params.id },
   });
 
-  res
-    .status(200)
-    .json({ message: `Question ${req.params.id} deleted`, deletedQuestion });
+  const questions = await Question.findAll({
+    order: [["createdAt", "DESC"]],
+    include: [
+      {
+        model: User,
+        attributes: ["username"],
+      },
+      { model: Comment },
+    ],
+  });
+
+  res.status(200).json({ questions });
 };
 
 exports.editAnswer = async (req, res) => {

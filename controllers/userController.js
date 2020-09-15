@@ -66,7 +66,7 @@ exports.getUser = async (req, res) => {
     ],
   });
 
-  res.json({ message: "logged in", user });
+  res.json({ user });
 };
 
 // set up password reset token and send email with url
