@@ -58,8 +58,6 @@ exports.editComment = async (req, res) => {
 };
 
 exports.deleteComment = async (req, res) => {
-  // throw new CustomError("post.failed", "AnswerError", 500);
-
   const deletedComment = await Comment.destroy({
     where: { id: req.params.commentId },
   });
@@ -82,8 +80,7 @@ exports.deleteComment = async (req, res) => {
 };
 
 exports.selectAnswer = async (req, res) => {
-  //?? should I just be putting commentId in params and getting questionId from comment
-
+  throw new CustomError("server.failed");
   const { commentId, questionId } = req.params;
 
   const selectedAnswer = await Comment.update(

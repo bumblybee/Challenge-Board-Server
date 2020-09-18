@@ -3,6 +3,11 @@ const User = require("../db").User;
 const emailHandler = require("../handlers/emailHandler");
 const { CustomError } = require("../handlers/errorHandlers");
 
+exports.getProject = async (req, res) => {
+  const project = await Project.findOne({ where: { userId: req.params.id } });
+  res.json({ project });
+};
+
 exports.submitProject = async (req, res) => {
   const { githubLink, additionalLink, comment, userData } = req.body;
 
