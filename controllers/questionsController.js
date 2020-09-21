@@ -2,6 +2,7 @@ const Question = require("../db").Question;
 const User = require("../db").User;
 const Comment = require("../db").Comment;
 const { CustomError } = require("../handlers/errorHandlers");
+
 exports.getQuestions = async (req, res) => {
   //Find all questions and sort by newest
   const questions = await Question.findAll({

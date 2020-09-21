@@ -2,6 +2,7 @@ const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const { Op } = require("sequelize");
+const { logger } = require("../handlers/logger");
 
 const User = require("../db").User;
 const Question = require("../db").Question;
@@ -18,6 +19,8 @@ exports.signupUser = async (req, res) => {
 
   const { jwt, user } = await authService.signupUser(email, username, password);
 
+  logger.info("New user signup");
+
   if (user) {
     res.cookie("jwt", jwt, COOKIE_CONFIG);
     res.json(user);
@@ -29,6 +32,8 @@ exports.signupUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
   const { jwt, user } = await authService.loginWithPassword(email, password);
+
+  logger.info("User logged in");
 
   res.cookie("jwt", jwt, COOKIE_CONFIG);
 
@@ -74,6 +79,8 @@ exports.generatePasswordReset = async (req, res) => {
   //Grab email from client
   const { email } = req.body;
 
+  logger.info("Password resetInitiated");
+
   //Find email in db
   const userRecord = User.findOne({ where: { email: email } });
 
@@ -104,6 +111,8 @@ exports.generatePasswordReset = async (req, res) => {
 
       resetPasswordUrl,
     });
+
+    logger.info("Reset password email sent");
 
     //send json confirmation
     res.json({ message: "An email has been sent to the address provided." });

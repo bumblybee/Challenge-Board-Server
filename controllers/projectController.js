@@ -4,28 +4,34 @@ const emailHandler = require("../handlers/emailHandler");
 const { CustomError } = require("../handlers/errorHandlers");
 
 exports.getProject = async (req, res) => {
-  const project = await Project.findOne({ where: { userId: req.params.id } });
+  const { id } = req.token.data;
+  const project = await Project.findOne({ where: { userId: id } });
   res.json({ project });
 };
 
 exports.submitProject = async (req, res) => {
   const { githubLink, additionalLink, comment, userData } = req.body;
+  const { id: userId } = req.token.data;
 
-  const { id: userId, email, username } = userData;
+  const { email, username } = userData;
 
   const project = { githubLink, additionalLink, comment, userId };
 
-  const newProject = await Project.create(project);
+  if (userId) {
+    const newProject = await Project.create(project);
 
-  emailHandler.sendEmail({
-    subject: "Project Submission Received!",
-    filename: "submissionEmail",
-    user: {
-      username,
-      email,
-    },
-  });
-  res.status(200).json(newProject);
+    emailHandler.sendEmail({
+      subject: "Project Submission Received!",
+      filename: "submissionEmail",
+      user: {
+        username,
+        email,
+      },
+    });
+    res.status(200).json(newProject);
+  } else {
+    throw new CustomError("post.failed");
+  }
 };
 
 exports.editProject = async (req, res) => {

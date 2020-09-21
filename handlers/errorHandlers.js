@@ -1,4 +1,5 @@
 const Sequelize = require("sequelize");
+const { logger } = require("./logger");
 
 exports.errorWrapper = (fn) => {
   return function (req, res, next) {
@@ -13,10 +14,13 @@ exports.developmentErrors = (err, req, res, next) => {
     stack: err.stack,
   };
 
+  logger.error(err);
   res.status(err.status || 500).json(errorDetails);
 };
 
 exports.productionErrors = (err, req, res, next) => {
+  logger.error(err);
+
   res.status(err.status || 500).json({
     error: err.message,
   });

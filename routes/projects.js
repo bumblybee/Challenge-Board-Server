@@ -5,8 +5,10 @@ const { errorWrapper } = require("../handlers/errorHandlers");
 
 const projectController = require("../controllers/projectController");
 
-router.get("/:id", isAuth, projectController.getProject);
+router.get("/", isAuth, projectController.getProject);
+
 router.put("/:id", isAuth, errorWrapper(projectController.editProject));
+
 router.post("/", isAuth, errorWrapper(projectController.submitProject));
 
 module.exports = router;

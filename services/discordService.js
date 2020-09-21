@@ -6,7 +6,7 @@ const { CustomError } = require("../handlers/errorHandlers");
 // set up the service with some base information
 const oauth = new DiscordOauth2({
   clientId: process.env.DISCORD_CLIENT, // provided when you sign up on Discord for an app
-  clientSecret: process.env.DISCORD_SECRET, // can redirectUri  here so you don't repeat yourself, but need two different uris for login and signup?
+  clientSecret: process.env.DISCORD_SECRET, // can redirectUri here so you don't repeat yourself, but need two different uris for login and signup?
 });
 
 exports.generateSignupDiscordURL = () => {
