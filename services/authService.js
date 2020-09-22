@@ -5,6 +5,7 @@ const emailHandler = require("../handlers/emailHandler");
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 const { CustomError } = require("../handlers/errorHandlers");
+const { logger } = require("../handlers/logger");
 
 exports.generateJWT = (user) => {
   const data = {
@@ -51,7 +52,7 @@ exports.createTeacherUser = async (username, email, password) => {
     },
   });
 
-  logger.info(`Signup email sent to teacher ${createdUser.username}`);
+  logger.info(`Signup email sent to ${email}`);
 
   return createdUser;
 };
@@ -87,7 +88,7 @@ exports.signupUser = async (email, username, password) => {
         },
       });
 
-      logger.info(`Signup email sent to student ${createdUser.username}`);
+      logger.info(`Signup email sent to ${email}`);
 
       const jwt = this.generateJWT(createdUser);
 
@@ -147,7 +148,7 @@ exports.signupDiscordUser = async (email, username) => {
     },
   });
 
-  logger.info(`Signup email sent to student ${createdUser.username}`);
+  logger.info(`Signup email sent to ${email}`);
 
   return createdUser;
 };

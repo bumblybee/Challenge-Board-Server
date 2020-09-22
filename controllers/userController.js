@@ -19,7 +19,7 @@ exports.signupUser = async (req, res) => {
 
   const { jwt, user } = await authService.signupUser(email, username, password);
 
-  logger.info("New user signup");
+  logger.info(`New user ${username} signed up, user email: ${email}`);
 
   if (user) {
     res.cookie("jwt", jwt, COOKIE_CONFIG);
