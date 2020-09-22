@@ -7,7 +7,16 @@ const logger = winston.createLogger({
     winston.format.json()
   ),
 
-  transports: [new winston.transports.Console()],
+  transports: [
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.simple()
+      ),
+    }),
+  ],
 });
+
+winston.addColors({ error: "red", info: "cyan", warn: "yellow" });
 
 exports.logger = logger;
