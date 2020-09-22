@@ -23,6 +23,9 @@ exports.signupUser = async (req, res) => {
 
   if (user) {
     res.cookie("jwt", jwt, COOKIE_CONFIG);
+
+    logger.info(`${username} sent cookie with JWT`);
+
     res.json(user);
   } else {
     res.json({ error });
@@ -36,6 +39,8 @@ exports.loginUser = async (req, res) => {
   logger.info("User logged in successfully.");
 
   res.cookie("jwt", jwt, COOKIE_CONFIG);
+
+  logger.info(`${user.username} sent cookie with JWT`);
 
   if (user) {
     res.json({
