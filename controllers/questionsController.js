@@ -2,6 +2,7 @@ const Question = require("../db").Question;
 const User = require("../db").User;
 const Comment = require("../db").Comment;
 const { CustomError } = require("../handlers/errorHandlers");
+const { logger } = require("../handlers/logger");
 
 exports.getQuestions = async (req, res) => {
   //Find all questions and sort by newest
@@ -56,6 +57,8 @@ exports.createQuestion = async (req, res) => {
   };
   const question = await Question.create(newQuestion);
 
+  logger.info(`User ${userId} posted question ${question.id}: ${title}`);
+
   const questions = await Question.findAll({
     order: [["createdAt", "DESC"]],
     include: [
@@ -80,6 +83,8 @@ exports.editQuestion = async (req, res) => {
       { where: { id: req.params.id } }
     );
 
+    logger.info(`User ${id} edited question ${question.id}: ${title}`);
+
     const questions = await Question.findAll({
       order: [["createdAt", "DESC"]],
       include: [
@@ -100,6 +105,10 @@ exports.deleteQuestion = async (req, res) => {
     where: { id: req.params.id },
   });
 
+  logger.info(
+    `Teacher ${req.token.data.username} deleted question ${req.params.id}`
+  );
+
   const questions = await Question.findAll({
     order: [["createdAt", "DESC"]],
     include: [
@@ -119,6 +128,8 @@ exports.editAnswer = async (req, res) => {
     { isAnswered: false },
     { where: { id: req.params.id } }
   );
+
+  logger.info(`User ${req.token.data.id} edited question ${req.params.id}`);
 
   res.status(200).json("Question updated");
 };
