@@ -83,7 +83,7 @@ exports.editQuestion = async (req, res) => {
       { where: { id: req.params.id } }
     );
 
-    logger.info(`User ${id} edited question ${question.id}: ${title}`);
+    logger.info(`User ${id} edited question ${req.params.id}: ${title}`);
 
     const questions = await Question.findAll({
       order: [["createdAt", "DESC"]],
