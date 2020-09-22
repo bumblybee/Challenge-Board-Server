@@ -20,7 +20,7 @@ exports.signupUser = async (req, res) => {
   const { jwt, user } = await authService.signupUser(email, username, password);
 
   logger.info(
-    `Successful Signup - user id: ${user.id}, username: ${user.username}`
+    `Successful Signup - user id: ${user.id}, username: ${user.username}, role: ${user.role}`
   );
 
   if (user) {
@@ -37,7 +37,7 @@ exports.loginUser = async (req, res) => {
   const { jwt, user } = await authService.loginWithPassword(email, password);
 
   logger.info(
-    `Successful Login - user id: ${user.id}, username: ${user.username}`
+    `Successful Login - user id: ${user.id}, username: ${user.username}, role: ${user.role}`
   );
 
   res.cookie("jwt", jwt, COOKIE_CONFIG);
