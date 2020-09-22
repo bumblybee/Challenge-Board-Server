@@ -88,7 +88,7 @@ exports.signupUser = async (email, username, password) => {
         },
       });
 
-      logger.info(`Signup email sent to ${email}`);
+      logger.info(`Signup email sent to user ${createdUser.id} at ${email}`);
 
       const jwt = this.generateJWT(createdUser);
 
@@ -148,7 +148,7 @@ exports.signupDiscordUser = async (email, username) => {
     },
   });
 
-  logger.info(`Signup email sent to ${email}`);
+  logger.info(`Signup email sent to user ${createdUser.id} at ${email}`);
 
   return createdUser;
 };

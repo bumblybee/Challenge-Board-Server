@@ -101,7 +101,7 @@ exports.selectAnswer = async (req, res) => {
   );
 
   logger.info(
-    `Teacher ${req.token.data.username} promoted comment ${commentId} to answer.`
+    `Teacher with user id ${req.token.data.id} promoted comment ${commentId} to answer.`
   );
 
   const comments = await Comment.findAll({
@@ -135,7 +135,7 @@ exports.deselectAnswer = async (req, res) => {
   );
 
   logger.info(
-    `Teacher ${req.token.data.username} demoted comment ${commentId} from answer.`
+    `Teacher with user id ${req.token.data.id} demoted comment ${commentId} from answer.`
   );
 
   const comments = await Comment.findAll({

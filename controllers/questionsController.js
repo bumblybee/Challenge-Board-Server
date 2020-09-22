@@ -106,7 +106,7 @@ exports.deleteQuestion = async (req, res) => {
   });
 
   logger.info(
-    `Teacher ${req.token.data.username} deleted question ${req.params.id}`
+    `Teacher with user id ${req.token.data.id} deleted question ${req.params.id}`
   );
 
   const questions = await Question.findAll({
