@@ -13,5 +13,5 @@ exports.isAuth = jwt({
   userProperty: "token",
   getToken: getTokenFromHeader,
   algorithms: ["HS256"],
-  // credentialsRequired: true,
+  credentialsRequired: true,
 });
