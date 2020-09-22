@@ -19,12 +19,12 @@ exports.signupUser = async (req, res) => {
 
   const { jwt, user } = await authService.signupUser(email, username, password);
 
-  logger.info(`New user ${username} signed up, user email: ${email}`);
+  logger.info(
+    `Successful Signup - user id: ${user.id}, username: ${user.username}`
+  );
 
   if (user) {
     res.cookie("jwt", jwt, COOKIE_CONFIG);
-
-    logger.info(`${username} sent cookie with JWT`);
 
     res.json(user);
   } else {
@@ -36,11 +36,11 @@ exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
   const { jwt, user } = await authService.loginWithPassword(email, password);
 
-  logger.info("User logged in successfully.");
+  logger.info(
+    `Successful Login - user id: ${user.id}, username: ${user.username}`
+  );
 
   res.cookie("jwt", jwt, COOKIE_CONFIG);
-
-  logger.info(`${user.username} sent cookie with JWT`);
 
   if (user) {
     res.json({
@@ -84,7 +84,7 @@ exports.generatePasswordReset = async (req, res) => {
   //Grab email from client
   const { email } = req.body;
 
-  logger.info("Password resetInitiated");
+  logger.info(`Password reset initiated for ${email}`);
 
   //Find email in db
   const userRecord = User.findOne({ where: { email: email } });
@@ -117,7 +117,7 @@ exports.generatePasswordReset = async (req, res) => {
       resetPasswordUrl,
     });
 
-    logger.info("Reset password email sent");
+    logger.info(`Password reset email sent to ${email}`);
 
     //send json confirmation
     res.json({ message: "An email has been sent to the address provided." });
@@ -148,7 +148,9 @@ exports.passwordReset = async (req, res) => {
     userRecord.update({ password: hash });
     // send along another cookie with token so they're logged in
 
-    logger.info("User successfully reset password.");
+    logger.info(
+      `Successful Password Reset - user id ${useRecord.id}, username: ${userRecord.username}`
+    );
 
     res.cookie("jwt", authService.generateJWT(userRecord), COOKIE_CONFIG);
     // Send data

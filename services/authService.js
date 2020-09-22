@@ -52,7 +52,9 @@ exports.createTeacherUser = async (username, email, password) => {
     },
   });
 
-  logger.info(`Signup email sent to ${email}`);
+  logger.info(
+    `Signup Email Sent - user id: ${createdUser.id}, username: ${username}, email: ${email}, ${createdUser.role}`
+  );
 
   return createdUser;
 };
@@ -88,7 +90,9 @@ exports.signupUser = async (email, username, password) => {
         },
       });
 
-      logger.info(`Signup email sent to user ${createdUser.id} at ${email}`);
+      logger.info(
+        `Signup Email Sent - user id: ${createdUser.id}, username: ${username}, email: ${email}`
+      );
 
       const jwt = this.generateJWT(createdUser);
 
@@ -148,7 +152,9 @@ exports.signupDiscordUser = async (email, username) => {
     },
   });
 
-  logger.info(`Signup email sent to user ${createdUser.id} at ${email}`);
+  logger.info(
+    `Signup Email Sent - user id: ${createdUser.id}, username: ${username}, email: ${email}`
+  );
 
   return createdUser;
 };

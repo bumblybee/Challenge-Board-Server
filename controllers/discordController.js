@@ -63,7 +63,9 @@ exports.authenticateDiscordUser = async (req, res) => {
     // Function that requests token from Discord, gens JWT, returns user data and JWT
     const { jwt, user } = await discordOAuthService.createDiscordUser(code);
 
-    logger.info(`Discord user with user id ${user.id} created`);
+    logger.info(
+      `Successful Discord User Signup - user id: ${user.id}, username: ${user.username}`
+    );
 
     if (user) {
       res.cookie("jwt", jwt, COOKIE_CONFIG);
@@ -90,7 +92,9 @@ exports.loginDiscordUser = async (req, res) => {
     const { jwt, user } = await discordOAuthService.loginDiscordUser(code);
 
     if (user) {
-      logger.info(`Discord user with user id ${user.id} logged in`);
+      logger.info(
+        `Successful Discord User Login - user id: ${user.id}, username: ${user.username}`
+      );
 
       res.cookie("jwt", jwt, COOKIE_CONFIG);
 
