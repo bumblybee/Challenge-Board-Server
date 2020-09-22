@@ -11,10 +11,8 @@ exports.getProject = async (req, res) => {
 };
 
 exports.submitProject = async (req, res) => {
-  const { githubLink, additionalLink, comment, userData } = req.body;
-  const { id: userId } = req.token.data;
-
-  const { email, username } = userData;
+  const { githubLink, additionalLink, comment } = req.body;
+  const { id: userId, email, username } = req.token.data;
 
   const project = { githubLink, additionalLink, comment, userId };
 
@@ -45,28 +43,25 @@ exports.submitProject = async (req, res) => {
 };
 
 exports.editProject = async (req, res) => {
-  const { id: id } = req.token.data;
-  const { githubLink, additionalLink, comment, userData } = req.body;
-  const { id: userId, email, username } = userData;
+  const { id: userId, email, username } = req.token.data;
+  const { githubLink, additionalLink, comment } = req.body;
 
-  if (userId === id) {
-    const editedProject = await Project.update(
-      {
-        githubLink: githubLink,
-        additionalLink: additionalLink,
-        comment: comment,
-      },
-      { where: { id: req.params.id } }
-    );
+  const editedProject = await Project.update(
+    {
+      githubLink: githubLink,
+      additionalLink: additionalLink,
+      comment: comment,
+    },
+    { where: { id: req.params.id } }
+  );
 
-    emailHandler.sendEmail({
-      subject: "Your Edited Project Submission has Been Received!",
-      filename: "submissionEmail",
-      user: {
-        username,
-        email,
-      },
-    });
-    res.status(201).json(editedProject);
-  }
+  emailHandler.sendEmail({
+    subject: "Your Edited Project Submission has Been Received!",
+    filename: "submissionEmail",
+    user: {
+      username,
+      email,
+    },
+  });
+  res.status(201).json(editedProject);
 };
