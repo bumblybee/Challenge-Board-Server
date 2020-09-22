@@ -79,6 +79,8 @@ exports.loginDiscordUser = async (code) => {
 
     const createdUser = await authService.loginDiscordUser(email, username);
 
+    logger.info(`Discord user ${username} logged in`);
+
     const jwt = authService.generateJWT(createdUser);
 
     return {

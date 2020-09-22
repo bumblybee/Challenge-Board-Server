@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
 const ejs = require("ejs");
 const juice = require("juice");
+const { logger } = require("./logger");
 
 const transport = nodemailer.createTransport({
   host: process.env.MAILTRAP_HOST,
@@ -29,6 +30,11 @@ exports.sendEmail = async (options) => {
       subject: options.subject,
       html: emailHTML,
     };
+
+    logger.info(
+      `Sending email to ${options.user.email}, subject: ${options.subject}`
+    );
+
     return transport.sendMail(mailOptions);
   } catch (err) {
     console.log(err);

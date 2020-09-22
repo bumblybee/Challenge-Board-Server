@@ -2,7 +2,7 @@ const cookie = require("cookie");
 const { COOKIE_CONFIG } = require("../config");
 
 const discordOAuthService = require("../services/discordService");
-
+const { logger } = require("../handlers/logger");
 const { CustomError } = require("../handlers/errorHandlers");
 
 function getParameterByName(name, url) {
@@ -63,6 +63,8 @@ exports.authenticateDiscordUser = async (req, res) => {
     // Function that requests token from Discord, gens JWT, returns user data and JWT
     const { jwt, user } = await discordOAuthService.createDiscordUser(code);
 
+    logger.info(`Discord user ${user.username} created`);
+
     if (user) {
       res.cookie("jwt", jwt, COOKIE_CONFIG);
 
@@ -88,6 +90,8 @@ exports.loginDiscordUser = async (req, res) => {
     const { jwt, user } = await discordOAuthService.loginDiscordUser(code);
 
     if (user) {
+      logger.info(`Discord user ${user.username} logged in`);
+
       res.cookie("jwt", jwt, COOKIE_CONFIG);
 
       res.json(user);

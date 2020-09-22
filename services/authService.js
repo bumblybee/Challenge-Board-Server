@@ -23,21 +23,23 @@ exports.generateJWT = (user) => {
 exports.createTeacherUser = async (username, email, password) => {
   const hash = await argon2.hash(password);
 
-  const newUser = {
+  const newTeacher = {
     username,
     email,
     password: hash,
     role: roles.Teacher,
   };
   // Store user in db
-  const userData = await User.create(newUser);
+  const teacherData = await User.create(newTeacher);
+
+  logger.info(`Teacher ${teacherData.username} created`);
 
   // create object with data from db to pass to api, minus password
   const createdUser = {
-    id: userData.id,
-    username: userData.username,
-    email: userData.email,
-    role: userData.role,
+    id: teacherData.id,
+    username: teacherData.username,
+    email: teacherData.email,
+    role: teacherData.role,
   };
 
   emailHandler.sendEmail({
@@ -48,6 +50,8 @@ exports.createTeacherUser = async (username, email, password) => {
       email,
     },
   });
+
+  logger.info(`Signup email sent to teacher ${createdUser.username}`);
 
   return createdUser;
 };
@@ -82,6 +86,8 @@ exports.signupUser = async (email, username, password) => {
           email,
         },
       });
+
+      logger.info(`Signup email sent to student ${createdUser.username}`);
 
       const jwt = this.generateJWT(createdUser);
 
@@ -130,6 +136,7 @@ exports.loginWithPassword = async (email, password) => {
 
 exports.signupDiscordUser = async (email, username) => {
   const createdUser = await createDiscordUserInDB(email, username);
+
   // send welcome email
   emailHandler.sendEmail({
     subject: "Welcome to the Message Board!",
@@ -139,6 +146,8 @@ exports.signupDiscordUser = async (email, username) => {
       email,
     },
   });
+
+  logger.info(`Signup email sent to student ${createdUser.username}`);
 
   return createdUser;
 };

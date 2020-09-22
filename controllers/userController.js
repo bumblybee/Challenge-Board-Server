@@ -33,7 +33,7 @@ exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
   const { jwt, user } = await authService.loginWithPassword(email, password);
 
-  logger.info("User logged in");
+  logger.info("User logged in successfully.");
 
   res.cookie("jwt", jwt, COOKIE_CONFIG);
 
@@ -142,6 +142,8 @@ exports.passwordReset = async (req, res) => {
     // Update user in db
     userRecord.update({ password: hash });
     // send along another cookie with token so they're logged in
+
+    logger.info("User successfully reset password.");
 
     res.cookie("jwt", authService.generateJWT(userRecord), COOKIE_CONFIG);
     // Send data

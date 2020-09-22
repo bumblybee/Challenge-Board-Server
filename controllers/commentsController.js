@@ -1,4 +1,5 @@
 const { CustomError } = require("../handlers/errorHandlers");
+const { logger } = require("../handlers/logger");
 
 const Question = require("../db").Question;
 const Comment = require("../db").Comment;
@@ -11,6 +12,8 @@ exports.createComment = async (req, res) => {
   const comment = { body, questionId, userId, isAnswer: false };
 
   const createdComment = await Comment.create(comment);
+
+  logger.info(`User ${userId} posted comment ${createdComment.id}: ${body}`);
 
   const comments = await Comment.findAll({
     where: { questionId: questionId },
@@ -39,6 +42,8 @@ exports.editComment = async (req, res) => {
       { where: { id: req.params.id } }
     );
 
+    logger.info(`User ${userId} updated comment ${updatedComment.id}: ${body}`);
+
     const comments = await Comment.findAll({
       where: { questionId: questionId },
       order: [["createdAt", "ASC"]],
@@ -62,6 +67,8 @@ exports.deleteComment = async (req, res) => {
     where: { id: req.params.commentId },
   });
 
+  logger.info(`Teacher deleted comment ${req.params.commentId}`);
+
   const comments = await Comment.findAll({
     where: { questionId: req.params.questionId },
     order: [["createdAt", "ASC"]],
@@ -82,14 +89,19 @@ exports.deleteComment = async (req, res) => {
 exports.selectAnswer = async (req, res) => {
   // throw new CustomError("server.failed");
   const { commentId, questionId } = req.params;
-
+  console.log(req.token.data);
   const selectedAnswer = await Comment.update(
     { isAnswer: true },
     { where: { id: commentId }, returning: true, plain: true }
   );
+
   const updatedQuestion = await Question.update(
     { isAnswered: true },
     { where: { id: questionId }, returning: true, plain: true }
+  );
+
+  logger.info(
+    `Teacher ${req.token.data.username} promoted comment ${commentId} to answer.`
   );
 
   const comments = await Comment.findAll({
@@ -120,6 +132,10 @@ exports.deselectAnswer = async (req, res) => {
   const updatedQuestion = await Question.update(
     { isAnswered: false },
     { where: { id: questionId }, returning: true, plain: true }
+  );
+
+  logger.info(
+    `Teacher ${req.token.data.username} demoted comment ${commentId} from answer.`
   );
 
   const comments = await Comment.findAll({
