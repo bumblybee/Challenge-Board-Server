@@ -13,7 +13,9 @@ exports.createComment = async (req, res) => {
 
   const createdComment = await Comment.create(comment);
 
-  logger.info(`User ${userId} posted comment ${createdComment.id}: ${body}`);
+  logger.info(
+    `Successful Comment Post - comment id: ${createdComment.id}, body: ${createdComment.body}, user id: ${userId}, username: ${req.token.data.username}`
+  );
 
   const comments = await Comment.findAll({
     where: { questionId: questionId },
@@ -42,7 +44,9 @@ exports.editComment = async (req, res) => {
       { where: { id: req.params.id } }
     );
 
-    logger.info(`User ${userId} updated comment ${updatedComment.id}: ${body}`);
+    logger.info(
+      `Successful Comment Edit - comment id: ${id}, body: ${body}, user id: ${userId}, username: ${req.token.data.username}`
+    );
 
     const comments = await Comment.findAll({
       where: { questionId: questionId },
@@ -67,7 +71,9 @@ exports.deleteComment = async (req, res) => {
     where: { id: req.params.commentId },
   });
 
-  logger.info(`Teacher deleted comment ${req.params.commentId}`);
+  logger.info(
+    `Successful Comment Deletion - comment id: ${req.params.commentId}, Teacher user id: ${req.token.data.id}, username: ${req.token.data.username}`
+  );
 
   const comments = await Comment.findAll({
     where: { questionId: req.params.questionId },
@@ -89,7 +95,7 @@ exports.deleteComment = async (req, res) => {
 exports.selectAnswer = async (req, res) => {
   // throw new CustomError("server.failed");
   const { commentId, questionId } = req.params;
-  console.log(req.token.data);
+
   const selectedAnswer = await Comment.update(
     { isAnswer: true },
     { where: { id: commentId }, returning: true, plain: true }
@@ -101,7 +107,7 @@ exports.selectAnswer = async (req, res) => {
   );
 
   logger.info(
-    `Teacher with user id ${req.token.data.id} promoted comment ${commentId} to answer.`
+    `Successful Answer Selection - comment id: ${commentId}, Teacher user id: ${req.token.data.id}, username: ${req.token.data.username}`
   );
 
   const comments = await Comment.findAll({
@@ -135,7 +141,7 @@ exports.deselectAnswer = async (req, res) => {
   );
 
   logger.info(
-    `Teacher with user id ${req.token.data.id} demoted comment ${commentId} from answer.`
+    `Successful Answer Demotion - comment id: ${commentId}, Teacher user id: ${req.token.data.id}, username: ${req.token.data.username}`
   );
 
   const comments = await Comment.findAll({

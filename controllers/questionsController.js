@@ -57,7 +57,9 @@ exports.createQuestion = async (req, res) => {
   };
   const question = await Question.create(newQuestion);
 
-  logger.info(`User ${userId} posted question ${question.id}: ${title}`);
+  logger.info(
+    `Successful Question Post - question id: ${question.id}, title: ${question.title}, user id: ${userId}, username: ${req.token.data.username}`
+  );
 
   const questions = await Question.findAll({
     order: [["createdAt", "DESC"]],
@@ -83,7 +85,9 @@ exports.editQuestion = async (req, res) => {
       { where: { id: req.params.id } }
     );
 
-    logger.info(`User ${id} edited question ${req.params.id}: ${title}`);
+    logger.info(
+      `Successful Question Edit - question id: ${req.params.id}, title: ${title}, user id: ${userId}, username: ${req.token.data.username}`
+    );
 
     const questions = await Question.findAll({
       order: [["createdAt", "DESC"]],
@@ -106,7 +110,7 @@ exports.deleteQuestion = async (req, res) => {
   });
 
   logger.info(
-    `Teacher with user id ${req.token.data.id} deleted question ${req.params.id}`
+    `Successful Question Deletion - question id: ${req.params.id}, Teacher user id: ${req.token.data.id}, username: ${req.token.data.username}`
   );
 
   const questions = await Question.findAll({
@@ -129,7 +133,9 @@ exports.editAnswer = async (req, res) => {
     { where: { id: req.params.id } }
   );
 
-  logger.info(`User ${req.token.data.id} edited question ${req.params.id}`);
+  logger.info(
+    `Question Marked Unanswered - question id: ${req.params.id}, Teacher user id: ${req.token.data.id}, username: ${req.token.data.username}`
+  );
 
   res.status(200).json("Question updated");
 };

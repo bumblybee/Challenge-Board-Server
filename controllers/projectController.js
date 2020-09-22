@@ -2,6 +2,7 @@ const Project = require("../db").Project;
 const User = require("../db").User;
 const emailHandler = require("../handlers/emailHandler");
 const { CustomError } = require("../handlers/errorHandlers");
+const { logger } = require("../handlers/logger");
 
 exports.getProject = async (req, res) => {
   const { id } = req.token.data;
@@ -20,6 +21,10 @@ exports.submitProject = async (req, res) => {
   if (userId) {
     const newProject = await Project.create(project);
 
+    logger.info(
+      `Successful Project Submission - user id: ${userId}, username: ${username}, project id: ${newProject.id}`
+    );
+
     emailHandler.sendEmail({
       subject: "Project Submission Received!",
       filename: "submissionEmail",
@@ -28,6 +33,11 @@ exports.submitProject = async (req, res) => {
         email,
       },
     });
+
+    logger.info(
+      `Project Submission Email Sent - user id: ${userId}, username: ${username}, email: ${email}`
+    );
+
     res.status(200).json(newProject);
   } else {
     throw new CustomError("post.failed");

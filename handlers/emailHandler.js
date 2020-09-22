@@ -32,7 +32,7 @@ exports.sendEmail = async (options) => {
     };
 
     logger.info(
-      `Sending email to ${options.user.email}, subject: ${options.subject}`
+      `Sending Email - username: ${options.user.username}, email: ${options.user.email}, subject: ${options.subject}`
     );
 
     return transport.sendMail(mailOptions);
