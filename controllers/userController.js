@@ -54,6 +54,11 @@ exports.loginUser = async (req, res) => {
   }
 };
 
+exports.logoutUser = (req, res) => {
+  res.clearCookie("jwt");
+  res.json({ message: "done" });
+};
+
 exports.getUser = async (req, res) => {
   const { id } = req.token.data;
   const user = await User.findOne({
