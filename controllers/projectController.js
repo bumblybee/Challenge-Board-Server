@@ -55,6 +55,10 @@ exports.editProject = async (req, res) => {
     { where: { id: req.params.id } }
   );
 
+  logger.info(
+    `Successful Project Edit - user id: ${userId}, username: ${username}, project id: ${req.params.id}, project comment: ${comment}`
+  );
+
   emailHandler.sendEmail({
     subject: "Your Edited Project Submission has Been Received!",
     filename: "submissionEmail",
@@ -63,5 +67,10 @@ exports.editProject = async (req, res) => {
       email,
     },
   });
+
+  logger.info(
+    `Project Submission Email Sent - user id: ${userId}, username: ${username}, email: ${email}`
+  );
+
   res.status(201).json(editedProject);
 };
