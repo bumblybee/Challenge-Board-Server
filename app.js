@@ -50,4 +50,12 @@ if (app.get("env") === "development") {
   app.use(errorHandlers.productionErrors);
 }
 
+if (process.env.NODE_ENV === "development") {
+  console.log("dev env");
+}
+
+if (process.env.NODE_ENV === "production") {
+  console.log("prod env");
+}
+
 module.exports = app;
