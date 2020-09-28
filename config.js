@@ -6,6 +6,11 @@ if (process.env.NODE_ENV === "development") {
 
 if (process.env.NODE_ENV === "production") {
   cookieEnvConfig.secure = true;
+  cookieEnvConfig.sameSite = "none";
 }
 
-exports.COOKIE_CONFIG = { httpOnly: true, maxAge: 3600000, ...cookieEnvConfig };
+exports.COOKIE_CONFIG = {
+  httpOnly: true,
+  maxAge: 3600000,
+  ...cookieEnvConfig,
+};
