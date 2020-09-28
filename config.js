@@ -11,6 +11,6 @@ if (process.env.NODE_ENV === "production") {
 exports.COOKIE_CONFIG = {
   httpOnly: true,
   maxAge: 3600000,
-  sameSite: "none",
+  sameSite: "None",
   ...cookieEnvConfig,
 };
