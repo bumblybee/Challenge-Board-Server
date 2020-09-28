@@ -6,7 +6,6 @@ if (process.env.NODE_ENV === "development") {
 
 if (process.env.NODE_ENV === "production") {
   cookieEnvConfig.secure = true;
-  cookieEnvConfig.sameSite = "none";
 }
 
 exports.COOKIE_CONFIG = {
