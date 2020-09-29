@@ -111,7 +111,7 @@ exports.generatePasswordReset = async (req, res) => {
     );
 
     // create link with current host and reset token - req.headers.host is host and port number of server req is sent to
-    const resetPasswordUrl = `http://localhost:3000/reset-password/${resetToken}`;
+    const resetPasswordUrl = `https://challengeboard.vercel.app/reset-password/${resetToken}`;
 
     // send email containing link and pass url to ejs template
     emailHandler.sendEmail({
