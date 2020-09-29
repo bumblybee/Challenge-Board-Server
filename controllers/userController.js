@@ -154,7 +154,7 @@ exports.passwordReset = async (req, res) => {
     // send along another cookie with token so they're logged in
 
     logger.info(
-      `Successful Password Reset - user id ${useRecord.id}, username: ${userRecord.username}`
+      `Successful Password Reset - user id ${userRecord.id}, username: ${userRecord.username}`
     );
 
     res.cookie("jwt", authService.generateJWT(userRecord), COOKIE_CONFIG);
