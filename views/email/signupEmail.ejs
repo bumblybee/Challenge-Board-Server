@@ -22,16 +22,23 @@
         line-height: 1.4;
         font-size: 1.1rem;
       }
+      span {
+        color: #809bff;
+      }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>Welcome to the Challenge Board, <%= user.username %>!</h1>
+      <h1>
+        Welcome to the <span>Challenge Board</span>, <%= user.username %>!
+      </h1>
 
       <p>
-        We're so glad to have you! Head over to /threads to see what people are
-        talking about, <br />
-        or head over to /challenge to start leveling up your skills!
+        We're so glad to have you! Head over to the
+        <a href="https://challengeboard.vercel.app/challenge"
+          ><span>Challenge Board</span></a
+        >
+        to see what people are talking about, and start leveling up your skills!
       </p>
       <p>Rock on! &#x1F3B8; &#x1F91F;</p>
     </div>
