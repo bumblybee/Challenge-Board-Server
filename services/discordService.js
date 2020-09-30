@@ -52,10 +52,6 @@ exports.createDiscordUser = async (code) => {
     // create the JWT here, but let the controller set the cookie
     const jwt = authService.generateJWT(createdUser);
 
-    logger.info(
-      `Successful Discord User Signup - user id: ${createdUser.id}, username: ${createdUser.username} `
-    );
-
     return {
       jwt,
       user: createdUser,
