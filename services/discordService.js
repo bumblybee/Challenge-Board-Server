@@ -1,7 +1,7 @@
 const DiscordOauth2 = require("discord-oauth2");
 const crypto = require("crypto");
 const authService = require("./authService");
-const { CustomError } = require("../handlers/errorHandlers");
+import { logger } from "../handlers/logger";
 
 // set up the service with some base information
 const oauth = new DiscordOauth2({
@@ -51,6 +51,10 @@ exports.createDiscordUser = async (code) => {
 
     // create the JWT here, but let the controller set the cookie
     const jwt = authService.generateJWT(createdUser);
+
+    logger.info(
+      `Successful Discord User Signup - user id: ${createdUser.id}, username: ${createdUser.username} `
+    );
 
     return {
       jwt,
