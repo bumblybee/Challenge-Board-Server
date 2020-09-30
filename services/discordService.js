@@ -13,7 +13,8 @@ exports.generateSignupDiscordURL = () => {
   const url = oauth.generateAuthUrl({
     scope: ["identify", "email"], // see Discord OAuth docs for scope info
     state: crypto.randomBytes(16).toString("hex"),
-    redirectUri: "http://localhost:3000/discord-signup",
+    // redirectUri: "http://localhost:3000/discord-signup",
+    redirectUri: "https://challengeboard.vercel.app/discord-signup",
   });
 
   return url;
@@ -36,7 +37,8 @@ exports.createDiscordUser = async (code) => {
     code: code,
     scope: "identify email",
     grantType: "authorization_code", // check the Discord OAuth docs for various grantTypes
-    redirectUri: "http://localhost:3000/discord-signup",
+    // redirectUri: "http://localhost:3000/discord-signup",
+    redirectUri: "https://challengeboard.vercel.app/discord-signup",
   });
 
   const { access_token } = tokenResponse;
