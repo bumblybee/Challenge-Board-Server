@@ -20,6 +20,12 @@ router.put(
 );
 
 router.put(
+  "/edit-thread-question/:id",
+  isAuth,
+  errorWrapper(questionsController.editThreadQuestion)
+);
+
+router.put(
   "/edit-answer/:id",
   isAuth,
   errorWrapper(questionsController.editAnswer)
