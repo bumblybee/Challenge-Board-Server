@@ -22,11 +22,18 @@
         line-height: 1.4;
         font-size: 1.1rem;
       }
+
+      span {
+        color: #809bff;
+      }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>Your Project Submission was Received, <%= user.username %>!</h1>
+      <h1>
+        Your <span>Challenge Board</span> Project Submission was Received, <%=
+        user.username %>!
+      </h1>
 
       <p>
         Great job completing your project! Keep leveling up those dev skills!
