@@ -111,7 +111,7 @@ exports.generatePasswordReset = async (req, res) => {
     );
 
     // create link with current host and reset token - req.headers.host is host and port number of server req is sent to
-    const resetPasswordUrl = `https://challengeboard.vercel.app/reset-password/${resetToken}`;
+    const resetPasswordUrl = `http://localhost:3000/reset-password/${resetToken}`;
 
     // send email containing link and pass url to ejs template
     emailHandler.sendEmail({
@@ -154,7 +154,7 @@ exports.passwordReset = async (req, res) => {
     // send along another cookie with token so they're logged in
 
     logger.info(
-      `Successful Password Reset - user id ${userRecord.id}, username: ${userRecord.username}`
+      `Successful Password Reset - user id ${useRecord.id}, username: ${userRecord.username}`
     );
 
     res.cookie("jwt", authService.generateJWT(userRecord), COOKIE_CONFIG);
