@@ -55,6 +55,8 @@ exports.editProject = async (req, res) => {
     { where: { id: req.params.id } }
   );
 
+  const project = await Project.findOne({ where: { userId } });
+
   logger.info(
     `Successful Project Edit - user id: ${userId}, username: ${username}, project id: ${req.params.id}, project comment: ${comment}`
   );
@@ -72,5 +74,5 @@ exports.editProject = async (req, res) => {
     `Project Submission Email Sent - user id: ${userId}, username: ${username}, email: ${email}`
   );
 
-  res.status(201).json(editedProject);
+  res.status(201).json(project);
 };
