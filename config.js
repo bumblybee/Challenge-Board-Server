@@ -21,7 +21,7 @@ let discordSignupUri;
 let discordLoginUri;
 
 if (process.env.NODE_ENV === "development") {
-  discordSignupURI = "http://localhost:3000/discord-signup";
+  discordSignupUri = "http://localhost:3000/discord-signup";
 
   discordLoginUri = "http://localhost:3000/discord-login";
 }
