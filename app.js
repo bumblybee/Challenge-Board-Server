@@ -52,11 +52,11 @@ if (app.get("env") === "development") {
 }
 
 if (process.env.NODE_ENV === "development") {
-  console.log("dev env");
+  console.log("Working in dev environment");
 }
 
 if (process.env.NODE_ENV === "production") {
-  console.log("prod env");
+  console.log("Working in prod environment");
 }
 
 module.exports = app;

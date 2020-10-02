@@ -21,6 +21,7 @@ exports.getSignupDiscordUrl = (req, res) => {
   res.cookie("state", getParameterByName("state", url), {
     maxAge: 1000 * 60 * 20,
   });
+  console.log("Discord Signup URL:", url);
 
   res.json({
     discordUrl: url,
@@ -33,7 +34,7 @@ exports.getLoginDiscordUrl = (req, res) => {
   res.cookie("state", getParameterByName("state", url), {
     maxAge: 1000 * 60 * 20,
   });
-
+  console.log("Discord Login URL:", url);
   res.json({
     discordUrl: url,
   });
@@ -75,7 +76,7 @@ exports.authenticateDiscordUser = async (req, res) => {
       res.json({ error });
     }
   } else {
-    throw new CustomError("auth.discordError", "DiscordError", 401);
+    throw new CustomError("auth.discordSignupError", "DiscordError", 401);
   }
 };
 
@@ -83,7 +84,7 @@ exports.loginDiscordUser = async (req, res) => {
   const { code, state } = req.body;
 
   if (!code) {
-    throw new CustomError("auth.discordError", "DiscordError", 400);
+    throw new CustomError("auth.discordLoginError", "DiscordError", 400);
   }
   //Get state from header
   const previousState = getStateFromHeader(req);

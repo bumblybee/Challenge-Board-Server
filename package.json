@@ -6,8 +6,8 @@
     "node": "10.x"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development node ./bin/www",
-    "prod-start": "cross-env NODE_ENV=production node ./bin/www"
+    "start": "set NODE_ENV=development&&node ./bin/www",
+    "prod-start": "set NODE_ENV=production&&node ./bin/www"
   },
   "dependencies": {
     "argon2": "^0.26.2",
@@ -33,7 +33,5 @@
     "uuid": "^8.3.0",
     "winston": "^3.3.3"
   },
-  "devDependencies": {
-    "cross-env": "^7.0.2"
-  }
+  "devDependencies": {}
 }
