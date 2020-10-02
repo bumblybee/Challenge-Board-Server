@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const { Op } = require("sequelize");
 const { logger } = require("../handlers/logger");
+const { RESET_PASSWORD_URL } = require("../config");
 
 const User = require("../db").User;
 const Question = require("../db").Question;
@@ -112,7 +113,7 @@ exports.generatePasswordReset = async (req, res) => {
     );
 
     // create link with current host and reset token - req.headers.host is host and port number of server req is sent to
-    const resetPasswordUrl = `http://localhost:3000/reset-password/${resetToken}`;
+    const resetPasswordUrl = `${RESET_PASSWORD_URL}/${resetToken}`;
 
     // send email containing link and pass url to ejs template
     emailHandler.sendEmail({

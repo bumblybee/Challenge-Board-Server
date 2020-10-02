@@ -34,3 +34,15 @@ if (process.env.NODE_ENV === "production") {
 exports.DISCORD_SIGNUP_URI_CONFIG = discordSignupUri;
 
 exports.DISCORD_LOGIN_URI_CONFIG = discordLoginUri;
+
+let resetPasswordUrl;
+
+if (process.env.NODE_ENV === "development") {
+  resetPasswordUrl = "http://localhost:3000/reset-password";
+}
+
+if (process.env.NODE_ENV === "production") {
+  resetPasswordUrl = "https://challengeboard.vercel.app/reset-password";
+}
+
+exports.RESET_PASSWORD_URL = resetPasswordUrl;
