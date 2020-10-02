@@ -3,6 +3,11 @@ const crypto = require("crypto");
 const authService = require("./authService");
 const { CustomError } = require("../handlers/errorHandlers");
 
+const {
+  DISCORD_SIGNUP_URI_CONFIG,
+  DISCORD_LOGIN_URI_CONFIG,
+} = require("../config");
+
 // set up the service with some base information
 const oauth = new DiscordOauth2({
   clientId: process.env.DISCORD_CLIENT, // provided when you sign up on Discord for an app
@@ -13,7 +18,7 @@ exports.generateSignupDiscordURL = () => {
   const url = oauth.generateAuthUrl({
     scope: ["identify", "email"], // see Discord OAuth docs for scope info
     state: crypto.randomBytes(16).toString("hex"),
-    redirectUri: "http://localhost:3000/discord-signup",
+    redirectUri: DISCORD_SIGNUP_URI_CONFIG,
     // redirectUri: "https://challengeboard.vercel.app/discord-signup"
   });
 
@@ -24,7 +29,7 @@ exports.generateLoginDiscordURL = () => {
   const url = oauth.generateAuthUrl({
     scope: ["identify", "email"], // see Discord OAuth docs for scope info
     state: crypto.randomBytes(16).toString("hex"), // look familiar? cryptographically-secure random 16 bytes
-    redirectUri: "http://localhost:3000/discord-login",
+    redirectUri: DISCORD_LOGIN_URI_CONFIG,
   });
 
   return url;
@@ -37,7 +42,7 @@ exports.createDiscordUser = async (code) => {
     code: code,
     scope: "identify email",
     grantType: "authorization_code", // check the Discord OAuth docs for various grantTypes
-    redirectUri: "http://localhost:3000/discord-signup",
+    redirectUri: DISCORD_SIGNUP_URI_CONFIG,
     // redirectUri: "https://challengeboard.vercel.app/discord-signup",
   });
 
@@ -69,7 +74,7 @@ exports.loginDiscordUser = async (code) => {
     code: code,
     scope: "identify email",
     grantType: "authorization_code",
-    redirectUri: "http://localhost:3000/discord-login",
+    redirectUri: DISCORD_LOGIN_URI_CONFIG,
   });
 
   const { access_token } = tokenResponse;
