@@ -1,5 +1,5 @@
 const cookie = require("cookie");
-const { COOKIE_CONFIG } = require("../config");
+const { COOKIE_CONFIG, DISCORD_COOKIE_CONFIG } = require("../config");
 
 const discordOAuthService = require("../services/discordService");
 const { logger } = require("../handlers/logger");
@@ -18,12 +18,7 @@ exports.getSignupDiscordUrl = (req, res) => {
   // Passes scope and crypto state, along with client id and redirect URI, constructed in library method
   const url = discordOAuthService.generateSignupDiscordURL();
 
-  res.cookie("state", getParameterByName("state", url), {
-    maxAge: 1000 * 60 * 20,
-    httpOnly: true,
-    sameSite: "none",
-    secure: true,
-  });
+  res.cookie("state", getParameterByName("state", url), DISCORD_COOKIE_CONFIG);
 
   res.json({
     discordUrl: url,
@@ -33,12 +28,7 @@ exports.getSignupDiscordUrl = (req, res) => {
 exports.getLoginDiscordUrl = (req, res) => {
   const url = discordOAuthService.generateLoginDiscordURL();
 
-  res.cookie("state", getParameterByName("state", url), {
-    maxAge: 1000 * 60 * 20,
-    httpOnly: true,
-    sameSite: "none",
-    secure: true,
-  });
+  res.cookie("state", getParameterByName("state", url), DISCORD_COOKIE_CONFIG);
 
   res.json({
     discordUrl: url,

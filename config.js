@@ -1,3 +1,5 @@
+//********** Cookie Config ************/
+
 const cookieEnvConfig = {};
 
 if (process.env.NODE_ENV === "development") {
@@ -13,6 +15,25 @@ exports.COOKIE_CONFIG = {
   httpOnly: true,
   maxAge: 3600000,
   ...cookieEnvConfig,
+};
+
+// ********* Discord Cookie Config
+
+const discordCookieEnvConfig = {};
+
+if (process.env.NODE_ENV === "development") {
+  //nothing extra
+}
+
+if (process.env.NODE_ENV === "production") {
+  discordCookieEnvConfig.secure = true;
+  discordCookieEnvConfig.sameSite = "none";
+}
+
+exports.DISCORD_COOKIE_CONFIG = {
+  httpOnly: true,
+  maxAge: 1000 * 60 * 20,
+  ...discordCookieEnvConfig,
 };
 
 // ********** Discord Config *************
