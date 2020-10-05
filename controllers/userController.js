@@ -56,7 +56,7 @@ exports.loginUser = async (req, res) => {
 };
 
 exports.logoutUser = (req, res) => {
-  res.clearCookie("jwt").json({ message: "User logged out" });
+  res.clearCookie("jwt", COOKIE_CONFIG).json({ message: "User logged out" });
 };
 
 exports.getUser = async (req, res) => {

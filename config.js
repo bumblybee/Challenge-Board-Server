@@ -35,6 +35,8 @@ exports.DISCORD_SIGNUP_URI_CONFIG = discordSignupUri;
 
 exports.DISCORD_LOGIN_URI_CONFIG = discordLoginUri;
 
+//*******Reset Password Config ********/
+
 let resetPasswordUrl;
 
 if (process.env.NODE_ENV === "development") {
