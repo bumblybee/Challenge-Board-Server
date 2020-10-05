@@ -20,8 +20,9 @@ exports.getSignupDiscordUrl = (req, res) => {
 
   res.cookie("state", getParameterByName("state", url), {
     maxAge: 1000 * 60 * 20,
+    httpOnly: true,
+    sameSite: "none",
   });
-  console.log("Discord Signup URL:", url);
 
   res.json({
     discordUrl: url,
