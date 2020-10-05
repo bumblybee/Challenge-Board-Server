@@ -35,8 +35,11 @@ exports.getLoginDiscordUrl = (req, res) => {
 
   res.cookie("state", getParameterByName("state", url), {
     maxAge: 1000 * 60 * 20,
+    httpOnly: true,
+    sameSite: "none",
+    secure: true,
   });
-  console.log("Discord Login URL:", url);
+
   res.json({
     discordUrl: url,
   });
@@ -54,9 +57,6 @@ exports.authenticateDiscordUser = async (req, res) => {
   // URL contains state and code when user redirected back to app by redirect uri specified
 
   const { code, state } = req.body;
-
-  console.log(`STATE: ${state}`);
-  console.log(`HEADERS STATE: ${req.headers.state}`);
 
   // If no code returned then something went wrong with requesting the token from Discord
   if (!code) {
