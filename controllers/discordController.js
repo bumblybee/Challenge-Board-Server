@@ -53,6 +53,8 @@ exports.authenticateDiscordUser = async (req, res) => {
 
   const { code, state } = req.body;
 
+  console.log(`STATE: ${state}`);
+
   // If no code returned then something went wrong with requesting the token from Discord
   if (!code) {
     throw new CustomError("auth.discordSignupError", "DiscordError", 400);

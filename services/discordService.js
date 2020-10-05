@@ -44,8 +44,6 @@ exports.createDiscordUser = async (code) => {
     redirectUri: DISCORD_SIGNUP_URI_CONFIG,
   });
 
-  console.log(tokenResponse);
-
   const { access_token } = tokenResponse;
 
   // now that we have the access_token, let's get some user information
