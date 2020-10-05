@@ -54,6 +54,8 @@ exports.authenticateDiscordUser = async (req, res) => {
   const { code, state } = req.body;
 
   console.log(`STATE: ${state}`);
+  console.log(`HEADERS: ${req.headers}`);
+  console.log(`HEADER: ${req.header}`);
 
   // If no code returned then something went wrong with requesting the token from Discord
   if (!code) {
@@ -61,8 +63,6 @@ exports.authenticateDiscordUser = async (req, res) => {
   }
   //Get state from header
   const previousState = getStateFromHeader(req);
-
-  console.log(`PREVIOUS STATE: ${previousState}`);
 
   if (previousState === state) {
     // Function that requests token from Discord, gens JWT, returns user data and JWT
