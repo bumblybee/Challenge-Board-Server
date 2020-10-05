@@ -22,6 +22,7 @@ exports.getSignupDiscordUrl = (req, res) => {
     maxAge: 1000 * 60 * 20,
     httpOnly: true,
     sameSite: "none",
+    secure: true,
   });
 
   res.json({
