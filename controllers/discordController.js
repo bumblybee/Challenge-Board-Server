@@ -62,6 +62,8 @@ exports.authenticateDiscordUser = async (req, res) => {
   //Get state from header
   const previousState = getStateFromHeader(req);
 
+  console.log(`PREVIOUS STATE: ${previousState}`);
+
   if (previousState === state) {
     // Function that requests token from Discord, gens JWT, returns user data and JWT
     const { jwt, user } = await discordOAuthService.createDiscordUser(code);
