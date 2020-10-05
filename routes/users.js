@@ -8,7 +8,7 @@ router.post("/create", errorWrapper(userController.signupUser));
 
 router.post("/login", errorWrapper(userController.loginUser));
 
-router.post("/logout", errorWrapper(userController.logoutUser));
+router.post("/logout", userController.logoutUser);
 
 router.post(
   "/password-reset",
