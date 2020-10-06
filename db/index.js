@@ -36,7 +36,7 @@ Project.belongsTo(User);
 
 Question.belongsTo(User);
 
-Question.hasMany(Comment);
+Question.hasMany(Comment, { onDelete: "CASCADE", hooks: true });
 
 Comment.belongsTo(User);
 

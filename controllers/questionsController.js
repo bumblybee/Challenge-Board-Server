@@ -144,6 +144,15 @@ exports.editThreadQuestion = async (req, res) => {
 exports.deleteQuestion = async (req, res) => {
   const deletedQuestion = await Question.destroy({
     where: { id: req.params.id },
+    include: [
+      {
+        model: Comment,
+      },
+    ],
+  });
+
+  const deletedComments = await Comment.destroy({
+    where: { questionId: req.params.id },
   });
 
   logger.info(
