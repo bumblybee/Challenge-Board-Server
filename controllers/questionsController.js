@@ -111,34 +111,33 @@ exports.editThreadQuestion = async (req, res) => {
   if (id === userId) {
     const updatedThreadQuestion = await Question.update(
       { body: body, title: title },
-      { where: { id: req.params.id } }
+      {
+        where: { id: req.params.id },
+        include: [
+          {
+            model: User,
+            attributes: ["username", "id", "email"],
+          },
+          {
+            model: Comment,
+            include: [
+              { model: User, attributes: ["username", "email"] },
+              { model: Question },
+            ],
+          },
+        ],
+
+        order: [[Comment, "createdAt", "ASC"]],
+        returning: true,
+        plain: true,
+      }
     );
 
     logger.info(
       `Successful Thread Question Edit - question id: ${req.params.id}, title: ${title}, user id: ${userId}, username: ${req.token.data.username}`
     );
 
-    const question = await Question.findOne({
-      where: { id: req.params.id },
-
-      include: [
-        {
-          model: User,
-          attributes: ["username", "id", "email"],
-        },
-        {
-          model: Comment,
-          include: [
-            { model: User, attributes: ["username", "email"] },
-            { model: Question },
-          ],
-        },
-      ],
-
-      order: [[Comment, "createdAt", "ASC"]],
-    });
-
-    res.status(201).json({ question });
+    res.status(201).json({ question: updatedThreadQuestion });
   }
 };
 
