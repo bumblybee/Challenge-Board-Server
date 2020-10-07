@@ -36,11 +36,11 @@ Project.belongsTo(User);
 
 Question.belongsTo(User);
 
-Question.hasMany(Comment, { onDelete: "CASCADE", hooks: true });
+Question.hasMany(Comment, { onDelete: "CASCADE" });
 
 Comment.belongsTo(User);
 
-Comment.belongsTo(Question);
+Comment.belongsTo(Question, { onDelete: "CASCADE" });
 
 // authenticate db
 sequelize

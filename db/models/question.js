@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         field: "deleted_at",
       },
     },
+
     {
       timestamps: true,
       paranoid: true,

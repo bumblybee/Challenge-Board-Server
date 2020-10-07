@@ -151,7 +151,7 @@ exports.deleteQuestion = async (req, res) => {
     ],
   });
 
-  const deletedComments = await Comment.destroy({
+  await Comment.destroy({
     where: { questionId: req.params.id },
   });
 
