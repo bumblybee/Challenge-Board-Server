@@ -30,15 +30,15 @@ User.hasMany(Project);
 
 User.hasMany(Question);
 
-User.hasMany(Comment);
+User.hasMany(Comment, { onDelete: "CASCADE" });
 
 Project.belongsTo(User);
 
 Question.belongsTo(User);
 
-Question.hasMany(Comment, { onDelete: "CASCADE" });
+Question.hasMany(Comment);
 
-Comment.belongsTo(User);
+Comment.belongsTo(User, { onDelete: "CASCADE" });
 
 Comment.belongsTo(Question, { onDelete: "CASCADE" });
 
