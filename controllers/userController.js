@@ -138,6 +138,7 @@ exports.passwordReset = async (req, res) => {
     where: {
       resetPasswordToken: token,
       resetPasswordExpiry: { [Op.gt]: Date.now() },
+      hasDiscordLogin: { [Op.not]: true },
     },
   });
   // If no matching user with reset token in db, or if token expired
