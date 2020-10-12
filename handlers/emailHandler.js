@@ -3,7 +3,6 @@ const smtp = require("nodemailer-smtp-transport");
 const ejs = require("ejs");
 const juice = require("juice");
 const { logger } = require("./logger");
-const { SENDGRID_AUTH } = require("../config");
 
 // const sgMail = require("@sendgrid/mail");
 // sgMail.setApiKey(process.env.SENDGRID_PASS);
@@ -12,7 +11,10 @@ const transport = nodemailer.createTransport({
   service: "SendGrid",
   host: process.env.SENDGRID_HOST,
   port: process.env.SENDGRID_PORT,
-  auth: SENDGRID_AUTH,
+  auth: {
+    user: process.env.SENDGRID_USER,
+    pass: process.env.SENDGRID_PASS,
+  },
 });
 
 const generateHTML = async (filename, options) => {
@@ -39,6 +41,7 @@ exports.sendEmail = async (options) => {
     );
 
     return transport.sendMail(mailOptions);
+    // return sgMail.send(mailOptions);
   } catch (err) {
     console.log(err);
   }

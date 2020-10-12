@@ -56,21 +56,6 @@ exports.DISCORD_SIGNUP_URI_CONFIG = discordSignupUri;
 
 exports.DISCORD_LOGIN_URI_CONFIG = discordLoginUri;
 
-//****** SendGrid Config **************/
-let sendgridAuth;
-if (process.env.NODE_ENV === "development") {
-  sendgridAuth = {
-    user: process.env.SENDGRID_USER,
-    pass: process.env.SENDGRID_PASS,
-  };
-}
-
-if (process.env.NODE_ENV === "production") {
-  sendgridAuth = process.env;
-}
-
-exports.SENDGRID_AUTH = sendgridAuth;
-
 //*******Reset Password Config ********/
 
 let resetPasswordUrl;
