@@ -44,7 +44,7 @@ exports.createTeacherUser = async (username, email, password) => {
   };
 
   emailHandler.sendEmail({
-    subject: "Welcome to the Message Board!",
+    subject: "Welcome to the Challenge Board!",
     filename: "signupEmail",
     user: {
       username,
@@ -82,7 +82,7 @@ exports.signupUser = async (email, username, password) => {
 
     if (createdUser) {
       emailHandler.sendEmail({
-        subject: "Welcome to the Message Board!",
+        subject: "Welcome to the Challenge Board!",
         filename: "signupEmail",
         user: {
           username,
@@ -144,7 +144,7 @@ exports.signupDiscordUser = async (email, username) => {
 
   // send welcome email
   emailHandler.sendEmail({
-    subject: "Welcome to the Message Board!",
+    subject: "Welcome to the Challenge Board!",
     filename: "signupEmail",
     user: {
       username,

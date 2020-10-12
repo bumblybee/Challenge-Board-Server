@@ -142,7 +142,7 @@ exports.passwordReset = async (req, res) => {
     },
   });
   // If no matching user with reset token in db, or if token expired
-  if (!userRecord) {
+  if (!token || !userRecord) {
     throw new CustomError("auth.noToken", "PasswordResetError", 401);
     // else if matching user
   } else {
