@@ -39,7 +39,6 @@ exports.sendEmail = async (options) => {
     );
 
     return transport.sendMail(mailOptions);
-    // return sgMail.send(mailOptions);
   } catch (err) {
     console.log(err);
   }
