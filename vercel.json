@@ -12,7 +12,7 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "/(.*)",
       "headers": {
         "Access-Control-Allow-Origin": "https://challenge-board-server.vercel.app",
         "Access-Control-Allow-Credentials": "true"
