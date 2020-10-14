@@ -4,12 +4,7 @@
   "github": {
     "silent": true
   },
-  "builds": [
-    {
-      "src": "app.js",
-      "use": "@now/node-server"
-    }
-  ],
+
   "routes": [
     { "handle": "filesystem" },
     {
