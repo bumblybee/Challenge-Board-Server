@@ -19,7 +19,7 @@ if (env !== "production") {
   );
 } else {
   sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect: "pg",
+    dialect: "postgres",
     dialectModule: require("pg"),
   });
 }
