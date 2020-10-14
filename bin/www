@@ -8,6 +8,7 @@ dotenv.config();
 
 var db = require("../db");
 var authService = require("../services/authService");
+
 var app = require("../app");
 var debug = require("debug")("challenge-board-server:server");
 var http = require("http");

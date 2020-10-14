@@ -19,11 +19,7 @@ var app = express();
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://challengeboard.vercel.app",
-      "https://challenge-board.herokuapp.com",
-    ],
+    origin: ["http://localhost:3000", "https://challengeboard.vercel.app"],
     credentials: true,
   })
 );
