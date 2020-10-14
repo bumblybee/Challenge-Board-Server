@@ -23,6 +23,7 @@ app.use(
       "http://localhost:3000",
       "https://challengeboard.vercel.app",
       "http://www.challengeboard.xyz",
+      "http://challenge-board.herokuapp.com/challenge",
     ],
     credentials: true,
   })
