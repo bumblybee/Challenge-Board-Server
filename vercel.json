@@ -7,12 +7,12 @@
   "builds": [
     {
       "src": "app.js",
-      "use": "@vercel/node"
+      "use": "@now/node-server"
     }
   ],
   "routes": [
     {
-      "src": "/",
+      "src": "/(.*)",
       "headers": {
         "Access-Control-Allow-Origin": "https://challengeboard.vercel.app",
         "Access-Control-Allow-Credentials": "true"
