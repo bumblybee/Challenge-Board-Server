@@ -1,5 +1,5 @@
 {
-  "alias": "challenge-board-server.vercel.app",
+  "alias": "challenge-board-server",
   "version": 2,
   "github": {
     "silent": true
@@ -7,7 +7,7 @@
   "builds": [
     {
       "src": "app.js",
-      "use": "@vercel/node"
+      "use": "@now/node-server"
     }
   ],
   "routes": [
