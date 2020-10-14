@@ -6,7 +6,7 @@
   },
   "builds": [
     {
-      "src": "./bin/www",
+      "src": "app.js",
       "use": "@now/node-server"
     }
   ],
@@ -17,7 +17,7 @@
         "Access-Control-Allow-Origin": "https://challengeboard.vercel.app",
         "Access-Control-Allow-Credentials": "true"
       },
-      "dest": "./bin/www",
+      "dest": "app.js",
       "continue": true
     }
   ]
