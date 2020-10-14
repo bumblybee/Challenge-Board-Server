@@ -6,7 +6,7 @@
   },
   "builds": [
     {
-      "src": "/bin/www.js",
+      "src": "./bin/www.js",
       "use": "@now/node-server"
     }
   ],
