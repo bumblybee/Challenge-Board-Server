@@ -1,12 +1,15 @@
 var express = require("express");
-var path = require("path");
+const dotenv = require("dotenv");
+dotenv.config();
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
 const compression = require("compression");
 const helmet = require("helmet");
-
+var http = require("http");
+var db = require("./db");
 const errorHandlers = require("./handlers/errorHandlers");
+var debug = require("debug")("challenge-board-server:server");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -15,6 +18,8 @@ const questionsRouter = require("./routes/questions");
 const commentsRouter = require("./routes/comments");
 const projectsRouter = require("./routes/projects");
 
+var port = process.env.PORT || "9000";
+var server = http.createServer(app);
 var app = express();
 
 app.use(
@@ -32,6 +37,18 @@ app.use(logger(morganLogStyle));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+let forceDbReset = false;
+db.sequelize.sync({ force: forceDbReset }).then(async () => {
+  server.listen(port, () => console.log(`Server running on ${port}`));
+
+  // seed db with teacher data
+  // await authService.createTeacherUser(
+  //   process.env.TEACHER_USERNAME,
+  //   process.env.TEACHER_EMAIL,
+  //   process.env.TEACHER_PASSWORD
+  // );
+});
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
