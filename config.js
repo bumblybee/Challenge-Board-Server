@@ -42,15 +42,14 @@ let discordSignupUri;
 let discordLoginUri;
 
 if (process.env.NODE_ENV === "development") {
-  discordSignupUri = "https://challengeboard.vercel.app//discord-signup";
+  discordSignupUri = "https://challengeboard.vercel.app/discord-signup";
 
   discordLoginUri = "https://challengeboard.vercel.app/discord-login";
 }
 
 if (process.env.NODE_ENV === "production") {
-  discordSignupUri =
-    "https://https://challengeboard.vercel.app//discord-signup";
-  discordLoginUri = "https://https://challengeboard.vercel.app//discord-login";
+  discordSignupUri = "https://challengeboard.vercel.app/discord-signup";
+  discordLoginUri = "https://challengeboard.vercel.app/discord-login";
 }
 
 exports.DISCORD_SIGNUP_URI_CONFIG = discordSignupUri;
@@ -66,7 +65,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 if (process.env.NODE_ENV === "production") {
-  resetPasswordUrl = "https://https://challengeboard.vercel.app/reset-password";
+  resetPasswordUrl = "https://challengeboard.vercel.app/reset-password";
 }
 
 exports.RESET_PASSWORD_URL = resetPasswordUrl;
