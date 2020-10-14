@@ -4,9 +4,13 @@
   "github": {
     "silent": true
   },
-
+  "builds": [
+    {
+      "src": "/bin/www.js",
+      "use": "@now/node-server"
+    }
+  ],
   "routes": [
-    { "handle": "filesystem" },
     {
       "src": "/.*",
       "headers": {
