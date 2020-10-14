@@ -6,7 +6,7 @@
     "node": "10.x"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "set NODE_ENV=development&&node ./bin/www",
     "prod-start": "set NODE_ENV=production&&node ./bin/www"
   },
   "dependencies": {

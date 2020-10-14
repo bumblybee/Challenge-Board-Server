@@ -18,14 +18,7 @@ if (env !== "production") {
     { dialect: "postgres", logging: false }
   );
 } else {
-  sequelize = new Sequelize(
-    process.env.DATABASE_URL,
-    process.env.DATABASE_PROD_USER,
-    process.env.DATABASE_PROD_PASSWORD,
-    {
-      dialect: "postgres",
-    }
-  );
+  sequelize = new Sequelize(process.env.DATABASE_URL);
 }
 
 const User = UserModel(sequelize, Sequelize);
