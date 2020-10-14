@@ -22,7 +22,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "https://challengeboard.vercel.app",
-      "http://www.challengeboard.xyz",
+      "https://challengeboard.xyz",
       "http://challenge-board.herokuapp.com/challenge",
     ],
     credentials: true,
