@@ -21,7 +21,6 @@ exports.authRole = (requiredRoles) => {
     }
   };
 };
-
 const isCorrectRole = (requiredRoles, userRole) => {
   if (typeof requiredRoles === "string") {
     return userRole === requiredRoles;
