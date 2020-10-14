@@ -42,14 +42,15 @@ let discordSignupUri;
 let discordLoginUri;
 
 if (process.env.NODE_ENV === "development") {
-  discordSignupUri = "http://localhost:3000/discord-signup";
+  discordSignupUri = "https://challengeboard.vercel.app//discord-signup";
 
-  discordLoginUri = "http://localhost:3000/discord-login";
+  discordLoginUri = "https://challengeboard.vercel.app/discord-login";
 }
 
 if (process.env.NODE_ENV === "production") {
-  discordSignupUri = "https://challenge-board.herokuapp.com/discord-signup";
-  discordLoginUri = "https://challenge-board.herokuapp.com/discord-login";
+  discordSignupUri =
+    "https://https://challengeboard.vercel.app//discord-signup";
+  discordLoginUri = "https://https://challengeboard.vercel.app//discord-login";
 }
 
 exports.DISCORD_SIGNUP_URI_CONFIG = discordSignupUri;
@@ -65,7 +66,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 if (process.env.NODE_ENV === "production") {
-  resetPasswordUrl = "https://challenge-board.herokuapp.com/reset-password";
+  resetPasswordUrl = "https://https://challengeboard.vercel.app/reset-password";
 }
 
 exports.RESET_PASSWORD_URL = resetPasswordUrl;
