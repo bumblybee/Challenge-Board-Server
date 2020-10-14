@@ -18,7 +18,10 @@ if (env !== "production") {
     { dialect: "postgres", logging: false }
   );
 } else {
-  sequelize = new Sequelize(process.env.DATABASE_URL);
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: "pg",
+    dialectModule: require("pg"),
+  });
 }
 
 const User = UserModel(sequelize, Sequelize);
