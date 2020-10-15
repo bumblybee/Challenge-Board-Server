@@ -24,6 +24,10 @@
         color: #809bff;
       }
 
+      a {
+        text-decoration: none;
+      }
+
       @media (max-width: 900px) {
         .container {
           width: 95%;
@@ -37,7 +41,12 @@
   </head>
   <body>
     <div class="container">
-      <h1>Welcome to the Challenge Board, <%= user.username %>!</h1>
+      <h1>
+        Welcome to the
+        <a href="https://challengeboard.xyz/challenge"
+          ><span>Challenge Board</span></a
+        >, <%= user.username %>!
+      </h1>
 
       <p>
         We're so glad to have you! Head over to the

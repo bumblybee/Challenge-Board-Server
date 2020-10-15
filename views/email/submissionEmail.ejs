@@ -25,6 +25,10 @@
         color: #809bff;
       }
 
+      a {
+        text-decoration: none;
+      }
+
       @media (max-width: 900px) {
         .container {
           width: 95%;
@@ -39,8 +43,11 @@
   <body>
     <div class="container">
       <h1>
-        Your <span>Challenge Board</span> Project Submission was Received, <%=
-        user.username %>!
+        Your
+        <a href="https://challengeboard.xyz/challenge"
+          ><span>Challenge Board</span></a
+        >
+        Project Submission was Received, <%= user.username %>!
       </h1>
 
       <p>
