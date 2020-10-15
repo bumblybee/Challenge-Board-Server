@@ -12,8 +12,6 @@ var authService = require("../services/authService");
 var app = require("../app");
 var debug = require("debug")("challenge-board-server:server");
 var http = require("http");
-var https = require("https");
-var fs = require("fs");
 
 /**
  * Get port from environment and store in Express.
@@ -25,11 +23,6 @@ app.set("port", port);
 /**
  * Create HTTP server.
  */
-
-const options = {
-  key: "../keys/key.pem",
-  cert: "../keys/cert.pem",
-};
 
 var server = http.createServer(app);
 
