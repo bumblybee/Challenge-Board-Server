@@ -44,17 +44,34 @@
   <body>
     <div class="container">
       <h1>
-        Your
         <a href="https://challengeboard.xyz/challenge"
           ><span>Challenge Board</span></a
         >
-        Project Submission was Received, <%= user.username %>!
+        Project Submission
       </h1>
 
-      <p>
-        Great job completing your project! Keep leveling up those dev skills!
-      </p>
-      <p>Rock on! &#x1F3B8; &#x1F91F;</p>
+      <div class="container">
+        <p><strong>Username: </strong> <%= user.username %></p>
+        <p><strong>Email: </strong> <%= user.userEmail %></p>
+        <p>
+          <strong>Github link: </strong
+          ><a href="<%= user.project.githubLink %>"
+            ><%= user.project.githubLink %></a
+          >
+        </p>
+        <% if (user.project.additionalLink) { %>
+        <p>
+          <strong> Additional link: </strong>
+          <a href="<%=user.project.additionalLink %>"
+            ><%=user.project.additionalLink %></a
+          >
+        </p>
+        <% } %> <% if (user.project.comment) { %>
+        <p><strong>Comments: </strong><%= user.project.comment %></p>
+        <% } else { %>
+        <p>NA</p>
+        <% } %>
+      </div>
     </div>
   </body>
 </html>

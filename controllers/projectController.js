@@ -32,6 +32,16 @@ exports.submitProject = async (req, res) => {
       },
     });
 
+    emailHandler.sendEmail({
+      subject: "Project Submission Received",
+      filename: "studentSubmissionEmail",
+      user: {
+        username,
+        email: ["hesstjune@gmail.com", "jkoontz2010@gmail.com"],
+        project,
+      },
+    });
+
     logger.info(
       `Project Submission Email Sent - user id: ${userId}, username: ${username}, email: ${email}`
     );
@@ -67,6 +77,17 @@ exports.editProject = async (req, res) => {
     user: {
       username,
       email,
+    },
+  });
+
+  emailHandler.sendEmail({
+    subject: "Edited Project Submission Received",
+    filename: "studentSubmissionEmail",
+    user: {
+      username,
+      userEmail: email,
+      email: ["hesstjune@gmail.com"],
+      project,
     },
   });
 
