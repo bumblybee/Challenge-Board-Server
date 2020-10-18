@@ -86,7 +86,7 @@ exports.editProject = async (req, res) => {
     user: {
       username,
       userEmail: email,
-      email: ["hesstjune@gmail.com"],
+      email: ["hesstjune@gmail.com", "jkoontz2010@gmail.com"],
       project,
     },
   });
