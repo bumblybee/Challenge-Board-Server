@@ -35,11 +35,11 @@ db.sequelize.sync({ force: forceDbReset }).then(async () => {
   server.on("error", onError);
   server.on("listening", onListening);
   // seed db with teacher data
-  // await authService.createTeacherUser(
-  //   process.env.TEACHER_USERNAME,
-  //   process.env.TEACHER_EMAIL,
-  //   process.env.TEACHER_PASSWORD
-  // );
+  await authService.createTeacherUser(
+    process.env.TEACHER_USERNAME,
+    process.env.TEACHER_EMAIL,
+    process.env.TEACHER_PASSWORD
+  );
 });
 
 /**
