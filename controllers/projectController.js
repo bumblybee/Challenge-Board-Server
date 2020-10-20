@@ -37,6 +37,7 @@ exports.submitProject = async (req, res) => {
       filename: "studentSubmissionEmail",
       user: {
         username,
+        userEmail: email,
         email: ["hesstjune@gmail.com", "jkoontz2010@gmail.com"],
         project,
       },
