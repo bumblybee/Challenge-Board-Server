@@ -50,7 +50,7 @@ exports.authenticateDiscordUser = async (req, res) => {
 
   // If no code returned then something went wrong with requesting the token from Discord
   if (!code) {
-    throw new CustomError("auth.discordSignupError", "DiscordError", 400);
+    throw new CustomError("auth.discordSignupError", "DiscordSignupError", 401);
   }
   //Get state from header
   const previousState = getStateFromHeader(req);
@@ -99,6 +99,6 @@ exports.loginDiscordUser = async (req, res) => {
       res.json({ error });
     }
   } else {
-    throw new CustomError("auth.discordError", "DiscordError", 401);
+    throw new CustomError("auth.discordLoginError", "DiscordError", 401);
   }
 };

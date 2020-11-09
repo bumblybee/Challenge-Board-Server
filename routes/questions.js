@@ -7,9 +7,9 @@ const roles = require("../enums/roles");
 
 const questionsController = require("../controllers/questionsController");
 
-router.get("/", questionsController.getQuestions);
-
 router.get("/:id", questionsController.getQuestion);
+
+router.get("/", questionsController.getQuestions);
 
 router.post("/", isAuth, errorWrapper(questionsController.createQuestion));
 

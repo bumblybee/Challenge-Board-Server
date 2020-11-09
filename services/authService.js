@@ -182,10 +182,11 @@ const createDiscordUserInDB = async (email, username) => {
   });
 
   if (existingCredentials) {
-    //!! this is being thrown, then DiscordHTTP error happens
-    //TODO: add log statements
-
-    throw new Error("auth.existingCredentials", "SignupError", 400);
+    throw new CustomError(
+      "auth.existingCredentials",
+      "DiscordSignupError",
+      400
+    );
   } else {
     const newUser = await User.create(user);
     const createdUser = {
@@ -200,22 +201,19 @@ const createDiscordUserInDB = async (email, username) => {
 };
 
 exports.loginDiscordUser = async (email, username) => {
-  const createdUser = await findDiscordUserInDB(email, username);
+  const loggedInUser = await findDiscordUserInDB(email, username);
 
-  return createdUser;
+  return loggedInUser;
 };
 
 const findDiscordUserInDB = async (email, username) => {
-  const user = {
-    username,
-    email,
-    hasDiscordLogin: true,
-    role: roles.Student,
-  };
-
   const existingCredentials = await User.findOne({
     where: { [Op.or]: [{ email: email }, { username: username }] },
   });
+
+  if (!existingCredentials) {
+    throw new CustomError("auth.discordLoginError", "DiscordLoginError", 400);
+  }
 
   const createdUser = {
     id: existingCredentials.id,

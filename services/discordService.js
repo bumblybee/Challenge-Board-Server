@@ -2,6 +2,7 @@ const DiscordOauth2 = require("discord-oauth2");
 const crypto = require("crypto");
 const authService = require("./authService");
 const { CustomError } = require("../handlers/errorHandlers");
+const { logger } = require("../handlers/logger");
 
 const {
   DISCORD_SIGNUP_URI_CONFIG,
@@ -63,7 +64,7 @@ exports.createDiscordUser = async (code) => {
       user: createdUser,
     };
   } else {
-    throw new CustomError("auth.discordError", "DiscordError", 401);
+    throw new CustomError("auth.discordSignupError", "DiscordSignupError", 401);
   }
 };
 
@@ -82,15 +83,15 @@ exports.loginDiscordUser = async (code) => {
   if (discordUser) {
     const { email, username } = discordUser;
 
-    const createdUser = await authService.loginDiscordUser(email, username);
+    const loggedInUser = await authService.loginDiscordUser(email, username);
 
-    const jwt = authService.generateJWT(createdUser);
+    const jwt = authService.generateJWT(loggedInUser);
 
     return {
       jwt,
-      user: createdUser,
+      user: loggedInUser,
     };
   } else {
-    throw new CustomError("auth.discordError", "DiscordError", 401);
+    throw new CustomError("auth.discordLoginError", "DiscordLoginError", 401);
   }
 };
