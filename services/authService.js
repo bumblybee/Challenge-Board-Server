@@ -162,6 +162,16 @@ exports.signupDiscordUser = async (email, username) => {
     },
   });
 
+  emailHandler.sendEmail({
+    subject: "New User Created",
+    filename: "newUserEmail",
+    user: {
+      username,
+      userEmail: email,
+      email: "hesstjune@gmail.com",
+    },
+  });
+
   logger.info(
     `Signup Email Sent - user id: ${createdUser.id}, username: ${username}, email: ${email}`
   );
