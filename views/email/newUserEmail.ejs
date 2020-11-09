@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome</title>
+    <style>
+      .container {
+        width: 75%;
+        padding: 1rem 0;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      h1 {
+        margin-bottom: 2rem;
+        font-size: 2rem;
+      }
+
+      p {
+        line-height: 1.4;
+        font-size: 1.1rem;
+      }
+      span {
+        color: #809bff;
+      }
+
+      @media only screen and(max-width: 900px) {
+        .container {
+          width: 100%;
+          padding-left: 0.5rem 0 0 1rem;
+        }
+
+        h1 {
+          font-size: 1.1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>New <span>Challenge Board</span> User Created.</h1>
+
+      <p>User: <%= user.username %></p>
+      <p>Email: <%= user.userEmail %></p>
+    </div>
+  </body>
+</html>

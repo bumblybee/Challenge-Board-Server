@@ -90,6 +90,16 @@ exports.signupUser = async (email, username, password) => {
         },
       });
 
+      emailHandler.sendEmail({
+        subject: "New User Created",
+        filename: "newUserEmail",
+        user: {
+          username,
+          userEmail: email,
+          email: "hesstjune@gmail.com",
+        },
+      });
+
       logger.info(
         `Signup Email Sent - user id: ${createdUser.id}, username: ${username}, email: ${email}`
       );
@@ -172,6 +182,9 @@ const createDiscordUserInDB = async (email, username) => {
   });
 
   if (existingCredentials) {
+    //!! this is being thrown, then DiscordHTTP error happens
+    //TODO: add log statements
+
     throw new Error("auth.existingCredentials", "SignupError", 400);
   } else {
     const newUser = await User.create(user);
