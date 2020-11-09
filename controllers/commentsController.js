@@ -93,7 +93,6 @@ exports.deleteComment = async (req, res) => {
 };
 
 exports.selectAnswer = async (req, res) => {
-  // throw new CustomError("server.failed");
   const { commentId, questionId } = req.params;
 
   const selectedAnswer = await Comment.update(

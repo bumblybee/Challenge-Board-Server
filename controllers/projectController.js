@@ -49,7 +49,8 @@ exports.submitProject = async (req, res) => {
 
     res.status(200).json(newProject);
   } else {
-    throw new CustomError("post.failed");
+    //If no user id there's no token ie. they aren't logged in
+    throw new CustomError("auth.unauthorized", "projectSubmissionError", 401);
   }
 };
 
