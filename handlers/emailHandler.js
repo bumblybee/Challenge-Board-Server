@@ -1,11 +1,7 @@
 const nodemailer = require("nodemailer");
-const smtp = require("nodemailer-smtp-transport");
 const ejs = require("ejs");
 const juice = require("juice");
 const { logger } = require("./logger");
-
-// const sgMail = require("@sendgrid/mail");
-// sgMail.setApiKey(process.env.SENDGRID_PASS);
 
 const transport = nodemailer.createTransport({
   service: "SendGrid",
@@ -41,7 +37,6 @@ exports.sendEmail = async (options) => {
     );
 
     return transport.sendMail(mailOptions);
-    // return sgMail.send(mailOptions);
   } catch (err) {
     console.log(err);
   }
